@@ -1,4 +1,4 @@
-package com.example.fiery_keeper
+package com.example.firy_streak
 
 import io.flutter.embedding.android.FlutterActivity
 

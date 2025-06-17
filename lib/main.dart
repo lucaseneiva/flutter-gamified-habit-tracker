@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
 	Widget build(BuildContext context) {
 		return MaterialApp(
 			debugShowCheckedModeBanner: false, // Mudei para false para produção
-			title: 'Fiery Streak',
+			title: 'Firy Streak',
 			theme: ThemeData(
 				primarySwatch: Colors.red,
 				scaffoldBackgroundColor: Colors.white,

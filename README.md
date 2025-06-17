@@ -1,4 +1,4 @@
-# fiery_keeper
+# firy_streak
 
 A new Flutter project.
 

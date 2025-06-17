@@ -101,7 +101,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 	@override
 	Widget build(BuildContext context) {
 		return Scaffold(
-			appBar: AppBar(title: const Text('Cadastro - Fiery Streak')),
+			appBar: AppBar(title: const Text('Cadastro - firy Streak')),
 			body: Center(
 				child: SingleChildScrollView(
 					padding: const EdgeInsets.all(20.0),

@@ -49,7 +49,7 @@ class HomeScreen extends StatelessWidget {
 
         // 3. Constrói a UI com base no estado atual
         return Scaffold(
-          appBar: AppBar(title: Text("Meu Fiery Streak")),
+          appBar: AppBar(title: Text("Meu firy Streak")),
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

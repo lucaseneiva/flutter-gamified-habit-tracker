@@ -1,4 +1,4 @@
-name: fiery_keeper
+name: firy_streak
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -41,6 +41,7 @@ dependencies:
   cloud_firestore: ^5.6.0
   flutter_svg: ^2.1.0
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -51,7 +52,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
-
+  flutter_rename_app_plus3: ^1.2.4
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
