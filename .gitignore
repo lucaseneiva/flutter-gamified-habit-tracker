@@ -45,3 +45,6 @@ app.*.map.json
 /android/app/release
 
 .vscode
+
+# Firebase - Arquivo de configuração que não deve ser versionado
+lib/firebase_options.dart
