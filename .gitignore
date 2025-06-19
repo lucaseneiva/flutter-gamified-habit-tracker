@@ -48,3 +48,5 @@ app.*.map.json
 
 # Firebase - Arquivo de configuração que não deve ser versionado
 lib/firebase_options.dart
+
+android/app/google-services.json
