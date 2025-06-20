@@ -60,7 +60,7 @@ class PetService {
 
     final lastFedDate = lastFedTimestamp.toDate();
     final now = _clock.now(); // Usa o relógio injetado!
-
+    
     // Lógica de tempo crucial
     final difference = now.difference(lastFedDate);
 

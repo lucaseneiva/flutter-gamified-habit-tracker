@@ -67,15 +67,16 @@ void main() {
     test('after 25 hours, state should be NOT_FED', () {
       fakeAsync((async) {
         final firestore = FakeFirebaseFirestore();
-        final fedTime = DateTime(2024, 1, 1, 10, 0);
-        final clock = Clock.fixed(fedTime);
+        final lastFed = DateTime(2024, 1, 1, 10, 0);
+        final clock = async.getClock(lastFed);
         final service = PetService(firestore: firestore, auth: auth, clock: clock);
 
         final fedUserData = {
           'fieryState': 'FED',
           'streakCount': 1,
-          'lastFedTimestamp': Timestamp.fromDate(fedTime),
+          'lastFedTimestamp': Timestamp.fromDate(lastFed),
         };
+
 
         async.elapse(const Duration(hours: 25));
         
@@ -87,17 +88,19 @@ void main() {
     test('after 49 hours, state should be DEAD', () {
       fakeAsync((async) {
         final firestore = FakeFirebaseFirestore();
-        final fedTime = DateTime(2024, 1, 1, 10, 0);
-        final clock = Clock.fixed(fedTime);
+        final lastFed = DateTime(2024, 1, 1, 10, 0);
+        var clock = async.getClock(lastFed);
         final service = PetService(firestore: firestore, auth: auth, clock: clock);
 
         final fedUserData = {
           'fieryState': 'FED',
           'streakCount': 5,
-          'lastFedTimestamp': Timestamp.fromDate(fedTime),
+          'lastFedTimestamp': Timestamp.fromDate(lastFed),
         };
         
+        // print('Current time: ${clock.now()}');
         async.elapse(const Duration(hours: 49));
+        // print('Current time: ${clock.now()}');
         
         final currentState = service.determineCurrentFieryState(fedUserData);
         expect(currentState, 'DEAD');
