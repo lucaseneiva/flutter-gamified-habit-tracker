@@ -5,8 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'pet_service.dart'; // Importe o novo serviço
-import 'package:google_fonts/google_fonts.dart';
 import 'widgets/speech_bubble.dart';
+import 'widgets/streak_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -100,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // Simplesmente centralizamos o card sem forçar largura
-                _buildStreakCard(streakCount),
+                StreakCard(streakCount: streakCount,),
                 const SizedBox(height: 20),
                 _buildPetWithBubble(currentState),
                 const SizedBox(height: 40),
@@ -131,76 +131,6 @@ class _HomeScreenState extends State<HomeScreen> {
       default: svgAssetPath = 'assets/egg.svg';
     }
     return SvgPicture.asset(svgAssetPath, height: 200,);
-  }
-
-  // Widget para construir o card de Streak, como no design
-  Widget _buildStreakCard(int streakCount) {
-    // Cores do design
-    final Color primaryOrange = const Color(0xFFF9703B);
-    final Color lightGray = const Color(0xFFE0E0E0);
-    final Color darkGrayText = const Color(0xFF4F4F4F);
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32), // Margem lateral
-      child: Container(
-        // Agora o container se adapta ao conteúdo naturalmente
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16.0),
-          border: Border.all(color: lightGray, width: 1.5),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
-              spreadRadius: 2,
-              blurRadius: 8,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'Streak',
-              style: GoogleFonts.nunito(
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-                color: darkGrayText,
-              ),
-            ),
-            const SizedBox(height: 6),
-            
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.baseline,
-              textBaseline: TextBaseline.alphabetic,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  '$streakCount',
-                  style: GoogleFonts.nunito(
-                    fontSize: 44,
-                    fontWeight: FontWeight.w800,
-                    color: primaryOrange,
-                  ),
-                ),
-                const SizedBox(width: 6),
-                
-                Text(
-                  streakCount == 1 ? 'day' : 'days',
-                  style: GoogleFonts.nunito(
-                    fontSize: 40,
-                    fontWeight: FontWeight.w700,
-                    color: primaryOrange,
-                  ),
-                ),
-              ],
-            )
-          ],
-        ),
-      ),
-    );
   }
 
   
