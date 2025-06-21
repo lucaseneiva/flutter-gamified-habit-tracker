@@ -109,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onPressed: (currentState == 'NOT_FED' || currentState == 'EGG' || currentState == 'DEAD')
                       ? () => _petService.feedPet()
                       : null,
-                  child: Text(currentState == 'DEAD' ? "Reviver o Bichinho" : "Alimentar o Bichinho"),
+                  child: Text(currentState == 'DEAD' ? "Reviver o Bichinho" : "Alimentar"),
                 ),
               ],
             ),
