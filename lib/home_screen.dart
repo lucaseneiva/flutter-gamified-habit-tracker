@@ -30,9 +30,9 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
   
-  Widget _buildPetWithBubble(String state) {
+  Widget _buildPetWithBubble(String state) { 
     return SizedBox(
-      height: 240, // Altura total para acomodar pet + bubble
+      height: 260, // Altura total para acomodar pet + bubble
       child: Stack(
         alignment: Alignment.center,
         children: [
