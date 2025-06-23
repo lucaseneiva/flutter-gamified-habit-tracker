@@ -180,13 +180,32 @@ class _HomeScreenState extends State<HomeScreen> {
   // A função _buildPetImage pode continuar a mesma
   Widget _buildPetImage(String state) {
     String svgAssetPath;
-    switch (state) {
-      case 'EGG': svgAssetPath = 'assets/egg.svg'; break;
-      case 'FED': svgAssetPath = 'assets/fed.svg'; break;
 
-      case 'NOT_FED': svgAssetPath = 'assets/not_fed.svg'; break;
-      case 'DEAD': svgAssetPath = 'assets/dead.svg'; break;
-      default: svgAssetPath = 'assets/egg.svg';
+    if (state.contains('_')) {
+      final parts = state.split('_');
+      final growthStage = parts[0].toLowerCase(); // baby, child, teen, adult
+      final feedingStatus = parts[1].toLowerCase(); // fed, not_fed
+
+      // A primeira fase usa os SVGs antigos para não quebrar o que já existe
+      if (growthStage == 'baby') {
+        svgAssetPath = 'assets/${feedingStatus == 'fed' ? 'fed' : 'not_fed'}.svg';
+      } else {
+        // As novas fases usam o padrão "stage_status.svg"
+        svgAssetPath = 'assets/${growthStage}_$feedingStatus.svg';
+      }
+    } else {
+      // Lida com os estados simples que não têm estágio (Ovo, Morto)
+      switch (state) {
+        case 'EGG':
+          svgAssetPath = 'assets/egg.svg';
+          break;
+        case 'DEAD':
+          svgAssetPath = 'assets/dead.svg';
+          break;
+        default:
+          // Fallback para qualquer estado inesperado
+          svgAssetPath = 'assets/egg.svg';
+      }
     }
     return SvgPicture.asset(svgAssetPath, height: 200,);
   }

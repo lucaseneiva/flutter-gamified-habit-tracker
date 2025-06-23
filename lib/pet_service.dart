@@ -45,17 +45,20 @@ class PetService {
     });
   }
 
-  // Função para DETERMINAR O ESTADO ATUAL
   String determineCurrentFieryState(Map<String, dynamic> userData) {
     final String savedState = userData['fieryState'] ?? 'EGG';
     final Timestamp? lastFedTimestamp = userData['lastFedTimestamp'];
+    final int streak = userData['streakCount'] ?? 0;
 
+    // O estado EGG é especial e apenas para o início.
     if (savedState == 'EGG') {
       return 'EGG';
     }
 
+    // Se não há timestamp, mas o pet já não é um ovo, ele precisa ser alimentado.
+    // Isso serve como um fallback seguro.
     if (lastFedTimestamp == null) {
-      return 'EGG';
+      return 'BABY_NOT_FED';
     }
 
     final lastFedDate = lastFedTimestamp.toDate();
@@ -67,13 +70,26 @@ class PetService {
     if (difference.inDays >= 2) {
       // Passaram-se 2 dias ou mais desde a última alimentação
       return 'DEAD';
-    } else if (difference.inDays >= 1) {
-      // Passou 1 dia
-      return 'NOT_FED';
-    } else {
-      // Ainda no mesmo dia da alimentação
-      return 'FED';
     }
+    
+    // Determina o status da alimentação
+    final feedingStatus = difference.inDays >= 1 ? 'NOT_FED' : 'FED';
+
+    // Determina o estágio de crescimento com base na streak
+    String growthStage;
+    // Streak thresholds: 1-9 (Baby), 10-29 (Child), 30-59 (Teen), 60+ (Adult)
+    if (streak >= 60) {
+      growthStage = 'ADULT';
+    } else if (streak >= 30) {
+      growthStage = 'TEEN';
+    } else if (streak >= 10) {
+      growthStage = 'CHILD';
+    } else {
+      // O estágio base após o ovo
+      growthStage = 'BABY';
+    }
+
+    return '${growthStage}_$feedingStatus';
   }
 
   // Lógica de reset do pet
