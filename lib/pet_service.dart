@@ -27,6 +27,14 @@ class PetService {
     return _firestore.collection('users').doc(_currentUser!.uid).snapshots();
   }
 
+  Future<void> setHabit(String habitName) async {
+    if (_currentUser == null) return;
+    final docRef = _firestore.collection('users').doc(_currentUser!.uid);
+    await docRef.update({
+      'habitName': habitName,
+    });
+  }
+  
   // Função para ALIMENTAR o pet
   Future<void> feedPet() async {
     if (_currentUser == null) return;

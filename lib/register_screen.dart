@@ -40,6 +40,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 					'fieryState': 'EGG',
 					'streakCount': 0,
 					'lastFedTimestamp': null, // Começa nulo, pois ainda não foi alimentado
+          'habitName': null,
 				});
 			}
 			// Após o cadastro, o AuthGate já deve redirecionar para HomeScreen

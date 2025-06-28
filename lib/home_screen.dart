@@ -8,6 +8,7 @@ import 'pet_service.dart'; // Importe o novo serviço
 import 'widgets/speech_bubble.dart';
 import 'widgets/streak_card.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'create_habit_screen.dart'; // Importa a tela de criação de hábito
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -137,7 +138,14 @@ class _HomeScreenState extends State<HomeScreen> {
         }
 
         var userData = snapshot.data!.data() as Map<String, dynamic>;
-        
+
+		final String? habitName = userData['habitName'];
+
+		if (habitName == null || habitName.isEmpty) {
+          // Se o usuário ainda não definiu um hábito, mostra a tela de criação.
+          return const CreateHabitScreen();
+        }
+		
         // A lógica de estado agora vem do serviço
         var currentState = _petService.determineCurrentFieryState(userData);
 
