@@ -4,7 +4,23 @@ enum GrowthStage {
   child,
   teen,
   adult,
-  dead,
+  dead;
+  static GrowthStage fromString(String? statusString) {
+    switch (statusString) {
+      case 'egg':
+        return GrowthStage.egg;
+      case 'dead':
+        return GrowthStage.dead;
+      // Adicione outros casos se você salvar outros estágios explicitamente
+      default:
+        // Se a string for nula ou desconhecida, qual é o padrão?
+        // Talvez aqui a gente lance um erro, ou retorne um padrão.
+        // Por enquanto, vamos assumir que não deveria acontecer para um pet ativo.
+        // Vamos deixar a lógica de cálculo cuidar disso.
+        // A rigor, o default aqui seria um erro.
+        return GrowthStage.baby; // Um fallback seguro, mas imperfeito.
+    }
+  }
 }
 
 enum FeedingStatus {

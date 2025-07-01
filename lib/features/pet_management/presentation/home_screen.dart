@@ -57,13 +57,13 @@ class _HomeScreenState extends State<HomeScreen> {
         var currentState = _petService.determineCurrentFieryState(userData);
 
         // Se o pet morreu, atualizamos o streak no banco
-        if (currentState == 'DEAD' && userData['fieryState'] != 'DEAD') {
+        if (currentState.isDead) {
            WidgetsBinding.instance.addPostFrameCallback((_) {
               _petService.resetPetIfDead();
            });
         }
         
-        int streakCount = (currentState == 'DEAD') ? 0 : (userData['streakCount'] ?? 0);
+        int streakCount = (currentState.isDead) ? 0 : (userData['streakCount'] ?? 0);
 
         return Scaffold(
           appBar: AppBar(title: const Text("Meu Firy Streak")),

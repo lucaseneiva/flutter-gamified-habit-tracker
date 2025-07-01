@@ -44,7 +44,7 @@ class PetDisplay extends StatelessWidget {
             onPressed: (!petState.isFed || petState.isEgg || petState.isDead)
                 ? () => _showConfirmationDialog(context, petState)
                 : null,
-            child: Text(petState.isDead ? "Reviver o Bichinho" : "Alimentar"),
+            child: Text(petState.isDead ? "Reviver o Bichinho" : petState.isEgg? "Chocar" : "Alimentar"),
           ),
         ],
       ),

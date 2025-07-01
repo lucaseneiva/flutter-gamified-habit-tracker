@@ -39,25 +39,21 @@ class PetService {
   Future<void> feedPet() async {
     if (_currentUser == null) return;
     final docRef = _firestore.collection('users').doc(_currentUser!.uid);
-
-    final doc = await docRef.get();
-
-    final data = doc.data();
-    final currentStreak = (data?['streakCount'] ?? 0) as int;
-    
     
     await docRef.update({
       'lastFedTimestamp': Timestamp.fromDate(_clock.now()),
-      'streakCount': currentStreak + 1,
+      'streakCount': FieldValue.increment(1),
+      'petStatus': "ACTIVE"
     });
   }
 
   PetState determineCurrentFieryState(Map<String, dynamic> userData) {
+    final String? statusString = userData['petStatus'];
     final Timestamp? lastFedTimestamp = userData['lastFedTimestamp'];
     final int streak = userData['streakCount'] ?? 0;
 
     // O estado EGG é especial e apenas para o início.
-    if (streak == 0) {
+    if (statusString == "EGG") {
       return PetState(GrowthStage.egg);
     }
 

@@ -37,7 +37,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 				// 2. CRIA O DOCUMENTO NO FIRESTORE!
 				await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
 					'email': user.email,
-					'fieryState': 'EGG',
+					'petStatus': 'EGG',
 					'streakCount': 0,
 					'lastFedTimestamp': null, // Começa nulo, pois ainda não foi alimentado
           'habitName': null,
