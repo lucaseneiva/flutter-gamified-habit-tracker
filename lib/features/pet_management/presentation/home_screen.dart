@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'pet_service.dart'; // Importe o novo serviço
+import '../data/pet_service.dart'; // Importe o novo serviço
 import 'widgets/speech_bubble.dart';
 import 'widgets/streak_card.dart';
 import 'package:google_fonts/google_fonts.dart';

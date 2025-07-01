@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'onboarding_screen.dart';
-import 'auth_gate.dart';
+import 'package:firy_streak/features/pet_management/presentation/onboarding_screen.dart';
+import 'package:firy_streak/core/auth/auth_gate.dart';
 
 class DecisionScreen extends StatefulWidget {
   const DecisionScreen({super.key});

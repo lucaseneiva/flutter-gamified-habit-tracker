@@ -1,6 +1,6 @@
 // lib/onboarding_screen.dart
 
-import 'package:firy_streak/auth_gate.dart';
+import 'package:firy_streak/core/auth/auth_gate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';

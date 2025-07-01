@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 // import 'auth_gate.dart'; // Vamos criar este arquivo
 import 'package:google_fonts/google_fonts.dart';
-import 'decision_screen.dart'; // Importa a tela de decisão
+import 'core/utils/decision_screen.dart'; // Importa a tela de decisão
 
 void main() async {
 	WidgetsFlutterBinding.ensureInitialized();

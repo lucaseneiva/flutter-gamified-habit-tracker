@@ -45,7 +45,7 @@ class PetService {
     final data = doc.data();
     final currentStreak = (data?['streakCount'] ?? 0) as int;
     
-    // Usa o relógio injetado!
+    
     await docRef.update({
       'fieryState': 'FED',
       'lastFedTimestamp': Timestamp.fromDate(_clock.now()),

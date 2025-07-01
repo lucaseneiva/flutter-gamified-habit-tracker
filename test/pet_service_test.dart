@@ -1,6 +1,6 @@
 // test/pet_service_test.dart
 import 'package:fake_async/fake_async.dart';
-import 'package:firy_streak/pet_service.dart';
+import 'package:firy_streak/features/pet_management/data/pet_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:clock/clock.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';

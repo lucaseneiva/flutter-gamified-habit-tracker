@@ -1,6 +1,6 @@
 // lib/create_habit_screen.dart
 
-import 'package:firy_streak/pet_service.dart';
+import 'package:firy_streak/features/pet_management/data/pet_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
