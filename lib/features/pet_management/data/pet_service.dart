@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:clock/clock.dart'; // Importe o pacote clock
+import 'package:firy_streak/features/pet_management/domain/pet_state.dart';
 
 class PetService {
   final FirebaseFirestore _firestore;
@@ -35,38 +36,35 @@ class PetService {
     });
   }
   
-  // Função para ALIMENTAR o pet
   Future<void> feedPet() async {
     if (_currentUser == null) return;
     final docRef = _firestore.collection('users').doc(_currentUser!.uid);
 
     final doc = await docRef.get();
-    // Usa um cast seguro para evitar exceções de runtime
+
     final data = doc.data();
     final currentStreak = (data?['streakCount'] ?? 0) as int;
     
     
     await docRef.update({
-      'fieryState': 'FED',
       'lastFedTimestamp': Timestamp.fromDate(_clock.now()),
       'streakCount': currentStreak + 1,
     });
   }
 
-  String determineCurrentFieryState(Map<String, dynamic> userData) {
-    final String savedState = userData['fieryState'] ?? 'EGG';
+  PetState determineCurrentFieryState(Map<String, dynamic> userData) {
     final Timestamp? lastFedTimestamp = userData['lastFedTimestamp'];
     final int streak = userData['streakCount'] ?? 0;
 
     // O estado EGG é especial e apenas para o início.
-    if (savedState == 'EGG') {
-      return 'EGG';
+    if (streak == 0) {
+      return PetState(GrowthStage.egg);
     }
 
     // Se não há timestamp, mas o pet já não é um ovo, ele precisa ser alimentado.
     // Isso serve como um fallback seguro.
     if (lastFedTimestamp == null) {
-      return 'BABY_NOT_FED';
+      return PetState(GrowthStage.baby);
     }
 
     final lastFedDate = lastFedTimestamp.toDate();
@@ -77,27 +75,26 @@ class PetService {
 
     if (difference.inDays >= 2) {
       // Passaram-se 2 dias ou mais desde a última alimentação
-      return 'DEAD';
+      return PetState(GrowthStage.dead);
     }
     
     // Determina o status da alimentação
-    final feedingStatus = difference.inDays >= 1 ? 'NOT_FED' : 'FED';
+    final feedingStatus = difference.inDays >= 1 ? FeedingStatus.notFed : FeedingStatus.fed;
 
     // Determina o estágio de crescimento com base na streak
-    String growthStage;
+    GrowthStage growthStage;
     // Streak thresholds: 1-9 (Baby), 10-29 (Child), 30-59 (Teen), 60+ (Adult)
     if (streak >= 60) {
-      growthStage = 'ADULT';
+      growthStage = GrowthStage.adult;
     } else if (streak >= 30) {
-      growthStage = 'TEEN';
+      growthStage = GrowthStage.teen;
     } else if (streak >= 10) {
-      growthStage = 'CHILD';
+      growthStage = GrowthStage.child;
     } else {
-      // O estágio base após o ovo
-      growthStage = 'BABY';
+      growthStage = GrowthStage.baby;
     }
 
-    return '${growthStage}_$feedingStatus';
+    return PetState(growthStage, feedingStatus);
   }
 
   // Lógica de reset do pet
@@ -105,7 +102,6 @@ class PetService {
     if (_currentUser == null) return;
     final docRef = _firestore.collection('users').doc(_currentUser!.uid);
     await docRef.update({
-      'fieryState': 'DEAD', // Mantém como DEAD para mostrar a imagem correta
       'streakCount': 0,
     });
   }

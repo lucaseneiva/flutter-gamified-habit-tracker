@@ -1,31 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firy_streak/features/pet_management/presentation/widgets/speech_bubble.dart';
+import 'package:firy_streak/features/pet_management/domain/pet_state.dart';
 
 class PetDisplay extends StatelessWidget {
-  final String petState;
+  final PetState petState;
+  final VoidCallback onFeedPet;
 
   const PetDisplay({
     super.key,
-    required this.petState
+    required this.petState,
+    required this.onFeedPet
   });
+
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 260, // Altura total para acomodar pet + bubble
-      child: Stack(
-        alignment: Alignment.center,
+      height: 260,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Pet image no centro-inferior
-          Positioned(
-            bottom: 0,
-            child: _buildPetImage(petState),
-          ),
-          // Speech bubble no topo, só aparece quando precisa alimentar
-          if (petState == 'NOT_FED' || petState == 'EGG')
-            Positioned(
-              top: 0,
+          // Balão de fala (opcional)
+          if (!petState.isFed || petState.isEgg)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
               child: SpeechBubble(
                 message: _getBubbleMessage(petState),
                 bubbleColor: Colors.white,
@@ -33,49 +32,88 @@ class PetDisplay extends StatelessWidget {
                 textColor: const Color(0xFF4F4F4F),
               ),
             ),
+
+          // Pet com espaçamento inferior
+          Padding(
+            padding: const EdgeInsets.only(bottom: 12.0),
+            child: SvgPicture.asset(petState.imagePath, height: 120),
+          ),
+
+          // Botão
+          ElevatedButton(
+            onPressed: (!petState.isFed || petState.isEgg || petState.isDead)
+                ? () => _showConfirmationDialog(context, petState)
+                : null,
+            child: Text(petState.isDead ? "Reviver o Bichinho" : "Alimentar"),
+          ),
         ],
       ),
     );
   }
 
-   String _getBubbleMessage(String state) {
-    switch (state) {
-      case 'NOT_FED': return 'Estou com fome!';
-      case 'EGG': return 'Me choca!';
-      default: return '';
+
+  String _getBubbleMessage(PetState state) {
+    if(state.isHungry) {
+      return 'Estou com fome!';
+    }
+    else {
+      return 'Me choca!';
     }
   }
+  
+  void _showConfirmationDialog(BuildContext context, PetState currentState) {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                currentState.isDead? "✧ Reviver ✧" : "🪵 Alimentar 🪵",
 
-  Widget _buildPetImage(String state) {
-    String svgAssetPath;
-
-    if (state.contains('_')) {
-      final parts = state.split('_');
-      final growthStage = parts[0].toLowerCase(); // baby, child, teen, adult
-      final feedingStatus = parts[1].toLowerCase(); // fed, not_fed
-
-      // A primeira fase usa os SVGs antigos para não quebrar o que já existe
-      if (growthStage == 'baby') {
-        svgAssetPath = 'assets/${feedingStatus == 'fed' ? 'fed' : 'not_fed'}.svg';
-      } else {
-        // As novas fases usam o padrão "stage_status.svg"
-        svgAssetPath = 'assets/${growthStage}_$feedingStatus.svg';
-      }
-    } else {
-      // Lida com os estados simples que não têm estágio (Ovo, Morto)
-      switch (state) {
-        case 'EGG':
-          svgAssetPath = 'assets/egg.svg';
-          break;
-        case 'DEAD':
-          svgAssetPath = 'assets/dead.svg';
-          break;
-        default:
-          // Fallback para qualquer estado inesperado
-          svgAssetPath = 'assets/egg.svg';
-      }
-    }
-    return SvgPicture.asset(svgAssetPath, height: 200,);
+              ),
+              const SizedBox(height: 16),
+              Text(
+                currentState.isDead 
+                    ? "Quer mesmo reviver seu companheiro?" 
+                    : "Vai dar comida pro bichinho agora?",
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.grey,
+                      side: const BorderSide(color: Colors.grey),
+                    ),
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text("Cancelar"),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFF9703B),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      onFeedPet();
+                    },
+                    child: const Text("Confirmar"),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
+
 }
 

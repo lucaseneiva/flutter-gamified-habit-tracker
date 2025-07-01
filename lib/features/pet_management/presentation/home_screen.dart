@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../data/pet_service.dart'; // Importe o novo serviço
 import 'widgets/streak_card.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'create_habit_screen.dart'; // Importa a tela de criação de hábito
 import 'package:firy_streak/features/pet_management/presentation/widgets/pet_display.dart';
 
@@ -30,63 +29,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
   
-  void _showConfirmationDialog(BuildContext context, String currentState) {
-    showDialog(
-      context: context,
-      builder: (context) => Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                currentState == 'DEAD' ? "✧ Reviver ✧" : "🪵 Alimentar 🪵",
-                style: GoogleFonts.nunito(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                currentState == 'DEAD' 
-                    ? "Quer mesmo reviver seu companheiro?" 
-                    : "Vai dar comida pro bichinho agora?",
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.grey,
-                      side: const BorderSide(color: Colors.grey),
-                    ),
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text("Cancelar"),
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFF9703B),
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      _petService.feedPet();
-                    },
-                    child: const Text("Confirmar"),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
@@ -123,7 +65,6 @@ class _HomeScreenState extends State<HomeScreen> {
         
         int streakCount = (currentState == 'DEAD') ? 0 : (userData['streakCount'] ?? 0);
 
-        
         return Scaffold(
           appBar: AppBar(title: const Text("Meu Firy Streak")),
           body: Center(
@@ -133,14 +74,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 // Simplesmente centralizamos o card sem forçar largura
                 StreakCard(streakCount: streakCount,),
                 const SizedBox(height: 20),
-                PetDisplay(petState: currentState),
-                const SizedBox(height: 40),
-                ElevatedButton(
-                  onPressed: (currentState == 'NOT_FED' || currentState == 'EGG' || currentState == 'DEAD')
-                      ? () => _showConfirmationDialog(context, currentState)
-                      : null,
-                  child: Text(currentState == 'DEAD' ? "Reviver o Bichinho" : "Alimentar"),
-                ),
+                PetDisplay(petState: currentState, onFeedPet: _petService.feedPet,)
+                
               ],
             ),
           ),
