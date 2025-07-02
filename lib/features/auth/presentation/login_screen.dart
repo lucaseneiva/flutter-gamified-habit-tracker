@@ -76,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
       appBar: AppBar(title: const Text('Login - Firy Streak')),
       body: Center(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(100.0),
+          padding: const EdgeInsets.all(80.0),
           child: ConstrainedBox(
             constraints: BoxConstraints(maxWidth: 500),
             child: Form(
@@ -194,10 +194,13 @@ class _LoginActions extends StatelessWidget {
             ? const Center(child: CircularProgressIndicator())
             : ElevatedButton(onPressed: signIn, child: const Text('Entrar')),
         const SizedBox(height: 16),
-        TextButton(
+        Center(
+          child: TextButton(
           onPressed: onNavigateToRegister,
-          child: const Text('Não tem uma conta? Cadastre-se'),
+          child: const Text('Não tem uma conta? Cadastre-se', textAlign: TextAlign.center,),
         ),
+        )
+        
       ],
     );
   }

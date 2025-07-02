@@ -105,7 +105,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       appBar: AppBar(title: const Text('Cadastro - firy Streak')),
       body: Center(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(80.0),
           child: ConstrainedBox(
             constraints: BoxConstraints(maxWidth: 500),
             child: Form(
