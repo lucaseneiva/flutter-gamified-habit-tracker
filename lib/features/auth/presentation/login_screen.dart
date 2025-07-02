@@ -94,7 +94,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   const SizedBox(height: 24),
 
-                  _LoginActions(isLoading: _isLoading, signIn: _signIn),
+                  _LoginActions(
+                    isLoading: _isLoading,
+                    signIn: _signIn,
+                    onNavigateToRegister: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const RegisterScreen(),
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
@@ -133,7 +143,6 @@ class _LoginFormInputs extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        const SizedBox(height: 30),
         TextFormField(
           controller: emailController,
           decoration: const InputDecoration(labelText: 'Email'),
@@ -168,30 +177,28 @@ class _LoginFormInputs extends StatelessWidget {
 class _LoginActions extends StatelessWidget {
   final bool isLoading;
   final VoidCallback signIn;
+  final VoidCallback onNavigateToRegister;
 
   const _LoginActions({
-    super.key,
     required this.isLoading,
     required this.signIn,
+    required this.onNavigateToRegister,
   });
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         isLoading
             ? const Center(child: CircularProgressIndicator())
             : ElevatedButton(onPressed: signIn, child: const Text('Entrar')),
         const SizedBox(height: 16),
         TextButton(
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const RegisterScreen()),
-            );
-          },
+          onPressed: onNavigateToRegister,
           child: const Text('Não tem uma conta? Cadastre-se'),
         ),
       ],
-    ); // TODO: implement build
+    );
   }
 }
