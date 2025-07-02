@@ -105,81 +105,84 @@ class _RegisterScreenState extends State<RegisterScreen> {
 			body: Center(
 				child: SingleChildScrollView(
 					padding: const EdgeInsets.all(20.0),
-					child: Form(
-						key: _formKey,
-						child: Column(
-							mainAxisAlignment: MainAxisAlignment.center,
-							crossAxisAlignment: CrossAxisAlignment.stretch,
-							children: <Widget>[
-								Text(
-									'Crie sua conta',
-									style: Theme.of(context).textTheme.headlineSmall,
-									textAlign: TextAlign.center,
-								),
-								const SizedBox(height: 30),
-								TextFormField(
-									controller: _emailController,
-									decoration: const InputDecoration(labelText: 'Email'),
-									keyboardType: TextInputType.emailAddress,
-									validator: (value) {
-										if (value == null || value.isEmpty) {
-											return 'Por favor, insira um email';
-										}
-										if (!value.contains('@')) {
-											return 'Email inválido';
-										}
-										return null;
-									},
-								),
-								const SizedBox(height: 16),
-								TextFormField(
-									controller: _passwordController,
-									decoration: const InputDecoration(labelText: 'Senha'),
-									obscureText: true,
-									validator: (value) {
-										if (value == null || value.isEmpty) {
-											return 'Por favor, insira uma senha';
-										}
-										if (value.length < 6) {
-											return 'A senha deve ter no mínimo 6 caracteres';
-										}
-										return null;
-									},
-								),
-								const SizedBox(height: 16),
-								TextFormField(
-									controller: _confirmPasswordController,
-									decoration: const InputDecoration(
-										labelText: 'Confirmar Senha',
-									),
-									obscureText: true,
-									validator: (value) {
-										if (value == null || value.isEmpty) {
-											return 'Por favor, confirme sua senha';
-										}
-										if (value != _passwordController.text) {
-											return 'As senhas não coincidem';
-										}
-										return null;
-									},
-								),
-								const SizedBox(height: 24),
-								_isLoading
-										? const Center(child: CircularProgressIndicator())
-										: ElevatedButton(
-												onPressed: _signUp,
-												child: const Text('Cadastrar'),
-											),
-								const SizedBox(height: 16),
-								TextButton(
-									onPressed: () {
-										Navigator.of(context).pop(); // Voltar para a tela de Login
-									},
-									child: const Text('Já tem uma conta? Faça login'),
-								),
-							],
-						),
-					),
+					child: ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: 500),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          Text(
+                            'Crie sua conta',
+                            style: Theme.of(context).textTheme.headlineSmall,
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 30),
+                          TextFormField(
+                            controller: _emailController,
+                            decoration: const InputDecoration(labelText: 'Email'),
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Por favor, insira um email';
+                              }
+                              if (!value.contains('@')) {
+                                return 'Email inválido';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          TextFormField(
+                            controller: _passwordController,
+                            decoration: const InputDecoration(labelText: 'Senha'),
+                            obscureText: true,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Por favor, insira uma senha';
+                              }
+                              if (value.length < 6) {
+                                return 'A senha deve ter no mínimo 6 caracteres';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          TextFormField(
+                            controller: _confirmPasswordController,
+                            decoration: const InputDecoration(
+                              labelText: 'Confirmar Senha',
+                            ),
+                            obscureText: true,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Por favor, confirme sua senha';
+                              }
+                              if (value != _passwordController.text) {
+                                return 'As senhas não coincidem';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 24),
+                          _isLoading
+                              ? const Center(child: CircularProgressIndicator())
+                              : ElevatedButton(
+                                  onPressed: _signUp,
+                                  child: const Text('Cadastrar'),
+                                ),
+                          const SizedBox(height: 16),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(); // Voltar para a tela de Login
+                            },
+                            child: const Text('Já tem uma conta? Faça login'),
+                          ),
+                        ],
+                      ),
+                    ),
+            ),
 				),
 			),
 		);

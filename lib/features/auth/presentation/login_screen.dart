@@ -77,65 +77,68 @@ class _LoginScreenState extends State<LoginScreen> {
 			body: Center(
 				child: SingleChildScrollView(
 					padding: const EdgeInsets.all(100.0),
-					child: Form(
-						key: _formKey,
-						child: Column(
-							mainAxisAlignment: MainAxisAlignment.center,
-							crossAxisAlignment: CrossAxisAlignment.stretch,
-							children: <Widget>[
-								Text(
-									'Seja bem vindo novamente!!',
-									style: Theme.of(context).textTheme.headlineSmall,
-									textAlign: TextAlign.center,
-								),
-								const SizedBox(height: 30),
-								TextFormField(
-									controller: _emailController,
-									decoration: const InputDecoration(labelText: 'Email'),
-									keyboardType: TextInputType.emailAddress,
-									validator: (value) {
-										if (value == null || value.isEmpty) {
-											return 'Por favor, insira seu email';
-										}
-										if (!value.contains('@')) {
-											return 'Email inválido';
-										}
-										return null;
-									},
-								),
-								const SizedBox(height: 16),
-								TextFormField(
-									controller: _passwordController,
-									decoration: const InputDecoration(labelText: 'Senha'),
-									obscureText: true,
-									validator: (value) {
-										if (value == null || value.isEmpty) {
-											return 'Por favor, insira sua senha';
-										}
-										return null;
-									},
-								),
-								const SizedBox(height: 24),
-								_isLoading
-										? const Center(child: CircularProgressIndicator())
-										: ElevatedButton(
-												onPressed: _signIn,
-												child: const Text('Entrar'),
-											),
-								const SizedBox(height: 16),
-								TextButton(
-									onPressed: () {
-										Navigator.of(context).push(
-											MaterialPageRoute(
-												builder: (context) => const RegisterScreen(),
-											),
-										);
-									},
-									child: const Text('Não tem uma conta? Cadastre-se'),
-								),
-							],
-						),
-					),
+					child: ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: 500),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Text(
+                              'Seja bem vindo novamente!!',
+                              style: Theme.of(context).textTheme.headlineSmall,
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 30),
+                            TextFormField(
+                              controller: _emailController,
+                              decoration: const InputDecoration(labelText: 'Email'),
+                              keyboardType: TextInputType.emailAddress,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Por favor, insira seu email';
+                                }
+                                if (!value.contains('@')) {
+                                  return 'Email inválido';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 16),
+                            TextFormField(
+                              controller: _passwordController,
+                              decoration: const InputDecoration(labelText: 'Senha'),
+                              obscureText: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Por favor, insira sua senha';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 24),
+                            _isLoading
+                                ? const Center(child: CircularProgressIndicator())
+                                : ElevatedButton(
+                                    onPressed: _signIn,
+                                    child: const Text('Entrar'),
+                                  ),
+                            const SizedBox(height: 16),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => const RegisterScreen(),
+                                  ),
+                                );
+                              },
+                              child: const Text('Não tem uma conta? Cadastre-se'),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
 				),
 			),
 		);
