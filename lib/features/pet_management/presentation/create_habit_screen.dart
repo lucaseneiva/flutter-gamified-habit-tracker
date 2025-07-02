@@ -29,7 +29,7 @@ class _CreateHabitScreenState extends State<CreateHabitScreen> {
     _petService = PetService(
       firestore: FirebaseFirestore.instance,
       auth: FirebaseAuth.instance,
-      clock: const Clock(), 
+      clock: const Clock(),
     );
   }
 
@@ -38,7 +38,7 @@ class _CreateHabitScreenState extends State<CreateHabitScreen> {
     _habitController.dispose();
     super.dispose();
   }
-  
+
   void _startHabit() async {
     if (_formKey.currentState!.validate()) {
       setState(() => _isLoading = true);
@@ -49,8 +49,11 @@ class _CreateHabitScreenState extends State<CreateHabitScreen> {
         // e mostrar a tela do pet, então não precisamos navegar daqui.
       } catch (e) {
         if (mounted) {
-           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Erro ao salvar o hábito: $e'), backgroundColor: Colors.red),
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Erro ao salvar o hábito: $e'),
+              backgroundColor: Colors.red,
+            ),
           );
         }
       } finally {
@@ -102,7 +105,10 @@ class _CreateHabitScreenState extends State<CreateHabitScreen> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(color: Color(0xFFF9703B), width: 2.0),
+                            borderSide: const BorderSide(
+                              color: Color(0xFFF9703B),
+                              width: 2.0,
+                            ),
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
@@ -117,26 +123,32 @@ class _CreateHabitScreenState extends State<CreateHabitScreen> {
                   ],
                 ),
                 const SizedBox(height: 16),
-                
+
                 const Text('todos os dias', style: TextStyle(fontSize: 18)),
 
                 const Spacer(flex: 3),
-                
+
                 // Botão Iniciar
-                _isLoading 
-                  ? const Center(child: CircularProgressIndicator())
-                  : ElevatedButton(
-                      onPressed: _startHabit,
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        backgroundColor: const Color(0xFFF9703B),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                _isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : ElevatedButton(
+                        onPressed: _startHabit,
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          backgroundColor: const Color(0xFFF9703B),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: const Text(
+                          'Iniciar',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
-                      child: const Text(
-                        'Iniciar',
-                        style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                    ),
                 const SizedBox(height: 40),
               ],
             ),

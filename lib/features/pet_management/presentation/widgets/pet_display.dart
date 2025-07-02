@@ -10,9 +10,8 @@ class PetDisplay extends StatelessWidget {
   const PetDisplay({
     super.key,
     required this.petState,
-    required this.onFeedPet
+    required this.onFeedPet,
   });
-
 
   @override
   Widget build(BuildContext context) {
@@ -44,43 +43,42 @@ class PetDisplay extends StatelessWidget {
             onPressed: (!petState.isFed || petState.isEgg || petState.isDead)
                 ? () => _showConfirmationDialog(context, petState)
                 : null,
-            child: Text(petState.isDead ? "Reviver o Bichinho" : petState.isEgg? "Chocar" : "Alimentar"),
+            child: Text(
+              petState.isDead
+                  ? "Reviver o Bichinho"
+                  : petState.isEgg
+                  ? "Chocar"
+                  : "Alimentar",
+            ),
           ),
         ],
       ),
     );
   }
 
-
   String _getBubbleMessage(PetState state) {
-    if(state.isHungry) {
+    if (state.isHungry) {
       return 'Estou com fome!';
-    }
-    else {
+    } else {
       return 'Me choca!';
     }
   }
-  
+
   void _showConfirmationDialog(BuildContext context, PetState currentState) {
     showDialog(
       context: context,
       builder: (context) => Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                currentState.isDead? "✧ Reviver ✧" : "🪵 Alimentar 🪵",
-
-              ),
+              Text(currentState.isDead ? "✧ Reviver ✧" : "🪵 Alimentar 🪵"),
               const SizedBox(height: 16),
               Text(
-                currentState.isDead 
-                    ? "Quer mesmo reviver seu companheiro?" 
+                currentState.isDead
+                    ? "Quer mesmo reviver seu companheiro?"
                     : "Vai dar comida pro bichinho agora?",
                 textAlign: TextAlign.center,
               ),
@@ -114,6 +112,4 @@ class PetDisplay extends StatelessWidget {
       ),
     );
   }
-
 }
-

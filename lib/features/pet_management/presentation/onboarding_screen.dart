@@ -62,30 +62,44 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       children: [
         SvgPicture.asset('assets/not_fed.svg', height: 80),
         const SizedBox(width: 12),
-        const Text('+', style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
+        const Text(
+          '+',
+          style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+        ),
         const SizedBox(width: 12),
-        SvgPicture.asset('assets/logs.svg', height: 80), // Você precisará adicionar esta imagem
+        SvgPicture.asset(
+          'assets/logs.svg',
+          height: 80,
+        ), // Você precisará adicionar esta imagem
         const SizedBox(width: 12),
-        const Text('=', style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
+        const Text(
+          '=',
+          style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+        ),
         const SizedBox(width: 12),
         SvgPicture.asset('assets/fed.svg', height: 80),
       ],
     );
   }
-  
+
   // Widget customizado para a terceira tela
   Widget _buildGrowFiryWidget() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 30.0), // <-- A MÁGICA ACONTECE AQUI (150 - 120 = 30)
+          padding: const EdgeInsets.only(
+            top: 30.0,
+          ), // <-- A MÁGICA ACONTECE AQUI (150 - 120 = 30)
           child: SvgPicture.asset('assets/fed.svg', height: 120),
         ),
         const SizedBox(width: 24),
         const Icon(Icons.arrow_forward, size: 40, color: Colors.black54),
         const SizedBox(width: 24),
-        SvgPicture.asset('assets/child_fed.svg', height: 150), // Você precisará adicionar esta imagem
+        SvgPicture.asset(
+          'assets/child_fed.svg',
+          height: 150,
+        ), // Você precisará adicionar esta imagem
       ],
     );
   }
@@ -150,7 +164,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                       onPressed: () {
                         if (_currentPage == _onboardingPages.length - 1) {
-                           _finishOnboarding();
+                          _finishOnboarding();
                         } else {
                           _pageController.nextPage(
                             duration: const Duration(milliseconds: 400),
@@ -182,13 +196,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       height: 8,
       width: _currentPage == index ? 24 : 8,
       decoration: BoxDecoration(
-        color: _currentPage == index ? const Color(0xFFF9703B) : Colors.grey[300],
+        color: _currentPage == index
+            ? const Color(0xFFF9703B)
+            : Colors.grey[300],
         borderRadius: BorderRadius.circular(4),
       ),
     );
   }
 }
-
 
 // Widget para o conteúdo de cada página
 class OnboardingPageWidget extends StatelessWidget {

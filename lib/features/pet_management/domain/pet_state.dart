@@ -5,6 +5,7 @@ enum GrowthStage {
   teen,
   adult,
   dead;
+
   static GrowthStage fromString(String? statusString) {
     switch (statusString) {
       case 'egg':
@@ -23,10 +24,7 @@ enum GrowthStage {
   }
 }
 
-enum FeedingStatus {
-  fed,
-  notFed,
-}
+enum FeedingStatus { fed, notFed }
 
 class PetState {
   final GrowthStage stage;
@@ -45,9 +43,9 @@ class PetState {
   String get imagePath {
     if (isEgg) return 'assets/egg.svg';
     if (isDead) return 'assets/dead.svg';
-    
+
     // Converte o enum para string: 'GrowthStage.baby' -> 'baby'
-    final stageString = stage.toString().split('.').last; 
+    final stageString = stage.toString().split('.').last;
     final statusString = isFed ? 'fed' : 'not_fed';
 
     return 'assets/${stageString}_$statusString.svg';

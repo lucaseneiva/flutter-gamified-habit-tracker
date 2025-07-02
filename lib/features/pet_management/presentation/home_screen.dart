@@ -28,42 +28,48 @@ class _HomeScreenState extends State<HomeScreen> {
       clock: const Clock(), // Aqui usamos o relógio real!
     );
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
       stream: _petService.petDataStream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Scaffold(body: Center(child: CircularProgressIndicator()));
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
         }
         if (snapshot.hasError) {
           return const Scaffold(body: Center(child: Text("Ocorreu um erro!")));
         }
         if (!snapshot.hasData || !snapshot.data!.exists) {
-          return const Scaffold(body: Center(child: Text("Criando seu bichinho...")));
+          return const Scaffold(
+            body: Center(child: Text("Criando seu bichinho...")),
+          );
         }
 
         var userData = snapshot.data!.data() as Map<String, dynamic>;
 
-		final String? habitName = userData['habitName'];
+        final String? habitName = userData['habitName'];
 
-		if (habitName == null || habitName.isEmpty) {
+        if (habitName == null || habitName.isEmpty) {
           // Se o usuário ainda não definiu um hábito, mostra a tela de criação.
           return const CreateHabitScreen();
         }
-		
+
         // A lógica de estado agora vem do serviço
         var currentState = _petService.determineCurrentFiryState(userData);
 
         // Se o pet morreu, atualizamos o streak no banco
         if (currentState.isDead) {
-           WidgetsBinding.instance.addPostFrameCallback((_) {
-              _petService.resetPetIfDead();
-           });
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _petService.resetPetIfDead();
+          });
         }
-        
-        int streakCount = (currentState.isDead) ? 0 : (userData['streakCount'] ?? 0);
+
+        int streakCount = (currentState.isDead)
+            ? 0
+            : (userData['streakCount'] ?? 0);
 
         return Scaffold(
           appBar: AppBar(
@@ -83,17 +89,17 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // Simplesmente centralizamos o card sem forçar largura
-                StreakCard(streakCount: streakCount,),
+                StreakCard(streakCount: streakCount),
                 const SizedBox(height: 20),
-                PetDisplay(petState: currentState, onFeedPet: _petService.feedPet,)
-                
+                PetDisplay(
+                  petState: currentState,
+                  onFeedPet: _petService.feedPet,
+                ),
               ],
             ),
           ),
         );
       },
     );
-
   }
-  
 }

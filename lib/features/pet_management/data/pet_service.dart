@@ -13,9 +13,9 @@ class PetService {
     required FirebaseFirestore firestore,
     required FirebaseAuth auth,
     required Clock clock,
-  })  : _firestore = firestore,
-        _auth = auth,
-        _clock = clock;
+  }) : _firestore = firestore,
+       _auth = auth,
+       _clock = clock;
 
   User? get _currentUser => _auth.currentUser;
 
@@ -31,19 +31,17 @@ class PetService {
   Future<void> setHabit(String habitName) async {
     if (_currentUser == null) return;
     final docRef = _firestore.collection('users').doc(_currentUser!.uid);
-    await docRef.update({
-      'habitName': habitName,
-    });
+    await docRef.update({'habitName': habitName});
   }
-  
+
   Future<void> feedPet() async {
     if (_currentUser == null) return;
     final docRef = _firestore.collection('users').doc(_currentUser!.uid);
-    
+
     await docRef.update({
       'lastFedTimestamp': Timestamp.fromDate(_clock.now()),
       'streakCount': FieldValue.increment(1),
-      'petStatus': "ACTIVE"
+      'petStatus': "ACTIVE",
     });
   }
 
@@ -65,7 +63,7 @@ class PetService {
 
     final lastFedDate = lastFedTimestamp.toDate();
     final now = _clock.now(); // Usa o relógio injetado!
-    
+
     // Lógica de tempo crucial
     final difference = now.difference(lastFedDate);
 
@@ -73,9 +71,11 @@ class PetService {
       // Passaram-se 2 dias ou mais desde a última alimentação
       return PetState(GrowthStage.dead);
     }
-    
+
     // Determina o status da alimentação
-    final feedingStatus = difference.inDays >= 1 ? FeedingStatus.notFed : FeedingStatus.fed;
+    final feedingStatus = difference.inDays >= 1
+        ? FeedingStatus.notFed
+        : FeedingStatus.fed;
 
     // Determina o estágio de crescimento com base na streak
     GrowthStage growthStage;
@@ -97,8 +97,6 @@ class PetService {
   Future<void> resetPetIfDead() async {
     if (_currentUser == null) return;
     final docRef = _firestore.collection('users').doc(_currentUser!.uid);
-    await docRef.update({
-      'streakCount': 0,
-    });
+    await docRef.update({'streakCount': 0});
   }
 }

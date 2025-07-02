@@ -23,9 +23,10 @@ class _DecisionScreenState extends State<DecisionScreen> {
     final prefs = await SharedPreferences.getInstance();
     // A chave 'onboarding_complete' será true se o usuário já viu o tutorial.
     // O '?? false' garante que se a chave não existir, o valor será false.
-    
-    final bool hasSeenOnboarding = prefs.getBool('onboarding_complete') ?? false;
-    
+
+    final bool hasSeenOnboarding =
+        prefs.getBool('onboarding_complete') ?? false;
+
     // final bool hasSeenOnboarding = false;
 
     // Aguarda um pequeno instante para evitar um flash de tela
@@ -49,10 +50,6 @@ class _DecisionScreenState extends State<DecisionScreen> {
   @override
   Widget build(BuildContext context) {
     // Tela de carregamento simples enquanto a decisão é feita
-    return const Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
+    return const Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 }

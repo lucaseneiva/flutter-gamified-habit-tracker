@@ -22,7 +22,12 @@ class SpeechBubble extends StatelessWidget {
         borderColor: borderColor,
       ),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 10, 16, 18), // espaço para a setinha
+        padding: const EdgeInsets.fromLTRB(
+          16,
+          10,
+          16,
+          18,
+        ), // espaço para a setinha
         child: Text(
           message,
           style: TextStyle(
@@ -40,10 +45,7 @@ class BubbleWithTailPainter extends CustomPainter {
   final Color bubbleColor;
   final Color borderColor;
 
-  BubbleWithTailPainter({
-    required this.bubbleColor,
-    required this.borderColor,
-  });
+  BubbleWithTailPainter({required this.bubbleColor, required this.borderColor});
 
   @override
   void paint(Canvas canvas, Size size) {

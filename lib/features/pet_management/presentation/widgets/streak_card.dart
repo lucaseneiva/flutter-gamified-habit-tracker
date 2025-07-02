@@ -4,10 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 class StreakCard extends StatelessWidget {
   final int streakCount;
 
-  const StreakCard({
-    super.key,
-    required this.streakCount,
-  });
+  const StreakCard({super.key, required this.streakCount});
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +42,7 @@ class StreakCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 6),
-            
+
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -61,7 +58,7 @@ class StreakCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 6),
-                
+
                 Text(
                   streakCount == 1 ? 'day' : 'days',
                   style: GoogleFonts.nunito(
@@ -71,7 +68,7 @@ class StreakCard extends StatelessWidget {
                   ),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),
