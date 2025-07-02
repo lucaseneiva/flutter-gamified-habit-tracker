@@ -114,73 +114,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  Text(
-                    'Crie sua conta',
-                    style: Theme.of(context).textTheme.headlineSmall,
-                    textAlign: TextAlign.center,
-                  ),
+                  _RegisterHeader(),
+
                   const SizedBox(height: 30),
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: const InputDecoration(labelText: 'Email'),
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, insira um email';
-                      }
-                      if (!value.contains('@')) {
-                        return 'Email inválido';
-                      }
-                      return null;
-                    },
+
+                  _RegisterFormInputs(
+                    emailController: _emailController,
+                    passwordController: _passwordController,
+                    confirmPasswordController: _confirmPasswordController,
                   ),
                   const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _passwordController,
-                    decoration: const InputDecoration(labelText: 'Senha'),
-                    obscureText: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, insira uma senha';
-                      }
-                      if (value.length < 6) {
-                        return 'A senha deve ter no mínimo 6 caracteres';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _confirmPasswordController,
-                    decoration: const InputDecoration(
-                      labelText: 'Confirmar Senha',
-                    ),
-                    obscureText: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, confirme sua senha';
-                      }
-                      if (value != _passwordController.text) {
-                        return 'As senhas não coincidem';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 24),
-                  _isLoading
-                      ? const Center(child: CircularProgressIndicator())
-                      : ElevatedButton(
-                          onPressed: _signUp,
-                          child: const Text('Cadastrar'),
-                        ),
-                  const SizedBox(height: 16),
-                  TextButton(
-                    onPressed: () {
+
+                  _RegisterActions(
+                    isLoading: _isLoading,
+                    signUp: _signUp,
+                    onNavigateToLogin: () {
                       Navigator.of(
                         context,
                       ).pop(); // Voltar para a tela de Login
                     },
-                    child: const Text('Já tem uma conta? Faça login'),
                   ),
                 ],
               ),
@@ -188,6 +140,109 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _RegisterFormInputs extends StatelessWidget {
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
+  final TextEditingController confirmPasswordController;
+
+  const _RegisterFormInputs({
+    required this.emailController,
+    required this.passwordController,
+    required this.confirmPasswordController,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        TextFormField(
+          controller: emailController,
+          decoration: const InputDecoration(labelText: 'Email'),
+          keyboardType: TextInputType.emailAddress,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Por favor, insira um email';
+            }
+            if (!value.contains('@')) {
+              return 'Email inválido';
+            }
+            return null;
+          },
+        ),
+        const SizedBox(height: 16),
+        TextFormField(
+          controller: passwordController,
+          decoration: const InputDecoration(labelText: 'Senha'),
+          obscureText: true,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Por favor, insira uma senha';
+            }
+            if (value.length < 6) {
+              return 'A senha deve ter no mínimo 6 caracteres';
+            }
+            return null;
+          },
+        ),
+        const SizedBox(height: 16),
+        TextFormField(
+          controller: confirmPasswordController,
+          decoration: const InputDecoration(labelText: 'Confirmar Senha'),
+          obscureText: true,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Por favor, confirme sua senha';
+            }
+            if (value != passwordController.text) {
+              return 'As senhas não coincidem';
+            }
+            return null;
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class _RegisterHeader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      'Crie sua conta',
+      style: Theme.of(context).textTheme.headlineSmall,
+      textAlign: TextAlign.center,
+    );
+  }
+}
+
+class _RegisterActions extends StatelessWidget {
+  final bool isLoading;
+  final VoidCallback signUp;
+  final VoidCallback onNavigateToLogin;
+
+  const _RegisterActions({
+    required this.isLoading,
+    required this.signUp,
+    required this.onNavigateToLogin,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : ElevatedButton(onPressed: signUp, child: const Text('Cadastrar')),
+        TextButton(
+          onPressed: onNavigateToLogin,
+          child: const Text('Já tem uma conta? Faça login'),
+        ),
+      ],
     );
   }
 }
