@@ -66,7 +66,18 @@ class _HomeScreenState extends State<HomeScreen> {
         int streakCount = (currentState.isDead) ? 0 : (userData['streakCount'] ?? 0);
 
         return Scaffold(
-          appBar: AppBar(title: const Text("Meu Firy Streak")),
+          appBar: AppBar(
+            title: const Text("Meu Firy Streak"),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.logout),
+                tooltip: 'Sair',
+                onPressed: () async {
+                  await FirebaseAuth.instance.signOut();
+                },
+              ),
+            ],
+          ),
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
