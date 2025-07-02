@@ -39,7 +39,6 @@ class _LoginScreenState extends State<LoginScreen> {
 				message = 'O formato do e-mail é inválido.';
 			} else {
 				message = 'Ocorreu um erro. Tente novamente.';
-				print('Erro de login: ${e.code} - ${e.message}');
 			}
 			if (mounted) {
 				ScaffoldMessenger.of(context).showSnackBar(

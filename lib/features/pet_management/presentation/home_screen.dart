@@ -54,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
         }
 		
         // A lógica de estado agora vem do serviço
-        var currentState = _petService.determineCurrentFieryState(userData);
+        var currentState = _petService.determineCurrentFiryState(userData);
 
         // Se o pet morreu, atualizamos o streak no banco
         if (currentState.isDead) {

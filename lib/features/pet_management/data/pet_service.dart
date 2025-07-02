@@ -47,7 +47,7 @@ class PetService {
     });
   }
 
-  PetState determineCurrentFieryState(Map<String, dynamic> userData) {
+  PetState determineCurrentFiryState(Map<String, dynamic> userData) {
     final String? statusString = userData['petStatus'];
     final Timestamp? lastFedTimestamp = userData['lastFedTimestamp'];
     final int streak = userData['streakCount'] ?? 0;

@@ -25,7 +25,7 @@ void main() {
     test('should return EGG state for a new user', () {
       final firestore = FakeFirebaseFirestore();
       final service = PetService(firestore: firestore, auth: auth, clock: const Clock());
-      final stage = service.determineCurrentFieryState(initialUserData).stage;
+      final stage = service.determineCurrentFiryState(initialUserData).stage;
       expect(stage, GrowthStage.egg);
     });
 
@@ -68,7 +68,7 @@ void main() {
         final service = PetService(firestore: firestore, auth: auth, clock: clock);
 
         final fedUserData = {
-          'fieryState': 'FED',
+          'FiryState': 'FED',
           'streakCount': 1,
           'lastFedTimestamp': Timestamp.fromDate(lastFed),
         };
@@ -76,7 +76,7 @@ void main() {
 
         async.elapse(const Duration(hours: 25));
         
-        final currentStatus = service.determineCurrentFieryState(fedUserData).status;
+        final currentStatus = service.determineCurrentFiryState(fedUserData).status;
         expect(currentStatus, FeedingStatus.notFed);
       });
     });
@@ -97,7 +97,7 @@ void main() {
         async.elapse(const Duration(hours: 49));
         // print('Current time: ${clock.now()}');
         
-        final currentState = service.determineCurrentFieryState(fedUserData);
+        final currentState = service.determineCurrentFiryState(fedUserData);
         expect(currentState.isDead, true);
       });
     });

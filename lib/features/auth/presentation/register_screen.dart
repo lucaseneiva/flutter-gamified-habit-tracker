@@ -66,7 +66,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
 				message = 'O formato do e-mail é inválido.';
 			} else {
 				message = 'Ocorreu um erro. Tente novamente.';
-				print('Erro de cadastro: ${e.code} - ${e.message}');
 			}
 			if (mounted) {
 				ScaffoldMessenger.of(context).showSnackBar(
