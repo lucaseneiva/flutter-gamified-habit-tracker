@@ -1,41 +1,66 @@
-name: Deploy to Firebase Hosting
+# .github/workflows/deploy.yml
+
+name: Deploy Firy Streak Web App
 
 on:
   push:
     branches:
-      - main  # or your default branch
-  pull_request:
-    branches:
-      - main
+      - main # Mude para seu branch de teste para testar
 
 jobs:
   build_and_deploy:
+    # Permissões necessárias para a Action de autenticação da Google
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout do código
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
+      # 2. Autenticar na Google Cloud (a forma mais segura)
+      - name: Authenticate to Google Cloud
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_FIRY_STREAK }}'
+
+      # 3. Configurar o Flutter
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.32.2'  # Specify your Flutter version
+          flutter-version: '3.19.5' # Use sua versão
+          channel: 'stable'
+          cache: true
 
-      - name: Install Dependencies
+      # 4. Instalar a CLI do FlutterFire
+      - name: Install FlutterFire CLI
+        run: dart pub global activate flutterfire_cli
+
+      # 5. Gerar o firebase_options.dart (COMANDO 100% EXPLÍCITO)
+      # Este comando não tem como pedir confirmação, pois tudo é fornecido.
+      - name: Generate Firebase Options
+        run: |
+          flutterfire configure \
+            --project=firy-streak \
+            --platforms=web \
+            --web-app-id=${{ secrets.FIREBASE_WEB_APP_ID }} \
+            --yes
+      
+      # 6. Instalar as dependências do projeto
+      - name: Install Project Dependencies
         run: flutter pub get
 
-      - name: Build Flutter Web
+      # 7. Build do aplicativo Web
+      - name: Build Web App
         run: flutter build web --release
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install Firebase CLI
-        run: npm install -g firebase-tools
-
+      # 8. Deploy no Firebase Hosting
       - name: Deploy to Firebase Hosting
-        run: firebase deploy --only hosting --project ${{ secrets.FIREBASE_WEB_APP_ID }}
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_FIRY_STREAK }}'
+          projectId: 'firy-streak'
+          channelId: live
