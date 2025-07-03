@@ -1,0 +1,46 @@
+# Nome do nosso workflow. Aparecerá na aba "Actions" do GitHub.
+name: Build and Deploy Firy Streak Web
+
+# Gatilho: Quando este workflow deve rodar?
+on:
+  push:
+    branches:
+      - main # Roda toda vez que houver um push ou merge no branch 'main'
+
+# Tarefas: O que o workflow deve fazer?
+jobs:
+  build_and_deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest # Usa uma máquina virtual Linux para rodar os comandos
+
+    steps:
+      # Passo 1: Baixar o código do seu repositório
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Passo 2: Configurar o Flutter na máquina virtual
+      # Esta é uma "Action" pronta da comunidade para facilitar nossa vida
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.32.2' # IMPORTANTE: Use a mesma versão do seu 'flutter --version'
+          channel: 'stable'
+          cache: true # Habilita o cache para builds mais rápidos
+
+      # Passo 3: Instalar as dependências do Flutter
+      - name: Install dependencies
+        run: flutter pub get
+
+      # Passo 4: Buildar o aplicativo web
+      - name: Build Web App
+        run: flutter build web --release
+
+      # Passo 5: Fazer o deploy para o Firebase Hosting
+      # Esta é outra "Action" pronta que usa a Firebase CLI
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_FIRY_STREAK_APP }}'
+          channelId: live # Deploy para o canal de produção
+          projectId: firy-streak-app # O ID do seu projeto no Firebase
