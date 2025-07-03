@@ -34,8 +34,10 @@ jobs:
           flutter-version: '3.19.5' # Use sua versão
           channel: 'stable'
           cache: true
-
-      # 4. Instalar a CLI do FlutterFire
+	  
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+		
       - name: Install FlutterFire CLI
         run: dart pub global activate flutterfire_cli
 
