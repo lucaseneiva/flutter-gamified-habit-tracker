@@ -28,23 +28,25 @@ jobs:
           channel: 'stable'
           cache: true
 
-      # --- NOVOS PASSOS COMEÇAM AQUI ---
-
-      # 4A. Instala a CLI do FlutterFire
+		  # 4A. Instala a CLI do FlutterFire
       - name: Install FlutterFire CLI
         run: dart pub global activate flutterfire_cli
 
-      # 4B. Gera o firebase_options.dart
-      # Este comando vai gerar o arquivo usando as credenciais do Firebase.
-      # O --project=firy-streak diz para qual projeto gerar.
-      # O --non-interactive impede que ele faça perguntas.
+      # 4B. Gera o firebase_options.dart (VERSÃO FINAL E CORRIGIDA)
       - name: Generate Firebase Options
-        run: flutterfire configure --project=firy-streak --yes --platforms=web
+        run: |
+          flutterfire configure --project=firy-streak \
+            --platforms=web \
+            --web-app-id=${{ secrets.FIREBASE_WEB_APP_ID }} \
+            --yes
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_FIRY_STREAK }}
 
-      # --- FIM DOS NOVOS PASSOS ---
+      # 5. Instala as dependências do Flutter
+      - name: Install Dependencies
+        run: flutter pub get
 
+      # ... (o resto do workflow continua o mesmo) ...
       # 5. Instala as dependências do Flutter
       # Movido para depois da geração do firebase_options para garantir que tudo esteja no lugar.
       - name: Install Dependencies
