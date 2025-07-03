@@ -5,34 +5,38 @@ name: Deploy Firy Streak Web App
 on:
   push:
     branches:
-      - main
+      - main # Lembre-se de mudar para seu branch de teste se ainda estiver testando
 
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
 
+    # A lista de passos que o job vai executar
     steps:
+      # Passo 1: Checkout do código
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      # Passo 2: Configurar o Java (dependência do Flutter)
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '11'
           
+      # Passo 3: Configurar o Flutter
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.5' # Use sua versão
+          flutter-version: '3.19.5' # IMPORTANTE: Verifique e use a sua versão do Flutter
           channel: 'stable'
           cache: true
 
-		  # 4A. Instala a CLI do FlutterFire
+      # Passo 4: Instalar a CLI do FlutterFire
       - name: Install FlutterFire CLI
         run: dart pub global activate flutterfire_cli
 
-      # 4B. Gera o firebase_options.dart (VERSÃO FINAL E CORRIGIDA)
+      # Passo 5: Gerar o firebase_options.dart
       - name: Generate Firebase Options
         run: |
           flutterfire configure --project=firy-streak \
@@ -42,21 +46,15 @@ jobs:
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_FIRY_STREAK }}
 
-      # 5. Instala as dependências do Flutter
-      - name: Install Dependencies
+      # Passo 6: Instalar as dependências do projeto Flutter
+      - name: Install Project Dependencies
         run: flutter pub get
 
-      # ... (o resto do workflow continua o mesmo) ...
-      # 5. Instala as dependências do Flutter
-      # Movido para depois da geração do firebase_options para garantir que tudo esteja no lugar.
-      - name: Install Dependencies
-        run: flutter pub get
-
-      # 6. Build do aplicativo Web
+      # Passo 7: Build do aplicativo Web para produção
       - name: Build Web App
-        run: flutter build web --release # Adicionado --release para um build otimizado
+        run: flutter build web --release
 
-      # 7. Deploy no Firebase Hosting
+      # Passo 8: Deploy no Firebase Hosting
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
