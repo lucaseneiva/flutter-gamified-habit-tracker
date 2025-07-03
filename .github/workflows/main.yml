@@ -39,13 +39,8 @@ jobs:
       # O --project=firy-streak diz para qual projeto gerar.
       # O --non-interactive impede que ele faça perguntas.
       - name: Generate Firebase Options
-        run: flutterfire configure --project=firy-streak --non-interactive --yes
-        # Adicione aqui as flags para as plataformas que você usa, se necessário
-        # Ex: --platforms=android,ios,web
+        run: flutterfire configure --project=firy-streak --yes --platforms=web
         env:
-          # A CLI do FlutterFire precisa de um token de login para funcionar.
-          # O mesmo service account que usamos para o deploy serve para isso.
-          # Estamos expondo a credencial como uma variável de ambiente para este passo.
           GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_FIRY_STREAK }}
 
       # --- FIM DOS NOVOS PASSOS ---
