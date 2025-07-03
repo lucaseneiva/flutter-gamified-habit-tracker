@@ -121,7 +121,7 @@ class _LoginHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      'Seja bem vindo novamente!!',
+      'Firy Streak Login! 🔥',
       style: Theme.of(context).textTheme.headlineSmall,
       textAlign: TextAlign.center,
     );
