@@ -39,10 +39,7 @@ jobs:
       # Passo 5: Gerar o firebase_options.dart
       - name: Generate Firebase Options
         run: |
-          flutterfire configure --project=firy-streak \
-            --platforms=web \
-            --web-app-id=${{ secrets.FIREBASE_WEB_APP_ID }} \
-            --yes
+          flutterfire configure --project=firy-streak --platforms=web \ --web-app-id=${{ secrets.FIREBASE_WEB_APP_ID }} \ --yes
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_FIRY_STREAK }}
 
