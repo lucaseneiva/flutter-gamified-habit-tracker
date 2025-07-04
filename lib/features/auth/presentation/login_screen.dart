@@ -1,27 +1,26 @@
 // lib/login_screen.dart
+import 'package:firy_streak/features/auth/application/auth_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'register_screen.dart'; // Para navegar para a tela de registro
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  bool _isLoading = false;
 
   Future<void> _signIn() async {
     if (!_formKey.currentState!.validate()) return;
 
-    setState(() {
-      _isLoading = true;
-    });
+    ref.read(authIsLoadingProvider.notifier).state = true;
 
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -56,9 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     } finally {
       if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
+        ref.read(authIsLoadingProvider.notifier).state = false;
       }
     }
   }
@@ -72,6 +69,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = ref.watch(authIsLoadingProvider);
+
     return Scaffold(
       appBar: AppBar(title: const Text('Login - Firy Streak')),
       body: Center(
@@ -95,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 24),
 
                   _LoginActions(
-                    isLoading: _isLoading,
+                    isLoading: isLoading,
                     signIn: _signIn,
                     onNavigateToRegister: () {
                       Navigator.of(context).push(

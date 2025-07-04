@@ -1,28 +1,26 @@
-// lib/register_screen.dart
+import 'package:firy_streak/features/auth/application/auth_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class RegisterScreen extends StatefulWidget {
+class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  ConsumerState<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  bool _isLoading = false;
 
   Future<void> _signUp() async {
     if (!_formKey.currentState!.validate()) return;
 
-    setState(() {
-      _isLoading = true;
-    });
+    ref.read(authIsLoadingProvider.notifier).state = true;
 
     try {
       final userCredential = await FirebaseAuth.instance
@@ -84,9 +82,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       }
     } finally {
       if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
+        ref.read(authIsLoadingProvider.notifier).state = false;
       }
     }
   }
@@ -101,6 +97,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = ref.watch(authIsLoadingProvider);
     return Scaffold(
       appBar: AppBar(title: const Text('Cadastro - firy Streak')),
       body: Center(
@@ -126,7 +123,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   const SizedBox(height: 16),
 
                   _RegisterActions(
-                    isLoading: _isLoading,
+                    isLoading: isLoading,
                     signUp: _signUp,
                     onNavigateToLogin: () {
                       Navigator.of(
