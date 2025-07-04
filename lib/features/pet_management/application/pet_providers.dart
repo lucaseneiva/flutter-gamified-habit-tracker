@@ -11,3 +11,9 @@ final petServiceProvider = Provider<PetService>((ref) {
     clock: const Clock(),
   );
 });
+
+final petDataStreamProvider = StreamProvider.autoDispose<DocumentSnapshot>((ref) {
+  final petService = ref.watch(petServiceProvider);
+
+  return petService.petDataStream;
+});
