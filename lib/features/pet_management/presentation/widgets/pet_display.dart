@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:firy_streak/features/pet_management/presentation/widgets/speech_bubble.dart';
 import 'package:firy_streak/features/pet_management/domain/pet_state.dart';
 
 class PetDisplay extends StatelessWidget {
@@ -16,23 +15,11 @@ class PetDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 260,
+      height: 180,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Balão de fala (opcional)
-          if (!petState.isFed || petState.isEgg)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: SpeechBubble(
-                message: _getBubbleMessage(petState),
-                bubbleColor: Colors.white,
-                borderColor: const Color(0xFFE0E0E0),
-                textColor: const Color(0xFF4F4F4F),
-              ),
-            ),
-
-          // Pet com espaçamento inferior
+          
           Padding(
             padding: const EdgeInsets.only(bottom: 12.0),
             child: SvgPicture.asset(petState.imagePath, height: 120),
@@ -54,14 +41,6 @@ class PetDisplay extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String _getBubbleMessage(PetState state) {
-    if (state.isHungry) {
-      return 'Estou com fome!';
-    } else {
-      return 'Me choca!';
-    }
   }
 
   void _showConfirmationDialog(BuildContext context, PetState currentState) {

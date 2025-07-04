@@ -5,6 +5,8 @@ import 'widgets/streak_card.dart';
 import 'create_habit_screen.dart'; // Importa a tela de criação de hábito
 import 'package:firy_streak/features/pet_management/presentation/widgets/pet_display.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:firy_streak/features/pet_management/presentation/widgets/speech_bubble.dart';
+import 'package:firy_streak/features/quotes/application/quote_provider.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -51,6 +53,36 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ? 0
             : (userData['streakCount'] ?? 0);
 
+        Widget speechBubbleWidget;
+        if (currentState.isFed) {
+          // Pet está alimentado, busca a frase da API
+          final quoteAsync = ref.watch(randomQuoteProvider);
+          speechBubbleWidget = quoteAsync.when(
+            data: (quote) => SpeechBubble(
+              message: quote,
+              bubbleColor: Colors.white,
+              borderColor: const Color(0xFFE0E0E0),
+              textColor: const Color(0xFF4F4F4F),
+            ),
+            loading: () => const Padding(
+              padding: EdgeInsets.symmetric(vertical: 20.0),
+              child: SizedBox(height: 24, width: 24, child: CircularProgressIndicator()),
+            ),
+            error: (err, stack) => SpeechBubble(message: 'Você é demais!'),
+          );
+        } else if (currentState.isHungry || currentState.isEgg) {
+          // Pet com fome ou ovo, mostra mensagem padrão
+          speechBubbleWidget = SpeechBubble(
+            message: currentState.isHungry ? 'Estou com fome!' : 'Me choca!',
+            bubbleColor: Colors.white,
+            borderColor: const Color(0xFFE0E0E0),
+            textColor: const Color(0xFF4F4F4F),
+          );
+        } else {
+          // Nenhum balão para outros estados (morto, etc.)
+          speechBubbleWidget = const SizedBox.shrink();
+        }
+
         return Scaffold(
           appBar: AppBar(
             title: const Text("Meu Firy Streak"),
@@ -70,6 +102,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               children: [
                 StreakCard(streakCount: streakCount),
                 const SizedBox(height: 20),
+                speechBubbleWidget,
                 PetDisplay(
                   petState: currentState,
                   onFeedPet: petService.feedPet,
