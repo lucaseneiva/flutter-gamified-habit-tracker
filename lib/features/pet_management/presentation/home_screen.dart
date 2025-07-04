@@ -1,38 +1,28 @@
-// lib/home_screen.dart
-import 'package:clock/clock.dart';
+import 'package:firy_streak/features/pet_management/application/pet_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../data/pet_service.dart'; // Importe o novo serviço
 import 'widgets/streak_card.dart';
 import 'create_habit_screen.dart'; // Importa a tela de criação de hábito
 import 'package:firy_streak/features/pet_management/presentation/widgets/pet_display.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   // Crie uma instância do serviço. No app real, usamos o clock padrão.
-  late final PetService _petService;
-
-  @override
-  void initState() {
-    super.initState();
-    _petService = PetService(
-      firestore: FirebaseFirestore.instance,
-      auth: FirebaseAuth.instance,
-      clock: const Clock(), // Aqui usamos o relógio real!
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
+    final petService = ref.watch(petServiceProvider);
+
     return StreamBuilder<DocumentSnapshot>(
-      stream: _petService.petDataStream,
+      stream: petService.petDataStream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
@@ -58,12 +48,12 @@ class _HomeScreenState extends State<HomeScreen> {
         }
 
         // A lógica de estado agora vem do serviço
-        var currentState = _petService.determineCurrentFiryState(userData);
+        var currentState = petService.determineCurrentFiryState(userData);
 
         // Se o pet morreu, atualizamos o streak no banco
         if (currentState.isDead) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            _petService.resetPetIfDead();
+            petService.resetPetIfDead();
           });
         }
 
@@ -93,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 20),
                 PetDisplay(
                   petState: currentState,
-                  onFeedPet: _petService.feedPet,
+                  onFeedPet: petService.feedPet,
                 ),
               ],
             ),
