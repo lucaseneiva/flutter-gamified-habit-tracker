@@ -1,37 +1,21 @@
-// lib/create_habit_screen.dart
-
+import 'package:firy_streak/features/pet_management/application/pet_providers.dart';
 import 'package:firy_streak/features/pet_management/data/pet_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:clock/clock.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CreateHabitScreen extends StatefulWidget {
+class CreateHabitScreen extends ConsumerStatefulWidget {
   const CreateHabitScreen({super.key});
 
   @override
-  State<CreateHabitScreen> createState() => _CreateHabitScreenState();
+  ConsumerState<CreateHabitScreen> createState() => _CreateHabitScreenState();
 }
 
-class _CreateHabitScreenState extends State<CreateHabitScreen> {
+class _CreateHabitScreenState extends ConsumerState<CreateHabitScreen> {
   final _habitController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
-
-  late final PetService _petService;
-
-  @override
-  void initState() {
-    super.initState();
-    // A HomeScreen vai nos passar o serviço já instanciado
-    _petService = PetService(
-      firestore: FirebaseFirestore.instance,
-      auth: FirebaseAuth.instance,
-      clock: const Clock(),
-    );
-  }
 
   @override
   void dispose() {
@@ -44,7 +28,9 @@ class _CreateHabitScreenState extends State<CreateHabitScreen> {
       setState(() => _isLoading = true);
 
       try {
-        await _petService.setHabit(_habitController.text.trim());
+        final PetService petService = ref.read(petServiceProvider);
+
+        await petService.setHabit(_habitController.text.trim());
         // A HomeScreen vai se reconstruir automaticamente por causa do StreamBuilder
         // e mostrar a tela do pet, então não precisamos navegar daqui.
       } catch (e) {
@@ -66,6 +52,7 @@ class _CreateHabitScreenState extends State<CreateHabitScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: const Color(0xFFF9FAFB),
       body: SafeArea(
