@@ -57,29 +57,38 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   // Widget customizado para a segunda tela
   Widget _buildFeedFiryWidget() {
+    return LayoutBuilder(
+  builder: (context, constraints) {
+    double width = constraints.maxWidth;
+
+    // ajuste proporcional (pode afinar depois)
+    double iconLarge = width * 0.36;
+    double iconSmall = width * 0.15;
+    double fontSize = width * 0.12;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SvgPicture.asset('assets/not_fed.svg', height: 80),
-        const SizedBox(width: 12),
-        const Text(
+        SvgPicture.asset('assets/not_fed.svg', height: iconLarge),
+        const SizedBox(width: 6),
+        Text(
           '+',
-          style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
         ),
-        const SizedBox(width: 12),
-        SvgPicture.asset(
-          'assets/logs.svg',
-          height: 80,
-        ), // Você precisará adicionar esta imagem
-        const SizedBox(width: 12),
-        const Text(
+        const SizedBox(width: 6),
+        SvgPicture.asset('assets/log.svg', height: iconSmall),
+        const SizedBox(width: 6),
+        Text(
           '=',
-          style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
         ),
-        const SizedBox(width: 12),
-        SvgPicture.asset('assets/fed.svg', height: 80),
+        const SizedBox(width: 6),
+        SvgPicture.asset('assets/happy.svg', height: iconLarge),
       ],
     );
+  },
+);
+
   }
 
   // Widget customizado para a terceira tela
@@ -91,14 +100,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           padding: const EdgeInsets.only(
             top: 30.0,
           ), // <-- A MÁGICA ACONTECE AQUI (150 - 120 = 30)
-          child: SvgPicture.asset('assets/fed.svg', height: 120),
+          child: SvgPicture.asset('assets/fed.svg', height: 100),
         ),
-        const SizedBox(width: 24),
-        const Icon(Icons.arrow_forward, size: 40, color: Colors.black54),
-        const SizedBox(width: 24),
+        const SizedBox(width: 12),
+        const Icon(Icons.arrow_forward, size: 60, color: Colors.black54),
+        const SizedBox(width: 12),
         SvgPicture.asset(
-          'assets/child_fed.svg',
-          height: 150,
+          'assets/adult_fed.svg',
+          height: 130,
         ), // Você precisará adicionar esta imagem
       ],
     );

@@ -15,7 +15,7 @@ class MobileFrameWrapper extends StatelessWidget {
         child: Container(
           // Define a largura máxima do nosso "celular".
           constraints: const BoxConstraints(
-            maxWidth: 480,
+            maxWidth: 560,
           ),
           child: AspectRatio(
             aspectRatio: 9/20,
