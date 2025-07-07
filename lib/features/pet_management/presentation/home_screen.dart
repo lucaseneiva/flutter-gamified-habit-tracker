@@ -88,12 +88,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(kToolbarHeight),
             child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(border: Border(
                 bottom: BorderSide(color: AppColors.lightGrey,
                 width: 4)
               )),
               child: AppBar(
-                title: const Text("Meu Firy Streak"),
+                title: const Text("Meu Firy"),
                 actions: [
                   IconButton(
                     icon: const Icon(Icons.logout),
