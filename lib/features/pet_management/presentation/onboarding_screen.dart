@@ -219,7 +219,7 @@ class OnboardingPageWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Spacer(flex: 2),
+          const Spacer(flex: 1),
           Text(
             item.title,
             textAlign: TextAlign.center,
@@ -229,9 +229,10 @@ class OnboardingPageWidget extends StatelessWidget {
               color: const Color(0xFF333333),
             ),
           ),
-          const SizedBox(height: 50),
+          const Spacer(flex: 1),
           item.imageWidget,
-          const SizedBox(height: 50),
+          const Spacer(flex: 1),
+          
           Text(
             item.description,
             textAlign: TextAlign.center,
@@ -241,7 +242,7 @@ class OnboardingPageWidget extends StatelessWidget {
               color: Colors.grey[600],
             ),
           ),
-          const Spacer(flex: 3),
+          const Spacer(flex: 1),
         ],
       ),
     );
