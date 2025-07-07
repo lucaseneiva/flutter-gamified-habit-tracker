@@ -15,7 +15,7 @@ class PetDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 180,
+      height: 200,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -25,6 +25,7 @@ class PetDisplay extends StatelessWidget {
             child: SvgPicture.asset(petState.imagePath, height: 120),
           ),
 
+          Spacer(flex: 1),
           // Botão
           ElevatedButton(
             onPressed: (!petState.isFed || petState.isEgg || petState.isDead)

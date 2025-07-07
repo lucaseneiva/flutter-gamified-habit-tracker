@@ -100,13 +100,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Spacer(flex: 1),
                 StreakCard(streakCount: streakCount),
-                const SizedBox(height: 20),
+                Spacer(flex: 1),
                 speechBubbleWidget,
                 PetDisplay(
                   petState: currentState,
                   onFeedPet: petService.feedPet,
                 ),
+                Spacer(flex: 1)
               ],
             ),
           ),
