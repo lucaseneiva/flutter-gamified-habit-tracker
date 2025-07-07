@@ -12,7 +12,7 @@ class AppColors {
   static const Color white = Colors.white;
   static const Color lightGrey = Color(0xFFDADADA); // Bordas e divisores
   static const Color darkGrey = Color(0xFF4F4F4F); // Texto secundário
-  static const Color textDark = Color(0xFF333333); // Texto principal
+  static const Color textDark = Color.fromARGB(255, 70, 70, 70); // Texto principal
 
   // Cores de Feedback
   static const Color success = Colors.green;
