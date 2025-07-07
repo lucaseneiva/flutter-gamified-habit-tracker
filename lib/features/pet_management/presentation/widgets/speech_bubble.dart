@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firy_streak/core/theme/app_colors.dart';
 
 class SpeechBubble extends StatelessWidget {
   final String message;
@@ -10,7 +11,7 @@ class SpeechBubble extends StatelessWidget {
     super.key,
     required this.message,
     this.bubbleColor = Colors.white,
-    this.borderColor = Colors.grey,
+    this.borderColor = AppColors.lightGrey,
     this.textColor = Colors.black,
   });
 

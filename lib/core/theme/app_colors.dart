@@ -10,11 +10,14 @@ class AppColors {
   // Cores Neutras
   static const Color background = Color(0xFFF9FAFB); // Cinza claro de fundo
   static const Color white = Colors.white;
-  static const Color lightGrey = Color(0xFFE0E0E0); // Bordas e divisores
+  static const Color lightGrey = Color(0xFFDADADA); // Bordas e divisores
   static const Color darkGrey = Color(0xFF4F4F4F); // Texto secundário
   static const Color textDark = Color(0xFF333333); // Texto principal
 
   // Cores de Feedback
   static const Color success = Colors.green;
   static const Color error = Colors.red;
+
+  // Style Outline
+
 }

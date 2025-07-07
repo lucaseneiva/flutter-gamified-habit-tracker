@@ -1,3 +1,4 @@
+import 'package:firy_streak/core/theme/app_colors.dart';
 import 'package:firy_streak/features/pet_management/application/pet_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -84,17 +85,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         }
 
         return Scaffold(
-          appBar: AppBar(
-            title: const Text("Meu Firy Streak"),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.logout),
-                tooltip: 'Sair',
-                onPressed: () async {
-                  await FirebaseAuth.instance.signOut();
-                },
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(kToolbarHeight),
+            child: Container(
+              decoration: BoxDecoration(border: Border(
+                bottom: BorderSide(color: AppColors.lightGrey,
+                width: 4)
+              )),
+              child: AppBar(
+                title: const Text("Meu Firy Streak"),
+                actions: [
+                  IconButton(
+                    icon: const Icon(Icons.logout),
+                    tooltip: 'Sair',
+                    onPressed: () async {
+                      await FirebaseAuth.instance.signOut();
+                    },
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
           body: Center(
             child: Column(

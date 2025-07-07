@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firy_streak/core/theme/app_colors.dart';
 
 class StreakCard extends StatelessWidget {
   final int streakCount;
@@ -20,7 +21,7 @@ class StreakCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16.0),
-          border: Border.all(color: lightGray, width: 4),
+          border: Border.all(color: AppColors.lightGrey, width: 4),
           boxShadow: [
             BoxShadow(
               color: lightGray,
