@@ -35,8 +35,8 @@ class StreakCard extends StatelessWidget {
             Text(
               'Streak',
               style: GoogleFonts.nunito(
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
+                fontSize: 24,
+                fontWeight: FontWeight.w800,
                 color: darkGrayText,
               ),
             ),
@@ -51,7 +51,7 @@ class StreakCard extends StatelessWidget {
                 Text(
                   '$streakCount',
                   style: GoogleFonts.nunito(
-                    fontSize: 44,
+                    fontSize: 48,
                     fontWeight: FontWeight.w800,
                     color: primaryOrange,
                   ),
@@ -61,7 +61,7 @@ class StreakCard extends StatelessWidget {
                 Text(
                   streakCount == 1 ? 'dia' : 'dias',
                   style: GoogleFonts.nunito(
-                    fontSize: 40,
+                    fontSize: 28,
                     fontWeight: FontWeight.w700,
                     color: primaryOrange,
                   ),
