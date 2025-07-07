@@ -15,6 +15,7 @@ class CreateHabitScreen extends ConsumerStatefulWidget {
 class _CreateHabitScreenState extends ConsumerState<CreateHabitScreen> {
   final _habitController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  String? _selectedHabit = 'Estudar';
   bool _isLoading = false;
 
   @override
@@ -30,7 +31,7 @@ class _CreateHabitScreenState extends ConsumerState<CreateHabitScreen> {
       try {
         final PetService petService = ref.read(petServiceProvider);
 
-        await petService.setHabit(_habitController.text.trim());
+        await petService.setHabit(_selectedHabit.toString());
         // A HomeScreen vai se reconstruir automaticamente por causa do StreamBuilder
         // e mostrar a tela do pet, então não precisamos navegar daqui.
       } catch (e) {
@@ -52,7 +53,6 @@ class _CreateHabitScreenState extends ConsumerState<CreateHabitScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: const Color(0xFFF9FAFB),
       body: SafeArea(
@@ -80,44 +80,74 @@ class _CreateHabitScreenState extends ConsumerState<CreateHabitScreen> {
                     const SizedBox(height: 30),
                     SvgPicture.asset('assets/firy_thinking.svg', height: 150),
                     const SizedBox(height: 40),
-                
+
                     // Input de Hábito
                     Row(
                       children: [
-                        const Text('Eu quero', style: TextStyle(fontSize: 18)),
-                        const SizedBox(width: 8),
+                        const Text('Eu quero', style: TextStyle(fontSize: 16)),
+                        const SizedBox(width: 4),
                         Expanded(
-                          child: TextFormField(
-                            controller: _habitController,
-                            decoration: InputDecoration(
-                              hintText: 'estudar',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                  color: Color(0xFFF9703B),
-                                  width: 2.0,
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 195),
+                            child: DropdownButtonFormField<String>(
+                              value: _selectedHabit,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 12,
                                 ),
-                                borderRadius: BorderRadius.circular(12),
+                                hintText: 'Escolha um hábito',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    color: Color(0xFFF9703B),
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
                               ),
+                              items:
+                                  [
+                                    'Estudar',
+                                    'Ler',
+                                    'Meditar',
+                                    'Exercitar-se',
+                                    'Beber água',
+                                  ].map((habit) {
+                                    return DropdownMenuItem<String>(
+                                      value: habit,
+                                      child: Text(
+                                        habit,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    );
+                                  }).toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  _selectedHabit = value;
+                                });
+                              },
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return 'Selecione um hábito!';
+                                }
+                                return null;
+                              },
                             ),
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return 'Defina seu hábito!';
-                              }
-                              return null;
-                            },
                           ),
                         ),
                       ],
                     ),
+                    
                     const SizedBox(height: 16),
-                
+
                     const Text('todos os dias', style: TextStyle(fontSize: 18)),
-                
+
                     const Spacer(flex: 3),
-                
+
                     // Botão Iniciar
                     _isLoading
                         ? const Center(child: CircularProgressIndicator())

@@ -24,9 +24,9 @@ class _DecisionScreenState extends State<DecisionScreen> {
     // A chave 'onboarding_complete' será true se o usuário já viu o tutorial.
     // O '?? false' garante que se a chave não existir, o valor será false.
 
-    // final bool hasSeenOnboarding = prefs.getBool('onboarding_complete') ?? false;
+    final bool hasSeenOnboarding = prefs.getBool('onboarding_complete') ?? false;
 
-    final bool hasSeenOnboarding = false;
+    // final bool hasSeenOnboarding = false;
 
     // Aguarda um pequeno instante para evitar um flash de tela
     await Future.delayed(const Duration(milliseconds: 50));

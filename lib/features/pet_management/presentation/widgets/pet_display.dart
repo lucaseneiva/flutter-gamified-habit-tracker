@@ -72,7 +72,7 @@ class PetDisplay extends StatelessWidget {
                       side: const BorderSide(color: Colors.grey),
                     ),
                     onPressed: () => Navigator.pop(context),
-                    child: const Text("Cancelar"),
+                    child: const Text("Não"),
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -82,7 +82,7 @@ class PetDisplay extends StatelessWidget {
                       Navigator.pop(context);
                       onFeedPet();
                     },
-                    child: const Text("Confirmar"),
+                    child: const Text("Sim"),
                   ),
                 ],
               ),
