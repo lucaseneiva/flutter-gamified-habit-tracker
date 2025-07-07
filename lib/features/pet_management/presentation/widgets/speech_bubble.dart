@@ -16,24 +16,27 @@ class SpeechBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: BubbleWithTailPainter(
-        bubbleColor: bubbleColor,
-        borderColor: borderColor,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(
-          16,
-          10,
-          16,
-          18,
-        ), // espaço para a setinha
-        child: Text(
-          message,
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w900,
-            color: textColor,
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: 250),
+      child: CustomPaint(
+        painter: BubbleWithTailPainter(
+          bubbleColor: bubbleColor,
+          borderColor: borderColor,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(
+            16,
+            10,
+            16,
+            18,
+          ), // espaço para a setinha
+          child: Text(
+            message,
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w900,
+              color: textColor,
+            ),
           ),
         ),
       ),
@@ -60,14 +63,14 @@ class BubbleWithTailPainter extends CustomPainter {
     final Paint borderPaint = Paint()
       ..color = borderColor
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.5;
+      ..strokeWidth = 4;
 
     // 💥 INVADIR 1px a área da seta resolve o problema visual
     final RRect bubbleRect = RRect.fromLTRBR(
       0,
       0,
       size.width,
-      size.height - tailHeight + 1,
+      size.height - tailHeight + 2,
       const Radius.circular(radius),
     );
 

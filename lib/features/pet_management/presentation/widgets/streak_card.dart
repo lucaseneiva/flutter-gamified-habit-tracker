@@ -20,12 +20,10 @@ class StreakCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16.0),
-          border: Border.all(color: lightGray, width: 1.5),
+          border: Border.all(color: lightGray, width: 4),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withValues(alpha: 30),
-              spreadRadius: 2,
-              blurRadius: 8,
+              color: lightGray,
               offset: const Offset(0, 4),
             ),
           ],
@@ -60,7 +58,7 @@ class StreakCard extends StatelessWidget {
                 const SizedBox(width: 6),
 
                 Text(
-                  streakCount == 1 ? 'day' : 'days',
+                  streakCount == 1 ? 'dia' : 'dias',
                   style: GoogleFonts.nunito(
                     fontSize: 40,
                     fontWeight: FontWeight.w700,

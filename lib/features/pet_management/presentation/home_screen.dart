@@ -103,7 +103,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 Spacer(flex: 1),
                 StreakCard(streakCount: streakCount),
                 Spacer(flex: 1),
-                speechBubbleWidget,
+                  speechBubbleWidget,
+                SizedBox(height: 16),
                 PetDisplay(
                   petState: currentState,
                   onFeedPet: petService.feedPet,
