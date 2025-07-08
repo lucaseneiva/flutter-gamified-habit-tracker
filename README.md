@@ -1,89 +1,101 @@
-
----
-
-# Firy Streak 🔥
+# Firy Streak 🔥 - Um App Gamificado de Hábitos Profissional em Flutter
 
 ![Flutter](https://img.shields.io/badge/Flutter-3.x-blue?style=for-the-badge&logo=flutter)
+![Riverpod](https://img.shields.io/badge/State%20Management-Riverpod-blueviolet?style=for-the-badge)
 ![Firebase](https://img.shields.io/badge/Firebase-SDK-orange?style=for-the-badge&logo=firebase)
-![Tests](https://img.shields.io/badge/Tests-Passing-brightgreen?style=for-the-badge&logo=jest)
-![License](https://img.shields.io/badge/License-MIT-purple?style=for-the-badge)
+![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-enabled-blue?logo=githubactions)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visitar-brightgreen?style=for-the-badge&logo=firebase)](https://firy-streak.web.app/)
 
-![image](https://github.com/user-attachments/assets/5dc47d5f-0af1-4400-a9d2-ce5c56222096)
+![Animação](https://github.com/user-attachments/assets/4e539bb0-7af8-47c1-ae2f-042108849221)
 
-**Firy Streak** é um aplicativo multiplataforma (Android, iOS, Web, Desktop) desenvolvido em Flutter que gamifica a criação de hábitos. Cuide do seu pet virtual, o **Firy**, alimentando-o diariamente para manter sua sequência (streak) e vê-lo evoluir!
 
-O projeto foi construído com foco em uma arquitetura limpa, separação de responsabilidades e alta testabilidade, especialmente para a lógica de negócios que depende do tempo.
+**Firy Streak** é mais do que um simples app de hábitos; é um projeto de portfólio onde demonstro minhas habilidades em criar aplicativos Flutter robustos, escaláveis e testáveis. Nele, o usuário cuida de um pet virtual, o **Firy**, alimentando-o diariamente ao cumprir um hábito. O objetivo é manter a sequência (streak) e ver o pet evoluir.
 
----
+Desde a concepção, meu foco foi construir uma base sólida, aplicando princípios de **Arquitetura Limpa**, gerenciamento de estado reativo com **Riverpod** e automação com **GitHub Actions**.
 
-## 📋 Sumário
+## 🌟 Destaques Técnicos (O que eu quero demonstrar com este projeto)
 
-- [✨ Funcionalidades](#-funcionalidades)
-- [🎨 Visual](#-visual)
-- [🛠️ Tecnologias e Arquitetura](#️-tecnologias-e-arquitetura)
-- [🚀 Como Começar](#-como-começar)
-  - [Pré-requisitos](#pré-requisitos)
-  - [Configuração do Firebase](#configuração-do-firebase)
-  - [Instalação](#instalação)
-- [▶️ Executando o Aplicativo](#️-executando-o-aplicativo)
-- [🧪 Executando os Testes](#-executando-os-testes)
-- [📁 Estrutura do Projeto](#-estrutura-do-projeto)
-- [✒️ Autor](#️-autor)
+Como este é um projeto de portfólio, minhas escolhas técnicas foram intencionais para simular um ambiente de desenvolvimento profissional.
 
----
+*   **🚀 Arquitetura Limpa (Feature-First):** Abandonei uma estrutura simples e organizei o projeto em `features` (`auth`, `pet_management`, `quotes`) e `core` (elementos compartilhados como tema, auth_gate). Cada feature é um módulo com suas próprias camadas (`application`, `data`, `domain`, `presentation`), garantindo baixo acoplamento e alta escalabilidade.
+*   **💧 Gerenciamento de Estado com Riverpod:** Migrei do `Provider` tradicional para o **Riverpod**. Isso me permitiu um controle mais granular e testável do estado. Utilizei diferentes tipos de providers (`Provider`, `StateProvider`, `StreamProvider`, `FutureProvider`) para lidar com injeção de dependência, estado da UI, streams em tempo real do Firestore e chamadas de API assíncronas de forma eficiente e declarativa.
+*   **🤖 CI/CD com GitHub Actions:** Implementei um workflow completo de Integração e Deploy Contínuo. A cada `push` na branch `main`:
+    1.  Os testes unitários são executados automaticamente para garantir a integridade da lógica de negócios.
+    2.  Se os testes passarem, o app web é buildado em modo `release`.
+    3.  A nova versão é enviada automaticamente para o **Firebase Hosting**.
+*   **🧪 Testabilidade da Lógica de Negócios:** A lógica mais crítica do app – o estado do pet baseado na passagem do tempo – é 100% testável. Utilizei injeção de dependência para injetar um `Clock` "fake" nos testes, permitindo simular a passagem de horas e dias em milissegundos. Usei também `fake_cloud_firestore` e `firebase_auth_mocks` para testar as interações com o Firebase de forma rápida e isolada.
+*   **💻 Experiência Web Aprimorada:** Para a versão web, criei um `MobileFrameWrapper`, um widget que envolve o aplicativo em uma moldura de celular em telas maiores. É um detalhe que demonstra meu cuidado com a apresentação e a experiência do usuário em diferentes plataformas.
+*   **☁️ Integração com API Externa:** Adicionei uma feature (`quotes`) que consome uma API REST para buscar frases motivacionais, exibidas quando o usuário alimenta o Firy. Isso demonstra minha capacidade de lidar com requisições HTTP e gerenciar o estado assíncrono resultante com `FutureProvider`.
 
 ## ✨ Funcionalidades
 
-- ✅ **Autenticação de Usuários:** Cadastro e Login seguros com Email/Senha usando Firebase Authentication.
-- 🔥 **Gamificação de Hábitos:** Mantenha uma sequência de "dias de fogo" (streak) alimentando seu pet.
-- 🥚 **Pet Virtual Interativo:** O estado do Firy (Ovo, Alimentado, Faminto, Morto) muda com base nas suas ações e no tempo.
-- ☁️ **Persistência de Dados em Nuvem:** Todos os dados do usuário e do pet são salvos em tempo real no Cloud Firestore.
-- 🎯 **Arquitetura Limpa e Testável:** Separação clara entre UI, lógica de negócios e serviços de dados.
-- 💻 **Suporte Multi-plataforma:** Código-fonte único que roda em Android, iOS, Web e Desktop.
+*   ✅ **Autenticação Segura:** Cadastro e Login com Email/Senha usando Firebase Authentication.
+*   🐣 **Onboarding de Usuário:** Uma introdução visualmente agradável para novos usuários, cujo estado (visto/não visto) é persistido localmente com `shared_preferences`.
+*   🔥 **Gamificação de Hábitos:** O usuário escolhe um hábito e alimenta o Firy para manter sua sequência de dias.
+*   🥚 **Evolução do Pet:** O Firy não apenas fica feliz ou triste. Ele **evolui** através de diferentes estágios (`Bebê` -> `Criança` -> `Adolescente` -> `Adulto`) conforme a streak do usuário aumenta.
+*   💬 **Interação Dinâmica:** O Firy se comunica através de balões de fala. Quando está com fome, ele pede comida. Quando é alimentado, ele exibe uma frase motivacional obtida de uma API externa.
+*   ☁️ **Persistência em Nuvem:** Todos os dados do usuário, do pet e do hábito são salvos em tempo real no Cloud Firestore.
+*   💻 **Suporte Multiplataforma:** Código-fonte único que roda em Android, iOS e Web (com deploy automatizado).
 
-## 🎨 Visual
+## 🎨 O Ciclo de Vida do Firy
 
-O ciclo de vida do seu Firy é simples e recompensador:
+O estado do Firy é determinado por duas variáveis principais: a **passagem do tempo** e o **tamanho da streak**.
 
-```
-[OVO 🐣] ---Alimentar--> [ALIMENTADO 😊] ---+1 dia sem alimentar--> [FAMINTO 😥] ---+1 dia sem alimentar--> [MORTO 💀]
-```
+1.  **Ovo 🐣 (`streak = 0`)**: Todo novo pet começa como um ovo. Ao ser "chocado" (alimentado pela primeira vez), ele nasce.
+2.  **Bebê 👶 (`streak: 1-9`)**: O primeiro estágio. Precisa ser alimentado a cada 24h.
+3.  **Criança 🧒 (`streak: 10-29`)**: O pet evolui!
+4.  **Adolescente 🧑 (`streak: 30-59`)**: Mais uma evolução, recompensando a consistência.
+5.  **Adulto 🧔 (`streak: 60+`)**: O estágio final da evolução do Firy.
 
-| Estado | Imagem (SVG) | Descrição |
-| :--- | :---: | :--- |
-| **OVO** | `egg.svg` | Um novo pet esperando para ser cuidado! |
-| **ALIMENTADO** | `fed.svg` | Pet feliz e streak aumentada! |
-| **FAMINTO** | `not_fed.svg` | O pet precisa de atenção! Sua streak está em risco. |
-| **MORTO** | `dead.svg` | A streak foi perdida. Reviva o pet para começar de novo. |
+O status diário é simples:
+`[ALIMENTADO 😊]` --- *passam 24h* ---> `[FAMINTO 😥]` --- *passam mais 24h* ---> `[MORTO 💀]`
+
+Quando o pet morre, a streak é zerada e o usuário pode revivê-lo para começar um novo ciclo.
 
 ## 🛠️ Tecnologias e Arquitetura
 
-Este projeto utiliza tecnologias de ponta para garantir uma experiência de desenvolvimento e de usuário robusta.
-
 ### Tecnologias Principais
 
-- **[Flutter](https://flutter.dev/) & [Dart](https://dart.dev/)**: Para a construção da UI e da lógica do aplicativo.
-- **[Firebase](https://firebase.google.com/)**:
-  - **Authentication**: Gerenciamento de usuários.
-  - **Cloud Firestore**: Banco de dados NoSQL para armazenar os dados do usuário e do pet.
-- **[flutter_svg](https://pub.dev/packages/flutter_svg)**: Para renderizar as imagens vetoriais do pet.
-- **[Provider / StreamBuilder](https://api.flutter.dev/flutter/widgets/StreamBuilder-class.html)**: Para gerenciamento de estado reativo, ouvindo as mudanças do Firebase em tempo real.
+*   **[Flutter](https://flutter.dev/) & [Dart](https://dart.dev/)**: Para a UI e a lógica do aplicativo.
+*   **[Riverpod](https://riverpod.dev/)**: Para gerenciamento de estado reativo e injeção de dependência.
+*   **[Firebase](https://firebase.google.com/)**:
+    *   **Authentication**: Gerenciamento de usuários.
+    *   **Cloud Firestore**: Banco de dados NoSQL para dados em tempo real.
+    *   **Hosting**: Para o deploy da versão web.
+*   **[GitHub Actions](https://github.com/features/actions)**: Para automação de testes e deploy (CI/CD).
+*   **[http](https://pub.dev/packages/http)**: Para consumir a API de frases motivacionais.
+*   **[flutter_svg](https://pub.dev/packages/flutter_svg)**: Para renderizar as imagens vetoriais do pet.
+*   **[google_fonts](https://pub.dev/packages/google_fonts)**: Para uma tipografia elegante.
 
-### Arquitetura e Padrões de Projeto
+### Estrutura do Projeto
 
-- **Separação de Responsabilidades**:
-  - **UI (`/lib/*_screen.dart`)**: Camada de apresentação, responsável por exibir os dados e capturar as interações do usuário.
-  - **Serviço (`/lib/pet_service.dart`)**: Camada de lógica de negócios. Centraliza todas as regras de como o pet se comporta, como o tempo afeta seu estado e as interações com o banco de dados.
-  - **Controle de Autenticação (`/lib/auth_gate.dart`)**: Um widget "portão" que gerencia o estado de autenticação do usuário e decide qual tela exibir (Login ou Home).
+Adotei uma arquitetura limpa e escalável, separando as responsabilidades de forma clara.
 
-- **Injeção de Dependência para Testabilidade**:
-  - O `PetService` recebe suas dependências (Firestore, Auth e `Clock`) via construtor.
-  - O uso do pacote **[clock](https://pub.dev/packages/clock)** permite simular a passagem do tempo nos testes, garantindo que a lógica de "fome" e "morte" do pet funcione como esperado sem a necessidade de esperar horas ou dias reais. Isso é um pilar da alta qualidade e profissionalismo do código.
-
-- **Testes Unitários Abrangentes**:
-  - A lógica crítica em `pet_service.dart` é coberta por testes unitários.
-  - Utilizamos **`fake_cloud_firestore`** e **`firebase_auth_mocks`** para simular o backend do Firebase, permitindo testes rápidos e independentes da rede.
-  - **`fake_async`** é usado em conjunto com `clock` para controlar o fluxo do tempo nos testes.
+```
+lib/
+├── core/                   # Módulos compartilhados por todo o app
+│   ├── auth/
+│   │   └── auth_gate.dart  # "Portão" que gerencia o estado de auth do usuário
+│   ├── theme/              # Tema global do app (cores, fontes, etc.)
+│   └── utils/              # Utilitários, como o MobileFrameWrapper
+│
+├── features/               # Cada funcionalidade principal do app é um módulo
+│   ├── auth/               # Feature de Autenticação (Login, Cadastro)
+│   │   ├── application/    # Lógica de estado (Providers do Riverpod)
+│   │   └── presentation/   # Widgets e Telas (UI)
+│   │
+│   ├── pet_management/     # Feature principal (cuidar do pet)
+│   │   ├── application/    # Providers do pet
+│   │   ├── data/           # Lógica de dados (PetService)
+│   │   ├── domain/         # Modelos e Enums (PetState)
+│   │   └── presentation/   # Telas (Home, Onboarding) e Widgets
+│   │
+│   └── quotes/             # Feature de frases motivacionais
+│       ├── application/    # Provider da quote
+│       └── data/           # Serviço que consome a API
+│
+└── main.dart               # Ponto de entrada, inicializa o Firebase e o ProviderScope
+```
 
 ## 🚀 Como Começar
 
@@ -91,36 +103,25 @@ Siga os passos abaixo para configurar e executar o projeto localmente.
 
 ### Pré-requisitos
 
-- **Flutter SDK**: Versão 3.x ou superior. [Guia de instalação](https://docs.flutter.dev/get-started/install).
-- **Editor de Código**: VS Code ou Android Studio (com os plugins do Flutter/Dart).
-- **Conta no Firebase**: [Crie uma gratuitamente](https://firebase.google.com/).
+*   **Flutter SDK**: Versão 3.x ou superior.
+*   **Conta no Firebase**: [Crie uma gratuitamente](https://firebase.google.com/).
 
 ### Configuração do Firebase
 
-1.  **Crie um Projeto no Firebase:** Acesse o [console do Firebase](https://console.firebase.google.com/) e crie um novo projeto.
-
-2.  **Ative os Serviços:**
-    - No menu "Build", vá para **Authentication**, clique em "Começar" e ative o provedor **"E-mail/senha"**.
-    - No menu "Build", vá para **Firestore Database**, clique em "Criar banco de dados" e inicie no **modo de produção** (production mode).
-
-3.  **Configure o FlutterFire CLI:**
-    - Se ainda não tiver, instale a CLI do Firebase: `npm install -g firebase-tools`.
-    - Faça login: `firebase login`.
-    - Instale a CLI do FlutterFire: `dart pub global activate flutterfire_cli`.
-
-4.  **Conecte o App ao Firebase:**
-    - Na raiz do projeto, execute o comando:
-      ```bash
-      flutterfire configure
-      ```
-    - Siga as instruções, selecionando o projeto Firebase que você criou. Este comando irá gerar/atualizar automaticamente o arquivo `lib/firebase_options.dart` com as credenciais do seu projeto.
+1.  **Crie um Projeto no Firebase** e ative os serviços de **Authentication (Email/Senha)** e **Firestore Database**.
+2.  **Configure a FlutterFire CLI** seguindo o [guia oficial](https://firebase.flutter.dev/docs/cli).
+3.  **Conecte o App ao Firebase** executando na raiz do projeto:
+    ```bash
+    flutterfire configure
+    ```
+    Isso irá gerar o arquivo `lib/firebase_options.dart` com as credenciais do seu projeto.
 
 ### Instalação
 
 1.  **Clone o Repositório:**
     ```bash
-    git clone https://github.com/lucaseneiva/firy_streak.git
-    cd lucaseneiva-firy_streak
+    git clone https://github.com/lucaseneiva/firy-streak-app.git
+    cd firy-streak-app
     ```
 
 2.  **Instale as Dependências:**
@@ -130,7 +131,7 @@ Siga os passos abaixo para configurar e executar o projeto localmente.
 
 ## ▶️ Executando o Aplicativo
 
-Com o ambiente configurado, execute o seguinte comando para iniciar o aplicativo em um emulador, simulador ou dispositivo conectado:
+Com o ambiente configurado, execute o seguinte comando:
 
 ```bash
 flutter run
@@ -138,28 +139,12 @@ flutter run
 
 ## 🧪 Executando os Testes
 
-Para garantir a qualidade e a integridade da lógica de negócios, execute os testes unitários:
+Para garantir a qualidade da lógica de negócios, execute os testes unitários. Além de poder rodar localmente, esses testes são executados automaticamente a cada `push` para a branch `main` através do nosso workflow de CI/CD no GitHub Actions.
 
 ```bash
 flutter test
 ```
 
-Você verá os testes em `test/pet_service_test.dart` serem executados, validando a lógica de tempo e as interações com o Firebase mockado.
-
-## 📁 Estrutura do Projeto
-
-A lógica principal do aplicativo está concentrada no diretório `lib/`:
-
-```
-lib/
-├── auth_gate.dart          # Decide entre a tela de Login e a Home com base no estado de auth.
-├── home_screen.dart        # Tela principal para usuários logados, exibe o pet.
-├── login_screen.dart       # Tela de login.
-├── main.dart               # Ponto de entrada do aplicativo, inicializa o Firebase.
-├── pet_service.dart        # Coração da lógica de negócios do pet (estado, alimentação, etc.).
-└── register_screen.dart    # Tela de cadastro de novos usuários.
-```
-
 ## ✒️ Autor
 
-- **Lucas E. Eneiva** - [GitHub](https://github.com/lucaseneiva)
+-   **Lucas E. Eneiva** - [GitHub](https://github.com/lucaseneiva)
