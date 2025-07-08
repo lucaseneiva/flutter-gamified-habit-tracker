@@ -189,4 +189,4 @@ flutter test
 
 ## ✒️ Autor
 
--   **Lucas E. Eneiva** - [GitHub](https://github.com/lucaseneiva)
+-   **Lucas E. Eneiva** - [GitHub](https://github.com/lucaseneiva) [LinkedIn](https://linkedIn/in/lucaseneiva)
