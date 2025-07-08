@@ -68,8 +68,18 @@ Meu processo no Figma incluiu:
 
 Essa base sólida no Figma foi fundamental para construir uma interface bonita e funcional de forma eficiente.
 
-![image](https://github.com/user-attachments/assets/d522c177-cb95-4695-8e16-9f18c3bcdf54)
-![image](https://github.com/user-attachments/assets/3617e82a-efde-4053-a5aa-c9c4a17bd022)
+<p align="center">
+  <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin: 20px 0;">
+    <div style="text-align: center;">
+      <img src="https://github.com/user-attachments/assets/d522c177-cb95-4695-8e16-9f18c3bcdf54" alt="Design Process" style="max-width: 400px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);"/>
+      <p style="font-weight: 500; margin-top: 10px; color: #555;">Assets do Firy no Figma</p>
+    </div>
+    <div style="text-align: center;">
+      <img src="https://github.com/user-attachments/assets/3617e82a-efde-4053-a5aa-c9c4a17bd022" alt="Firy Assets" style="max-width: 400px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);"/>
+      <p style="font-weight: 500; margin-top: 10px; color: #555;">Prototipação das Telas no Figma</p>
+    </div>
+  </div>
+</p>
 
 ## ⚙️ O Ecossistema do Projeto: A API de Quotes
 
