@@ -45,6 +45,7 @@ dependencies:
   shared_preferences: ^2.5.3
   flutter_riverpod: ^2.6.1
   http: ^1.4.0
+  flutter_launcher_icons: ^0.14.4
   
 dev_dependencies:
   flutter_test:
@@ -63,6 +64,22 @@ dev_dependencies:
   
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
+flutter_launcher_icons:
+  # O valor 'true' habilita a geração de ícones para Android.
+  android: true
+  
+  # O valor 'true' habilita a geração de ícones para iOS.
+  ios: true
+  
+  # REMOVER ÍCONE ANTIGO (WATERMARK) DO FLUTTER
+  # Isso é importante para remover o ícone beta do Flutter no Android.
+  remove_alpha_ios: true
+
+  image_path: "assets/icon.png"
+  # --- CONFIGURAÇÃO DO ÍCONE ADAPTATIVO PARA ANDROID ---
+  # Esta é a configuração mais importante para um visual moderno.
+  adaptive_icon_background: "#FE7605" # Sua cor laranja de fundo
+  adaptive_icon_foreground: "assets/icon_foreground.png" # Caminho para sua imagem de primeiro plano
 
 # The following section is specific to Flutter packages.
 flutter:
