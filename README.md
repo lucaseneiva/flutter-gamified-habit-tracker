@@ -195,4 +195,6 @@ flutter test
 
 Este projeto está licenciado sob a [Creative Commons BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/deed.pt_BR).
 
+O personagem Firy, incluindo seu nome, design, conceito e personalidade, é uma criação original de Lucas E. Neiva.
+
 © Lucas E. Neiva – Todos os direitos reservados.
