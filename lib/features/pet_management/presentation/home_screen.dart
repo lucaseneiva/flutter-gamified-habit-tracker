@@ -3,7 +3,7 @@ import 'package:firy_streak/features/pet_management/application/pet_providers.da
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'widgets/streak_card.dart';
-import 'create_habit_screen.dart'; // Importa a tela de criação de hábito
+import 'create_habit_screen.dart';
 import 'package:firy_streak/features/pet_management/presentation/widgets/pet_display.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firy_streak/features/pet_management/presentation/widgets/speech_bubble.dart';

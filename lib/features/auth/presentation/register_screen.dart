@@ -1,7 +1,6 @@
 import 'package:firy_streak/features/auth/application/auth_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
@@ -22,28 +21,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
     ref.read(authIsLoadingProvider.notifier).state = true;
 
+    final authService = ref.read(authServiceProvider);
+
     try {
-      final userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-            email: _emailController.text.trim(),
-            password: _passwordController.text.trim(),
-          );
+      authService.signUp(
+        _emailController.text,
+        _confirmPasswordController.text,
+      );
 
-      final user = userCredential.user;
-
-      if (user != null) {
-        // 2. CRIA O DOCUMENTO NO FIRESTORE!
-        await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
-          'email': user.email,
-          'petStatus': 'EGG',
-          'streakCount': 0,
-          'lastFedTimestamp':
-              null, // Começa nulo, pois ainda não foi alimentado
-          'habitName': null,
-        });
-      }
-      // Após o cadastro, o AuthGate já deve redirecionar para HomeScreen
-      // Se quiser mostrar uma mensagem de sucesso antes, pode fazer aqui
       if (mounted && Navigator.canPop(context)) {
         Navigator.of(
           context,
