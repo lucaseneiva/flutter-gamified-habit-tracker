@@ -5,15 +5,18 @@ class AuthService {
   final FirebaseFirestore _firestore;
   final FirebaseAuth _auth;
 
-  AuthService({required FirebaseFirestore firestore, required FirebaseAuth auth}) : _firestore = firestore, _auth = auth;
-  
+  AuthService({
+    required FirebaseFirestore firestore,
+    required FirebaseAuth auth,
+  }) : _firestore = firestore,
+       _auth = auth;
+
   Future<void> signUp(String email, String password) async {
     try {
-      final userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-            email: email.trim(),
-            password: password.trim(),
-          );
+      final userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email.trim(),
+        password: password.trim(),
+      );
 
       final user = userCredential.user;
 
@@ -28,9 +31,20 @@ class AuthService {
           'habitName': null,
         });
       }
-      
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException {
       rethrow;
     }
   }
+
+  Future<void> signIn(String email, String password) async {
+    try {
+      await _auth.signInWithEmailAndPassword(
+        email: email.trim(),
+        password: password.trim(),
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
 }

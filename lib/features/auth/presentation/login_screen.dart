@@ -22,12 +22,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
     ref.read(authIsLoadingProvider.notifier).state = true;
 
+    final authService = ref.read(authServiceProvider);
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
-      // A navegação para HomeScreen será feita pelo AuthGate
+      
+      authService.signIn(_emailController.text, _passwordController.text);
+      
     } on FirebaseAuthException catch (e) {
       String message;
       if (e.code == 'user-not-found') {
