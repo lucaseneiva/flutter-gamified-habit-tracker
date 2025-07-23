@@ -8,6 +8,7 @@ import 'package:firy_streak/features/pet_management/presentation/widgets/pet_dis
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firy_streak/features/pet_management/presentation/widgets/speech_bubble.dart';
 import 'package:firy_streak/features/quotes/application/quote_provider.dart';
+import 'package:firy_streak/core/utils/confirmation_dialog.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -21,10 +22,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     final petDataAsync = ref.watch(petDataStreamProvider);
 
-    
     return petDataAsync.when(
       data: (snapshot) {
         var userData = snapshot.data() as Map<String, dynamic>;
@@ -67,7 +66,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
             loading: () => const Padding(
               padding: EdgeInsets.symmetric(vertical: 20.0),
-              child: SizedBox(height: 24, width: 24, child: CircularProgressIndicator()),
+              child: SizedBox(
+                height: 24,
+                width: 24,
+                child: CircularProgressIndicator(),
+              ),
             ),
             error: (err, stack) => SpeechBubble(message: 'Você é demais!'),
           );
@@ -89,19 +92,28 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             preferredSize: Size.fromHeight(kToolbarHeight),
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(border: Border(
-                bottom: BorderSide(color: AppColors.lightGrey,
-                width: 4)
-              )),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(color: AppColors.lightGrey, width: 4),
+                ),
+              ),
               child: AppBar(
                 title: const Text("Meu Firy"),
                 actions: [
                   IconButton(
                     icon: const Icon(Icons.logout),
                     tooltip: 'Sair',
-                    onPressed: () async {
-                      await FirebaseAuth.instance.signOut();
-                    },
+                    onPressed: () => showDialog(
+                      context: context,
+                      builder: (context) => ConfirmationDialog(
+                        title: "Logout",
+                        message: "Tem certeza que quer fazer o Logout?",
+                        onConfirmation: () async {
+                          await FirebaseAuth.instance.signOut();
+                          Navigator.of(context).pop;
+                        },
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -114,13 +126,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 Spacer(flex: 1),
                 StreakCard(streakCount: streakCount),
                 Spacer(flex: 1),
-                  speechBubbleWidget,
+                speechBubbleWidget,
                 SizedBox(height: 16),
                 PetDisplay(
                   petState: currentState,
                   onFeedPet: petService.feedPet,
                 ),
-                Spacer(flex: 1)
+                Spacer(flex: 1),
               ],
             ),
           ),
