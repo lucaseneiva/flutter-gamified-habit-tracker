@@ -101,13 +101,6 @@ class _CreateHabitScreenState extends ConsumerState<CreateHabitScreen> {
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                    color: Color(0xFFF9703B),
-                                    width: 2.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
                               ),
                               items:
                                   [
