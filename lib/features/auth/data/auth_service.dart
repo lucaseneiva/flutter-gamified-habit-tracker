@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firy_streak/features/auth/domain/user_model.dart';
 
 class AuthService {
   final FirebaseFirestore _firestore;
@@ -21,15 +22,9 @@ class AuthService {
       final user = userCredential.user;
 
       if (user != null) {
-        // 2. CRIA O DOCUMENTO NO FIRESTORE!
-        await _firestore.collection('users').doc(user.uid).set({
-          'email': user.email,
-          'petStatus': 'EGG',
-          'streakCount': 0,
-          'lastFedTimestamp':
-              null, // Começa nulo, pois ainda não foi alimentado
-          'habitName': null,
-        });
+		final newUserDoc = UserModel(uid: user.uid, email: user.email!, petStatus: 'EGG', streakCount: 0);
+
+        await _firestore.collection('users').doc(user.uid).set(newUserDoc.toJson());
       }
     } on FirebaseAuthException {
       rethrow;
@@ -46,5 +41,4 @@ class AuthService {
       rethrow;
     }
   }
-
 }
