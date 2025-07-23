@@ -41,8 +41,6 @@ class PetDisplay extends StatelessWidget {
             child: Text(
               petState.isDead
                   ? "Reviver o Bichinho"
-                  : petState.isEgg
-                  ? "Chocar"
                   : "Alimentar",
             ),
           ),

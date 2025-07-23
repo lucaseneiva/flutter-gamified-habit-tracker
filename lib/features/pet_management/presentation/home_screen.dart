@@ -74,10 +74,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
             error: (err, stack) => SpeechBubble(message: 'Você é demais!'),
           );
-        } else if (currentState.isHungry || currentState.isEgg) {
-          // Pet com fome ou ovo, mostra mensagem padrão
+        } else if (currentState.isHungry) {
           speechBubbleWidget = SpeechBubble(
-            message: currentState.isHungry ? 'Estou com fome!' : 'Me choca!',
+            message: 'Estou com fome!',
             bubbleColor: Colors.white,
             borderColor: const Color(0xFFE0E0E0),
             textColor: const Color(0xFF4F4F4F),

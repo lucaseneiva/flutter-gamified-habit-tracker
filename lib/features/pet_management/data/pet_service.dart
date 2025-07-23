@@ -41,24 +41,16 @@ class PetService {
     await docRef.update({
       'lastFedTimestamp': Timestamp.fromDate(_clock.now()),
       'streakCount': FieldValue.increment(1),
-      'petStatus': "ACTIVE",
     });
   }
 
   PetState determineCurrentFiryState(Map<String, dynamic> userData) {
-    final String? statusString = userData['petStatus'];
     final Timestamp? lastFedTimestamp = userData['lastFedTimestamp'];
     final int streak = userData['streakCount'] ?? 0;
 
-    // O estado EGG é especial e apenas para o início.
-    if (statusString == "EGG") {
-      return PetState(GrowthStage.egg);
-    }
-
-    // Se não há timestamp, mas o pet já não é um ovo, ele precisa ser alimentado.
     // Isso serve como um fallback seguro.
     if (lastFedTimestamp == null) {
-      return PetState(GrowthStage.baby);
+      return PetState(GrowthStage.baby, FeedingStatus.notFed);
     }
 
     final lastFedDate = lastFedTimestamp.toDate();

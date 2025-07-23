@@ -37,11 +37,10 @@ class PetState {
   bool get isFed => status == FeedingStatus.fed;
   bool get isHungry => status == FeedingStatus.notFed;
   bool get isDead => stage == GrowthStage.dead;
-  bool get isEgg => stage == GrowthStage.egg;
+  
 
   // Isso vai nos ajudar a pegar a imagem SVG correta
   String get imagePath {
-    if (isEgg) return 'assets/egg.svg';
     if (isDead) return 'assets/dead.svg';
 
     // Converte o enum para string: 'GrowthStage.baby' -> 'baby'
