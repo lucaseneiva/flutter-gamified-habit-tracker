@@ -15,7 +15,7 @@ class ConfirmationDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -29,23 +29,16 @@ class ConfirmationDialog extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.grey,
-                    side: const BorderSide(color: Colors.grey),
-                  ),
                   onPressed: () => Navigator.pop(context),
                   child: const Text("Não"),
                 ),
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFF9703B),
-                  ),
                   onPressed: () {
                     Navigator.pop(context);
                     onConfirmation();
                   },
                   child: const Text("Sim"),
-                ),
+                ),  
               ],
             ),
           ],

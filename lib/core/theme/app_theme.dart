@@ -54,7 +54,27 @@ class AppTheme {
     ),
 
     textSelectionTheme: TextSelectionThemeData(cursorColor: AppColors.blue),
-    
+
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        side: BorderSide(color: AppColors.lightGrey, width: 4),
+        foregroundColor: AppColors.textDark,
+        textStyle: TextStyle(
+          fontWeight: FontWeight.bold
+        )
+      ),
+    ),
+
+    dialogTheme: DialogThemeData(
+      barrierColor: Colors.transparent,
+      backgroundColor: AppColors.background,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(color: AppColors.lightGrey, width: 4),
+      ),
+      
+    ),
+
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.primary,
