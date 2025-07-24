@@ -132,6 +132,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ],
             ),
           ),
+
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CreateHabitScreen()),
+              );
+            },
+            child: const Icon(Icons.add),
+          ),
         );
       },
       loading: () =>
