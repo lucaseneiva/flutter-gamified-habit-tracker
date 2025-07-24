@@ -40,7 +40,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
         if (currentState.isDead) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            petService.resetPetIfDead();
+            petService.resetPetIfDead(snapshot.first.petid!);
           });
         }
 

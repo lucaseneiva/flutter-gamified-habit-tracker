@@ -44,7 +44,7 @@ class PetService {
     if (_currentUser == null) return;
     
     final docRef = _firestore.collection('users').doc(_currentUser!.uid).collection('pets').doc(petId);
-    
+
     await docRef.update({
       'lastFedTimestamp': Timestamp.fromDate(_clock.now()),
       'streakCount': FieldValue.increment(1),
@@ -110,9 +110,9 @@ class PetService {
   }
 
   // Lógica de reset do pet
-  Future<void> resetPetIfDead() async {
+  Future<void> resetPetIfDead(String petId) async {
     if (_currentUser == null) return;
-    final docRef = _firestore.collection('users').doc(_currentUser!.uid);
+    final docRef = _firestore.collection('users').doc(_currentUser!.uid).collection('pets').doc(petId);
     await docRef.update({'streakCount': 0});
   }
 }
