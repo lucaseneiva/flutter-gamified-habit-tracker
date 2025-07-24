@@ -27,22 +27,23 @@ class PetDisplay extends StatelessWidget {
 
           Spacer(flex: 1),
           // Botão
-          ElevatedButton(
-            onPressed: () => showDialog(
-              context: context,
-              builder: (context) => ConfirmationDialog(
-                message: petState.isDead
-                    ? "Quer mesmo reviver seu companheiro?"
-                    : "Vai dar comida pro bichinho agora?",
-                title: petState.isDead ? "Reviver" : "Alimentar",
-                onConfirmation: onFeedPet,
+            ElevatedButton(
+              onPressed: !petState.isFed ? () => showDialog(
+                context: context,
+                builder: (context) => ConfirmationDialog(
+                  message: petState.isDead
+                      ? "Quer mesmo reviver seu companheiro?"
+                      : "Vai dar comida pro bichinho agora?",
+                  title: petState.isDead ? "Reviver" : "Alimentar",
+                  onConfirmation: onFeedPet,
+                ),
+              )
+              : null,
+              child: Text(
+                petState.isDead
+                    ? "Reviver o Bichinho"
+                    : "Alimentar",
               ),
-            ),
-            child: Text(
-              petState.isDead
-                  ? "Reviver o Bichinho"
-                  : "Alimentar",
-            ),
           ),
         ],
       ),
