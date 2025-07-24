@@ -1,5 +1,6 @@
 import 'package:firy_streak/core/theme/app_colors.dart';
 import 'package:firy_streak/features/pet_management/application/pet_providers.dart';
+import 'package:firy_streak/features/pet_management/data/pet_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'widgets/streak_card.dart';
@@ -18,30 +19,24 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  // Crie uma instância do serviço. No app real, usamos o clock padrão.
-
   @override
   Widget build(BuildContext context) {
     final petDataAsync = ref.watch(petDataStreamProvider);
 
     return petDataAsync.when(
       data: (snapshot) {
-        var userData = snapshot.data() as Map<String, dynamic>;
-
-        if (!snapshot.exists || snapshot.data() == null) {
+        if (snapshot.isEmpty) {
           return const Scaffold(
             body: Center(child: Text("Criando seu bichinho...")),
           );
         }
+        final PetService petService = ref.read(petServiceProvider);
 
-        final String? habitName = userData['habitName'];
-
-        if (habitName == null || habitName.isEmpty) {
+        if (snapshot.isEmpty) {
           return const CreateHabitScreen();
         }
 
-        final petService = ref.read(petServiceProvider);
-        var currentState = petService.determineCurrentFiryState(userData);
+        var currentState = petService.determineCurrentFiryState(snapshot.first);
 
         if (currentState.isDead) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -51,7 +46,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
         int streakCount = (currentState.isDead)
             ? 0
-            : (userData['streakCount'] ?? 0);
+            : (snapshot.first.streakCount ?? 0);
 
         Widget speechBubbleWidget;
         if (currentState.isFed) {
@@ -129,7 +124,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 SizedBox(height: 16),
                 PetDisplay(
                   petState: currentState,
-                  onFeedPet: petService.feedPet,
+                  onFeedPet: () {
+                    petService.feedPet(snapshot.first.petid);
+                  },
                 ),
                 Spacer(flex: 1),
               ],

@@ -22,7 +22,7 @@ class AuthService {
       final user = userCredential.user;
 
       if (user != null) {
-		final newUserDoc = UserModel(uid: user.uid, email: user.email!, petStatus: 'EGG', streakCount: 0);
+		final newUserDoc = UserModel(uid: user.uid, email: user.email!);
 
         await _firestore.collection('users').doc(user.uid).set(newUserDoc.toJson());
       }

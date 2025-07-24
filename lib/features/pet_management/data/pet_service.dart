@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:clock/clock.dart'; // Importe o pacote clock
 import 'package:firy_streak/features/pet_management/domain/pet_state.dart';
+import 'package:firy_streak/features/pet_management/domain/pet_model.dart';
 
 class PetService {
   final FirebaseFirestore _firestore;
@@ -20,13 +21,18 @@ class PetService {
   User? get _currentUser => _auth.currentUser;
 
   // Stream que a UI vai ouvir para obter os dados do usuário
-  Stream<DocumentSnapshot> get petDataStream {
-    if (_currentUser == null) {
-      // Retorna um stream vazio se não houver usuário
+  Stream<List<PetModel>> get petDataStream {
+    if(_auth.currentUser == null){
       return Stream.empty();
     }
-    return _firestore.collection('users').doc(_currentUser!.uid).snapshots();
+
+    return _firestore.collection('users').doc(_auth.currentUser!.uid).collection('pets').snapshots().map((querySnapshot) {
+      return querySnapshot.docs.map((doc) {
+        return PetModel.fromJson(doc.data(), doc.id);
+      }).toList();
+    });
   }
+
 
   Future<void> setHabit(String habitName) async {
     if (_currentUser == null) return;
@@ -34,26 +40,44 @@ class PetService {
     await docRef.update({'habitName': habitName});
   }
 
-  Future<void> feedPet() async {
+  Future<void> feedPet(petId) async {
     if (_currentUser == null) return;
-    final docRef = _firestore.collection('users').doc(_currentUser!.uid);
-
+    
+    final docRef = _firestore.collection('users').doc(_currentUser!.uid).collection('pets').doc(petId);
+    
     await docRef.update({
       'lastFedTimestamp': Timestamp.fromDate(_clock.now()),
       'streakCount': FieldValue.increment(1),
     });
   }
 
-  PetState determineCurrentFiryState(Map<String, dynamic> userData) {
-    final Timestamp? lastFedTimestamp = userData['lastFedTimestamp'];
-    final int streak = userData['streakCount'] ?? 0;
+  Future<void> createPet(String habitName) async {
+    if (_currentUser == null) return;
 
+    final userId = _auth.currentUser!.uid;
+
+    final newPetDoc = PetModel(
+      habitName: habitName,
+      streakCount: 0,
+      lastFedTimestamp: null,
+    );
+
+    final petRef = _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('pets')
+        .doc(); // gera ID automático
+
+    await petRef.set(newPetDoc.toJson());
+  }
+
+  PetState determineCurrentFiryState(PetModel petModel) {
     // Isso serve como um fallback seguro.
-    if (lastFedTimestamp == null) {
+    if (petModel.lastFedTimestamp == null) {
       return PetState(GrowthStage.baby, FeedingStatus.notFed);
     }
 
-    final lastFedDate = lastFedTimestamp.toDate();
+    final lastFedDate = petModel.lastFedTimestamp!.toDate();
     final now = _clock.now(); // Usa o relógio injetado!
 
     // Lógica de tempo crucial
@@ -72,11 +96,11 @@ class PetService {
     // Determina o estágio de crescimento com base na streak
     GrowthStage growthStage;
     // Streak thresholds: 1-9 (Baby), 10-29 (Child), 30-59 (Teen), 60+ (Adult)
-    if (streak >= 60) {
+    if (petModel.streakCount! >= 60) {
       growthStage = GrowthStage.adult;
-    } else if (streak >= 30) {
+    } else if (petModel.streakCount! >= 30) {
       growthStage = GrowthStage.teen;
-    } else if (streak >= 10) {
+    } else if (petModel.streakCount! >= 10) {
       growthStage = GrowthStage.child;
     } else {
       growthStage = GrowthStage.baby;

@@ -1,6 +1,7 @@
 import 'package:clock/clock.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firy_streak/features/pet_management/domain/pet_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/pet_service.dart';
 
@@ -12,7 +13,7 @@ final petServiceProvider = Provider<PetService>((ref) {
   );
 });
 
-final petDataStreamProvider = StreamProvider.autoDispose<DocumentSnapshot>((ref) {
+final petDataStreamProvider = StreamProvider.autoDispose<List<PetModel>>((ref) {
   final petService = ref.watch(petServiceProvider);
 
   return petService.petDataStream;

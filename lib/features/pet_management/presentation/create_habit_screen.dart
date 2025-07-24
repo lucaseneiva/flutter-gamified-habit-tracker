@@ -31,9 +31,7 @@ class _CreateHabitScreenState extends ConsumerState<CreateHabitScreen> {
       try {
         final PetService petService = ref.read(petServiceProvider);
 
-        await petService.setHabit(_selectedHabit.toString());
-        // A HomeScreen vai se reconstruir automaticamente por causa do StreamBuilder
-        // e mostrar a tela do pet, então não precisamos navegar daqui.
+        await petService.createPet(_selectedHabit.toString());
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -46,6 +44,7 @@ class _CreateHabitScreenState extends ConsumerState<CreateHabitScreen> {
       } finally {
         if (mounted) {
           setState(() => _isLoading = false);
+          Navigator.of(context).pop();
         }
       }
     }
@@ -134,7 +133,7 @@ class _CreateHabitScreenState extends ConsumerState<CreateHabitScreen> {
                         ),
                       ],
                     ),
-                    
+
                     const SizedBox(height: 16),
 
                     const Text('todos os dias', style: TextStyle(fontSize: 18)),
