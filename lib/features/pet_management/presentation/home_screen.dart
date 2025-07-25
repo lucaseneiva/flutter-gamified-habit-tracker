@@ -1,6 +1,8 @@
 import 'package:firy_streak/core/theme/app_colors.dart';
 import 'package:firy_streak/features/pet_management/application/pet_providers.dart';
 import 'package:firy_streak/features/pet_management/data/pet_service.dart';
+import 'package:firy_streak/features/pet_management/domain/pet_model.dart';
+import 'package:firy_streak/features/pet_management/presentation/widgets/habit_name_card.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'widgets/streak_card.dart';
@@ -10,6 +12,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firy_streak/features/pet_management/presentation/widgets/speech_bubble.dart';
 import 'package:firy_streak/features/quotes/application/quote_provider.dart';
 import 'package:firy_streak/core/utils/confirmation_dialog.dart';
+import 'create_habit_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -42,7 +45,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       data: (snapshot) {
         if (snapshot.isEmpty) {
           return const Scaffold(
-            body: Center(child: Text("Criando seu bichinho...")),
+            body: CreateHabitScreen(),
           );
         }
 
@@ -156,7 +159,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget _buildSinglePetScreen(dynamic pet) {
+  Widget _buildSinglePetScreen(PetModel pet) {
     return Scaffold(
       appBar: _buildAppBar(),
       body: _buildPetPage(pet),
@@ -164,7 +167,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget _buildPetPage(dynamic pet) {
+  Widget _buildPetPage(PetModel pet) {
     final PetService petService = ref.read(petServiceProvider);
     var currentState = petService.determineCurrentFiryState(pet);
 
@@ -176,7 +179,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     }
 
     int streakCount = (currentState.isDead) ? 0 : (pet.streakCount ?? 0);
-
+    
     Widget speechBubbleWidget = _buildSpeechBubble(currentState);
 
     return Center(
@@ -184,10 +187,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Spacer(flex: 1),
-          StreakCard(streakCount: streakCount),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: HabitNameCard(habitName: pet.habitName!),
+                ),
+                
+                Expanded(
+                  child: StreakCard(streakCount: streakCount),
+                ),
+              ],
+            ),
+          ),
           Spacer(flex: 1),
+
           speechBubbleWidget,
-          SizedBox(height: 16),
           PetDisplay(
             petState: currentState,
             onFeedPet: () {
