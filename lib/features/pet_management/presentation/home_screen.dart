@@ -44,9 +44,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return petDataAsync.when(
       data: (snapshot) {
         if (snapshot.isEmpty) {
-          return const Scaffold(
-            body: CreateHabitScreen(),
-          );
+          return const Scaffold(body: CreateHabitScreen());
         }
 
         // Se só tem um pet, não precisa do PageView
@@ -60,7 +58,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             children: [
               // Indicadores de pets
               _buildPetIndicators(snapshot.length),
-              
+
               // PageView com os pets
               Expanded(
                 child: PageView.builder(
@@ -138,7 +136,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
           ),
           SizedBox(width: 16),
-          
+
           // Indicadores visuais
           ...List.generate(
             petCount,
@@ -148,9 +146,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               height: 8,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: _currentPetIndex == index 
-                  ? AppColors.primary
-                  : Colors.grey.shade300,
+                color: _currentPetIndex == index
+                    ? AppColors.primary
+                    : Colors.grey.shade300,
               ),
             ),
           ),
@@ -179,7 +177,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     }
 
     int streakCount = (currentState.isDead) ? 0 : (pet.streakCount ?? 0);
-    
+
     Widget speechBubbleWidget = _buildSpeechBubble(currentState);
 
     return Center(
@@ -191,13 +189,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(
               children: [
-                Expanded(
-                  child: HabitNameCard(habitName: pet.habitName!),
-                ),
-                
-                Expanded(
-                  child: StreakCard(streakCount: streakCount),
-                ),
+                Expanded(child: HabitNameCard(habitName: pet.habitName!)),
+
+                Expanded(child: StreakCard(streakCount: streakCount)),
               ],
             ),
           ),
@@ -217,7 +211,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Widget _buildSpeechBubble(dynamic currentState) {
-    if (currentState.isFed) {
+    if (currentState.isJustFed) {
       // Pet está alimentado, busca a frase da API
       final quoteAsync = ref.watch(randomQuoteProvider);
       return quoteAsync.when(

@@ -24,7 +24,7 @@ enum GrowthStage {
   }
 }
 
-enum FeedingStatus { fed, notFed }
+enum FeedingStatus { fed, notFed, justFed }
 
 class PetState {
   final GrowthStage stage;
@@ -37,11 +37,12 @@ class PetState {
   bool get isFed => status == FeedingStatus.fed;
   bool get isHungry => status == FeedingStatus.notFed;
   bool get isDead => stage == GrowthStage.dead;
-  
+  bool get isJustFed => status == FeedingStatus.justFed;
 
   // Isso vai nos ajudar a pegar a imagem SVG correta
   String get imagePath {
     if (isDead) return 'assets/dead.svg';
+	if (isJustFed) return 'assets/happy.svg';
 
     // Converte o enum para string: 'GrowthStage.baby' -> 'baby'
     final stageString = stage.toString().split('.').last;
