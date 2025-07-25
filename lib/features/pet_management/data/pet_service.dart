@@ -72,27 +72,32 @@ class PetService {
   }
 
   PetState determineCurrentFiryState(PetModel petModel) {
-    // Isso serve como um fallback seguro.
     if (petModel.lastFedTimestamp == null) {
       return PetState(GrowthStage.baby, FeedingStatus.notFed);
     }
-
+    
     final lastFedDate = petModel.lastFedTimestamp!.toDate();
-    final now = _clock.now(); // Usa o relógio injetado!
-
-    // Lógica de tempo crucial
-    final difference = now.difference(lastFedDate);
-
-    if (difference.inDays >= 2) {
-      // Passaram-se 2 dias ou mais desde a última alimentação
+    final now = _clock.now();
+    
+    // Calcula o início do dia da última alimentação (00:00:00)
+    final lastFedDayStart = DateTime(lastFedDate.year, lastFedDate.month, lastFedDate.day);
+    
+    // Calcula o início do dia atual (00:00:00)
+    final todayStart = DateTime(now.year, now.month, now.day);
+    
+    // Calcula a diferença em dias entre os inícios dos dias
+    final daysDifference = todayStart.difference(lastFedDayStart).inDays;
+    
+    if (daysDifference >= 2) {
+      // Passaram-se 2 dias ou mais desde a última alimentação - pet morreu
       return PetState(GrowthStage.dead);
     }
-
-    // Determina o status da alimentação
-    final feedingStatus = difference.inDays >= 1
-        ? FeedingStatus.notFed
-        : FeedingStatus.fed;
-
+    
+    // Determina o status da alimentação baseado nos dias
+    final feedingStatus = daysDifference >= 1
+        ? FeedingStatus.notFed  // 1 dia ou mais = com fome
+        : FeedingStatus.fed;    // mesmo dia = alimentado
+    
     // Determina o estágio de crescimento com base na streak
     GrowthStage growthStage;
     // Streak thresholds: 1-9 (Baby), 10-29 (Child), 30-59 (Teen), 60+ (Adult)
@@ -105,9 +110,9 @@ class PetService {
     } else {
       growthStage = GrowthStage.baby;
     }
-
+    
     return PetState(growthStage, feedingStatus);
-  }
+}
 
   // Lógica de reset do pet
   Future<void> resetPetIfDead(String petId) async {
