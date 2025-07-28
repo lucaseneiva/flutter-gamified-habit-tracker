@@ -34,12 +34,12 @@ class PetDisplay extends StatelessWidget {
                     builder: (context) => ConfirmationDialog(
                       message: petState.isDead
                           ? "Quer mesmo reviver seu companheiro?"
-                          : "Vai dar comida pro bichinho agora?",
+                          : "Vai dar comida pra Chaminha agora?",
                       title: petState.isDead ? "Reviver" : "Alimentar",
                       onConfirmation: onFeedPet,
                     ),
                   ),
-            child: Text(petState.isDead ? "Reviver o Bichinho" : "Alimentar"),
+            child: Text(petState.isDead ? "Reviver a Chaminha" : "Alimentar"),
           ),
         ],
       ),

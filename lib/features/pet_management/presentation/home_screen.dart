@@ -225,7 +225,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-
               // Indicadores visuais
               ...List.generate(
                 petCount,
@@ -329,8 +328,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         borderColor: const Color(0xFFE0E0E0),
         textColor: const Color(0xFF4F4F4F),
       );
+    } else if (currentState.isFed) {
+      return SpeechBubble(
+        message: 'Barriguinha cheia!',
+        bubbleColor: Colors.white,
+        borderColor: const Color(0xFFE0E0E0),
+        textColor: const Color(0xFF4F4F4F),
+      );
     } else {
-      // Nenhum balão para outros estados (morto, etc.)
       return const SizedBox.shrink();
     }
   }
