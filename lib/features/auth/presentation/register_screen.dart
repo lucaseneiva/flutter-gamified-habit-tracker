@@ -84,7 +84,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   Widget build(BuildContext context) {
     final isLoading = ref.watch(authIsLoadingProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text('Cadastro - firy Streak')),
+      appBar: AppBar(title: const Text('Cadastro')),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(80.0),
@@ -194,7 +194,7 @@ class _RegisterHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      'Crie sua conta',
+      'Crie sua conta!',
       style: Theme.of(context).textTheme.headlineSmall,
       textAlign: TextAlign.center,
     );
@@ -220,6 +220,7 @@ class _RegisterActions extends StatelessWidget {
         isLoading
             ? const Center(child: CircularProgressIndicator())
             : ElevatedButton(onPressed: signUp, child: const Text('Cadastrar')),
+        SizedBox(height: 16),
         TextButton(
           onPressed: onNavigateToLogin,
           child: const Text('Já tem uma conta? Faça login'),

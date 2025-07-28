@@ -38,18 +38,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     super.initState();
     _onboardingPages = [
       OnboardingItem(
-        title: 'Bem-vindo ao Firy Streak!',
-        description: 'Crie hábitos com seu novo pet, o Firy!',
+        title: 'Bem-vindo ao Chaminhas!',
+        description: 'Crie hábitos com seu novos pets, as Chaminhas!',
         imageWidget: SvgPicture.asset('assets/egg.svg', height: 150),
       ),
       OnboardingItem(
-        title: 'Alimente o Firy!',
-        description: 'Complete hábitos diários e mantenha a chama viva!',
+        title: 'Alimente as Chaminhas!',
+        description: 'Complete seus hábitos diários e mantenha a chama acesa!',
         imageWidget: _buildFeedFiryWidget(),
       ),
       OnboardingItem(
-        title: 'Veja o Firy crescer!',
-        description: 'Consistência faz seu pet evoluir com você.',
+        title: 'Veja as Chaminhas crescerem!',
+        description: 'Consistência faz sua Chaminha evoluir com você.',
         imageWidget: _buildGrowFiryWidget(),
       ),
     ];

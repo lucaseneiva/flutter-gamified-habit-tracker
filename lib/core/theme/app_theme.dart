@@ -59,9 +59,7 @@ class AppTheme {
       style: OutlinedButton.styleFrom(
         side: BorderSide(color: AppColors.lightGrey, width: 4),
         foregroundColor: AppColors.textDark,
-        textStyle: TextStyle(
-          fontWeight: FontWeight.bold
-        )
+        textStyle: TextStyle(fontWeight: FontWeight.bold),
       ),
     ),
 
@@ -72,7 +70,6 @@ class AppTheme {
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(color: AppColors.lightGrey, width: 4),
       ),
-      
     ),
 
     elevatedButtonTheme: ElevatedButtonThemeData(
@@ -86,6 +83,39 @@ class AppTheme {
           fontWeight: FontWeight.bold,
         ),
       ),
+    ),
+
+    // NOVO: Tema do FloatingActionButton
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: AppColors.primary, // Cor de fundo do botão
+      foregroundColor: AppColors.white, // Cor do ícone dentro do botão
+      elevation: 4.0, // Sombra do botão
+      shape: const CircleBorder(), // Forma do botão (círculo por padrão)
+      // Você também pode usar outras formas, como:
+      // shape: RoundedRectangleBorder(
+      //   borderRadius: BorderRadius.circular(16.0),
+      // ),
+    ),
+    // NOVO: Tema do PopupMenu
+    popupMenuTheme: PopupMenuThemeData(
+      color: AppColors.background, // Cor de fundo do menu
+      elevation: 6.0, // Sombra projetada pelo menu
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+        side: BorderSide(
+          color: AppColors.lightGrey,
+          width: 2.0,
+        ), // Sua borda personalizada
+      ),
+      textStyle: GoogleFonts.nunitoSans(
+        // Estilo do texto para os itens do menu
+        color: AppColors.textDark,
+        fontWeight: FontWeight.w600,
+        fontSize: 16,
+      ),
+      // Adicional: No Material 3, uma cor de "tintura" pode ser aplicada.
+      // Defina-a como a cor de fundo para garantir uma cor sólida.
+      surfaceTintColor: AppColors.background,
     ),
 
     // Tema dos Campos de Input

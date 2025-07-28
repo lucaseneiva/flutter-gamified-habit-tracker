@@ -96,7 +96,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
         ),
         child: AppBar(
-          title: const Text("Meu Firy"),
+          title: const Text("Chaminhas"),
           actions: [
             PopupMenuButton<String>(
               icon: const Icon(Icons.menu), // Ícone do hambúrger
@@ -115,9 +115,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   value: 'delete_pet',
                   child: Row(
                     children: [
-                      Icon(Icons.delete, color: Colors.red),
+                      Icon(Icons.delete, color: AppColors.darkGrey),
                       SizedBox(width: 8),
-                      Text('Excluir pet atual'),
+                      Text('Excluir Chaminha'),
                     ],
                   ),
                 ),
@@ -150,9 +150,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       showDialog(
         context: context,
         builder: (context) => ConfirmationDialog(
-          title: "Excluir Pet",
+          title: "Excluir Chaminha",
           message:
-              "Tem certeza que deseja excluir o pet '${currentPet.habitName}'? Esta ação não pode ser desfeita.",
+              "Tem certeza que deseja excluir a Chaminha '${currentPet.habitName}'? Esta ação não pode ser desfeita.",
           onConfirmation: () async {
             // Salva referências antes das operações async
             final navigator = Navigator.of(context);
@@ -166,7 +166,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               scaffoldMessenger.showSnackBar(
                 SnackBar(
                   content: Text(
-                    'Pet "${currentPet.habitName}" excluído com sucesso!',
+                    'Chaminha "${currentPet.habitName}" excluído com sucesso!',
                   ),
                   backgroundColor: Colors.green,
                 ),
@@ -178,7 +178,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               // Mostra mensagem de erro usando a referência salva
               scaffoldMessenger.showSnackBar(
                 SnackBar(
-                  content: Text('Erro ao excluir pet: $e'),
+                  content: Text('Erro ao excluir Chaminha: $e'),
                   backgroundColor: Colors.red,
                 ),
               );
@@ -198,10 +198,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         onConfirmation: () async {
           final authService = ref.read(authServiceProvider);
           try {
-          await authService.signOut();
-
+            await authService.signOut();
           } catch (e) {
-            print("ERRO");  
+            print("ERRO");
           }
         },
       ),
@@ -211,34 +210,38 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget _buildPetIndicators(int petCount) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Column(
         children: [
-          // Informação do pet atual
           Text(
-            "Pet ${_currentPetIndex + 1} de $petCount",
+            // Informação do pet atual
+            "Chaminha ${_currentPetIndex + 1} de $petCount",
             style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
+              fontSize: 16,
+              fontWeight: FontWeight.w800,
               color: Colors.grey[600],
             ),
           ),
-          SizedBox(width: 16),
+          SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
 
-          // Indicadores visuais
-          ...List.generate(
-            petCount,
-            (index) => Container(
-              margin: EdgeInsets.symmetric(horizontal: 3),
-              width: 8,
-              height: 8,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: _currentPetIndex == index
-                    ? AppColors.primary
-                    : Colors.grey.shade300,
+              // Indicadores visuais
+              ...List.generate(
+                petCount,
+                (index) => Container(
+                  margin: EdgeInsets.symmetric(horizontal: 3),
+                  width: 8,
+                  height: 8,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: _currentPetIndex == index
+                        ? AppColors.primary
+                        : Colors.grey.shade300,
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ],
       ),

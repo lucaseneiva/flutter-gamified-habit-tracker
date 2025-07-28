@@ -2,8 +2,10 @@
 import 'package:firy_streak/features/auth/application/auth_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'register_screen.dart'; // Para navegar para a tela de registro
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -71,7 +73,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final isLoading = ref.watch(authIsLoadingProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Login - Firy Streak')),
+      appBar: AppBar(title: const Text('Login')),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(80.0),
@@ -118,11 +120,7 @@ class _LoginHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      'Firy Streak Login! 🔥',
-      style: Theme.of(context).textTheme.headlineSmall,
-      textAlign: TextAlign.center,
-    );
+    return SvgPicture.asset('assets/logo.svg', height: 164);
   }
 }
 

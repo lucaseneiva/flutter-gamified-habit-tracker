@@ -153,7 +153,7 @@ class _CreateHabitScreenState extends ConsumerState<CreateHabitScreen> {
                               ),
                             ),
                             child: const Text(
-                              'Iniciar',
+                              'Criar',
                               style: TextStyle(
                                 fontSize: 18,
                                 color: Colors.white,

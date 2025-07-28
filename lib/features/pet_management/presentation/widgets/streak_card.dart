@@ -31,9 +31,9 @@ class StreakCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Streak',
+              'Chama',
               style: GoogleFonts.nunito(
-                fontSize: 20,
+                fontSize: 19,
                 fontWeight: FontWeight.w800,
                 color: darkGrayText,
               ),

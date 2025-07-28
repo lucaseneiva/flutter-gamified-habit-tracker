@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false, // Mudei para false para produção
-      title: 'Firy Streak',
+      title: 'Chaminhas',
       theme: AppTheme.lightTheme,
       home:
           const DecisionScreen(),
