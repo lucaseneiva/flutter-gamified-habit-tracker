@@ -42,11 +42,11 @@ class PetState {
   // Isso vai nos ajudar a pegar a imagem SVG correta
   String get imagePath {
     if (isDead) return 'assets/dead.svg';
-	if (isJustFed) return 'assets/happy.svg';
+	// if (isJustFed) return 'assets/happy.svg';
 
     // Converte o enum para string: 'GrowthStage.baby' -> 'baby'
     final stageString = stage.toString().split('.').last;
-    final statusString = isFed ? 'fed' : 'not_fed';
+    final statusString = isFed ? 'fed' : isJustFed ? 'just_fed' : 'not_fed';
 
     return 'assets/${stageString}_$statusString.svg';
   }
