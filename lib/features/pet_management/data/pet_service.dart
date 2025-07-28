@@ -141,4 +141,20 @@ class PetService {
         .doc(petId);
     await docRef.update({'streakCount': 0});
   }
+
+  Future<void> deletePet(String petId) async {
+    if (_currentUser == null) return;
+
+    try {
+      final docRef = _firestore
+          .collection('users')
+          .doc(_currentUser!.uid)
+          .collection('pets')
+          .doc(petId);
+
+      await docRef.delete();
+    } catch (e) {
+      throw Exception('Erro ao excluir pet: $e');
+    }
+  }
 }

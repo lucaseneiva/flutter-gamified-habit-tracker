@@ -1,10 +1,10 @@
 import 'package:firy_streak/core/theme/app_colors.dart';
+import 'package:firy_streak/features/auth/application/auth_providers.dart';
 import 'package:firy_streak/features/pet_management/application/pet_providers.dart';
 import 'package:firy_streak/features/pet_management/data/pet_service.dart';
 import 'package:firy_streak/features/pet_management/domain/pet_model.dart';
 import 'package:firy_streak/features/pet_management/presentation/widgets/habit_name_card.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'widgets/streak_card.dart';
 import 'create_habit_screen.dart';
 import 'package:firy_streak/features/pet_management/presentation/widgets/pet_display.dart';
@@ -12,7 +12,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firy_streak/features/pet_management/presentation/widgets/speech_bubble.dart';
 import 'package:firy_streak/features/quotes/application/quote_provider.dart';
 import 'package:firy_streak/core/utils/confirmation_dialog.dart';
-import 'create_habit_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -99,23 +98,112 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         child: AppBar(
           title: const Text("Meu Firy"),
           actions: [
-            IconButton(
-              icon: const Icon(Icons.logout),
-              tooltip: 'Sair',
-              onPressed: () => showDialog(
-                context: context,
-                builder: (context) => ConfirmationDialog(
-                  title: "Logout",
-                  message: "Tem certeza que quer fazer o Logout?",
-                  onConfirmation: () async {
-                    await FirebaseAuth.instance.signOut();
-                    Navigator.of(context).pop();
-                  },
+            PopupMenuButton<String>(
+              icon: const Icon(Icons.menu), // Ícone do hambúrger
+              onSelected: (String value) {
+                switch (value) {
+                  case 'delete_pet':
+                    _showDeletePetDialog();
+                    break;
+                  case 'logout':
+                    _showLogoutDialog();
+                    break;
+                }
+              },
+              itemBuilder: (BuildContext context) => [
+                const PopupMenuItem<String>(
+                  value: 'delete_pet',
+                  child: Row(
+                    children: [
+                      Icon(Icons.delete, color: Colors.red),
+                      SizedBox(width: 8),
+                      Text('Excluir pet atual'),
+                    ],
+                  ),
                 ),
-              ),
+                const PopupMenuItem<String>(
+                  value: 'logout',
+                  child: Row(
+                    children: [
+                      Icon(Icons.logout),
+                      SizedBox(width: 8),
+                      Text('Sair'),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _showDeletePetDialog() {
+    final petDataAsync = ref.read(petDataStreamProvider);
+
+    petDataAsync.whenData((pets) {
+      if (pets.isEmpty) return;
+
+      final currentPet = pets[_currentPetIndex];
+
+      showDialog(
+        context: context,
+        builder: (context) => ConfirmationDialog(
+          title: "Excluir Pet",
+          message:
+              "Tem certeza que deseja excluir o pet '${currentPet.habitName}'? Esta ação não pode ser desfeita.",
+          onConfirmation: () async {
+            // Salva referências antes das operações async
+            final navigator = Navigator.of(context);
+            final scaffoldMessenger = ScaffoldMessenger.of(context);
+
+            try {
+              final PetService petService = ref.read(petServiceProvider);
+              await petService.deletePet(currentPet.petid!);
+
+              // Mostra mensagem de sucesso usando a referência salva
+              scaffoldMessenger.showSnackBar(
+                SnackBar(
+                  content: Text(
+                    'Pet "${currentPet.habitName}" excluído com sucesso!',
+                  ),
+                  backgroundColor: Colors.green,
+                ),
+              );
+            } catch (e) {
+              // Usa a referência salva do navigator
+              navigator.pop();
+
+              // Mostra mensagem de erro usando a referência salva
+              scaffoldMessenger.showSnackBar(
+                SnackBar(
+                  content: Text('Erro ao excluir pet: $e'),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
+          },
+        ),
+      );
+    });
+  }
+
+  void _showLogoutDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => ConfirmationDialog(
+        title: "Logout",
+        message: "Tem certeza que quer fazer o Logout?",
+        onConfirmation: () async {
+          final authService = ref.read(authServiceProvider);
+          try {
+          await authService.signOut();
+
+          } catch (e) {
+            print("ERRO");  
+          }
+        },
       ),
     );
   }
