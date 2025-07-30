@@ -123,3 +123,7 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+flutter_rename_app_plus3:
+  application_name: "Chaminhas"
+  bundle_id: "com.lucaseneiva.chaminhas"
+  ios_bundle_name: "com.lucaseneiva.chaminhas"

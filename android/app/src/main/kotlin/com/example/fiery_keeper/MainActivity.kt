@@ -1,4 +1,4 @@
-package com.example.firy_streak
+package com.lucasenevia.chaminhas
 
 import io.flutter.embedding.android.FlutterActivity
 
