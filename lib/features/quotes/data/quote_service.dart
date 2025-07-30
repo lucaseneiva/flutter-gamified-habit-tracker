@@ -17,8 +17,6 @@ class QuoteService {
 
       }
     } catch (e) {
-      print('Erro ao buscar frases: $e');
-
       return 'Você é mais forte do que imagina!';
     }
     

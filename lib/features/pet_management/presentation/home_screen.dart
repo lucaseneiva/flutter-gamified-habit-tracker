@@ -200,7 +200,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           try {
             await authService.signOut();
           } catch (e) {
-            print("ERRO");
+            // fazer depois
           }
         },
       ),

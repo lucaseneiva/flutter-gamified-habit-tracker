@@ -1,11 +1,10 @@
-// lib/login_screen.dart
 import 'package:firy_streak/features/auth/application/auth_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'register_screen.dart'; // Para navegar para a tela de registro
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -25,9 +24,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     ref.read(authIsLoadingProvider.notifier).state = true;
 
     final authService = ref.read(authServiceProvider);
+    
     try {
       
-      authService.signIn(_emailController.text, _passwordController.text);
+      await authService.signIn(_emailController.text, _passwordController.text);
       
     } on FirebaseAuthException catch (e) {
       String message;
