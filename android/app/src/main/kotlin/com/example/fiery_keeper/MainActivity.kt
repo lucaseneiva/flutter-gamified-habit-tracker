@@ -1,4 +1,4 @@
-package com.lucasenevia.chaminhas
+package com.lucaseneiva.chaminhas
 
 import io.flutter.embedding.android.FlutterActivity
 

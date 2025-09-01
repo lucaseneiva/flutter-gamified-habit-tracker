@@ -96,6 +96,7 @@ class AppTheme {
       //   borderRadius: BorderRadius.circular(16.0),
       // ),
     ),
+    
     // NOVO: Tema do PopupMenu
     popupMenuTheme: PopupMenuThemeData(
       color: AppColors.background, // Cor de fundo do menu
@@ -105,7 +106,8 @@ class AppTheme {
         side: BorderSide(
           color: AppColors.lightGrey,
           width: 2.0,
-        ), // Sua borda personalizada
+        ),
+         // Sua borda personalizada
       ),
       textStyle: GoogleFonts.nunitoSans(
         // Estilo do texto para os itens do menu
