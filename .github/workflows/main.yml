@@ -1,11 +1,13 @@
-# .github/workflows/deploy.yml
-
 name: Deploy Firy Streak Web App
 
 on:
   push:
     branches:
-      - main # Mude para seu branch de teste para testar
+      - main
+    paths-ignore:
+      - 'README.md'
+      - 'docs/**'
+      - '.github/**'
 
 jobs:
   build_and_deploy:
