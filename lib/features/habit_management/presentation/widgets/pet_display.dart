@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:firy_streak/features/pet_management/domain/pet_state.dart';
+import 'package:firy_streak/features/habit_management/domain/pet_state.dart';
 import 'package:firy_streak/core/utils/confirmation_dialog.dart';
 
 class PetDisplay extends StatelessWidget {

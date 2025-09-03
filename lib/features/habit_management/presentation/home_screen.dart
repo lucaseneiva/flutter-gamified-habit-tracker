@@ -1,15 +1,15 @@
 import 'package:firy_streak/core/theme/app_colors.dart';
 import 'package:firy_streak/features/auth/application/auth_providers.dart';
-import 'package:firy_streak/features/pet_management/application/pet_providers.dart';
-import 'package:firy_streak/features/pet_management/data/pet_service.dart';
-import 'package:firy_streak/features/pet_management/domain/pet_model.dart';
-import 'package:firy_streak/features/pet_management/presentation/widgets/habit_name_card.dart';
+import 'package:firy_streak/features/habit_management/application/pet_providers.dart';
+import 'package:firy_streak/features/habit_management/data/pet_service.dart';
+import 'package:firy_streak/features/habit_management/domain/pet_model.dart';
+import 'package:firy_streak/features/habit_management/presentation/widgets/habit_name_card.dart';
 import 'package:flutter/material.dart';
 import 'widgets/streak_card.dart';
 import 'create_habit_screen.dart';
-import 'package:firy_streak/features/pet_management/presentation/widgets/pet_display.dart';
+import 'package:firy_streak/features/habit_management/presentation/widgets/pet_display.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:firy_streak/features/pet_management/presentation/widgets/speech_bubble.dart';
+import 'package:firy_streak/features/habit_management/presentation/widgets/speech_bubble.dart';
 import 'package:firy_streak/features/quotes/application/quote_provider.dart';
 import 'package:firy_streak/core/utils/confirmation_dialog.dart';
 

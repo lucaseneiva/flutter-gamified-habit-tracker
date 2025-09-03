@@ -2,7 +2,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firy_streak/features/auth/presentation/login_screen.dart';
-import 'package:firy_streak/features/pet_management/presentation/home_screen.dart';
+import 'package:firy_streak/features/habit_management/presentation/home_screen.dart';
 
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});

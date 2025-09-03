@@ -1,5 +1,5 @@
-import 'package:firy_streak/features/pet_management/application/pet_providers.dart';
-import 'package:firy_streak/features/pet_management/data/pet_service.dart';
+import 'package:firy_streak/features/habit_management/application/pet_providers.dart';
+import 'package:firy_streak/features/habit_management/data/pet_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
