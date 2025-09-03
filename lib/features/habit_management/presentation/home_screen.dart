@@ -2,7 +2,7 @@ import 'package:firy_streak/core/theme/app_colors.dart';
 import 'package:firy_streak/features/auth/application/auth_providers.dart';
 import 'package:firy_streak/features/habit_management/application/pet_providers.dart';
 import 'package:firy_streak/features/habit_management/data/pet_service.dart';
-import 'package:firy_streak/features/habit_management/domain/pet_model.dart';
+import 'package:firy_streak/features/habit_management/domain/habit_entity.dart';
 import 'package:firy_streak/features/habit_management/presentation/widgets/habit_name_card.dart';
 import 'package:flutter/material.dart';
 import 'widgets/streak_card.dart';

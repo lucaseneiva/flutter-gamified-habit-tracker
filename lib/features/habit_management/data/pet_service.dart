@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:clock/clock.dart'; // Importe o pacote clock
 import 'package:firy_streak/features/habit_management/domain/pet_state.dart';
-import 'package:firy_streak/features/habit_management/domain/pet_model.dart';
+import 'package:firy_streak/features/habit_management/domain/habit_entity.dart';
 
 class PetService {
   final FirebaseFirestore _firestore;
