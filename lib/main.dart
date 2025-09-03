@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'core/utils/decision_screen.dart';
-import 'core/theme/app_theme.dart';
+import 'presentation/core/utils/decision_screen.dart';
+import 'presentation/core/app_theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:firy_streak/core/utils/mobile_frame_wrapper.dart';
+import 'package:firy_streak/presentation/core/utils/mobile_frame_wrapper.dart';
 import 'package:flutter/foundation.dart';
 
 void main() async {
