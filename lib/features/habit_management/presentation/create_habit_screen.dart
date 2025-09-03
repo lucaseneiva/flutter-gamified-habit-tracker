@@ -1,4 +1,4 @@
-import 'package:firy_streak/features/habit_management/application/pet_providers.dart';
+import 'package:firy_streak/features/habit_management/application/habit_providers.dart';
 import 'package:firy_streak/features/habit_management/data/habit_repository_impl.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
