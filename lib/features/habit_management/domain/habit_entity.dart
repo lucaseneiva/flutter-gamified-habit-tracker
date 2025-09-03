@@ -27,7 +27,6 @@ class HabitEntity extends Equatable {
     );
   }
 
-  /// Converte um objeto HabitEntity em um Map para ser salvo no Firestore.
   Map<String, dynamic> toJson() {
     return {
       'streakCount': streakCount,
@@ -35,8 +34,7 @@ class HabitEntity extends Equatable {
       'habitName': habitName,
     };
   }
-
-  // Necessário para o Equatable
+  
   @override
   List<Object?> get props => [
     habitId,

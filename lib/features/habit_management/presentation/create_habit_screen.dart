@@ -1,5 +1,5 @@
 import 'package:firy_streak/features/habit_management/application/pet_providers.dart';
-import 'package:firy_streak/features/habit_management/data/pet_service.dart';
+import 'package:firy_streak/features/habit_management/data/habit_repository_impl.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -29,9 +29,9 @@ class _CreateHabitScreenState extends ConsumerState<CreateHabitScreen> {
       setState(() => _isLoading = true);
 
       try {
-        final PetService petService = ref.read(petServiceProvider);
+        final HabitRepositoryImpl habitRepository = ref.read(habitRepositoryImplProvider);
 
-        await petService.createPet(_selectedHabit.toString());
+        await habitRepository.createHabit(_selectedHabit.toString());
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(

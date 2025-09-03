@@ -5,12 +5,12 @@ import 'package:firy_streak/core/utils/confirmation_dialog.dart';
 
 class PetDisplay extends StatelessWidget {
   final PetState petState;
-  final VoidCallback onFeedPet;
+  final VoidCallback oncheckIn;
 
   const PetDisplay({
     super.key,
     required this.petState,
-    required this.onFeedPet,
+    required this.oncheckIn,
   });
 
   @override
@@ -36,7 +36,7 @@ class PetDisplay extends StatelessWidget {
                           ? "Quer mesmo reviver seu companheiro?"
                           : "Vai dar comida pra Chaminha agora?",
                       title: petState.isDead ? "Reviver" : "Alimentar",
-                      onConfirmation: onFeedPet,
+                      onConfirmation: oncheckIn,
                     ),
                   ),
             child: Text(petState.isDead ? "Reviver a Chaminha" : "Alimentar"),

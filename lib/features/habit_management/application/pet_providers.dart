@@ -3,10 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firy_streak/features/habit_management/domain/habit_entity.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../data/pet_service.dart';
+import '../data/habit_repository_impl.dart';
 
-final petServiceProvider = Provider<PetService>((ref) {
-  return PetService(
+final habitRepositoryImplProvider = Provider<HabitRepositoryImpl>((ref) {
+  return HabitRepositoryImpl(
     firestore: FirebaseFirestore.instance,
     auth: FirebaseAuth.instance,
     clock: const Clock(),
@@ -14,7 +14,7 @@ final petServiceProvider = Provider<PetService>((ref) {
 });
 
 final petDataStreamProvider = StreamProvider.autoDispose<List<HabitEntity>>((ref) {
-  final petService = ref.watch(petServiceProvider);
+  final habitRepositoryImpl = ref.watch(habitRepositoryImplProvider);
 
-  return petService.petDataStream;
+  return habitRepositoryImpl.habitDataStream;
 });

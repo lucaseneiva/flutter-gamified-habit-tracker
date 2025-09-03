@@ -1,7 +1,7 @@
 import 'package:firy_streak/core/theme/app_colors.dart';
 import 'package:firy_streak/features/auth/application/auth_providers.dart';
 import 'package:firy_streak/features/habit_management/application/pet_providers.dart';
-import 'package:firy_streak/features/habit_management/data/pet_service.dart';
+import 'package:firy_streak/features/habit_management/data/habit_repository_impl.dart';
 import 'package:firy_streak/features/habit_management/domain/habit_entity.dart';
 import 'package:firy_streak/features/habit_management/presentation/widgets/habit_name_card.dart';
 import 'package:flutter/material.dart';
@@ -159,8 +159,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             final scaffoldMessenger = ScaffoldMessenger.of(context);
 
             try {
-              final PetService petService = ref.read(petServiceProvider);
-              await petService.deletePet(currentPet.habitId!);
+              final HabitRepositoryImpl habitRepository = ref.read(habitRepositoryImplProvider);
+              await habitRepository.deleteHabit(currentPet.habitId!);
 
               // Mostra mensagem de sucesso usando a referência salva
               scaffoldMessenger.showSnackBar(
@@ -256,13 +256,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Widget _buildPetPage(HabitEntity pet) {
-    final PetService petService = ref.read(petServiceProvider);
-    var currentState = petService.determineCurrentFiryState(pet);
+    final HabitRepositoryImpl habitRepository = ref.read(habitRepositoryImplProvider);
+    var currentState = habitRepository.determineCurrentPetState(pet);
 
     // Lógica para resetar pet morto
     if (currentState.isDead) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        petService.resetPetIfDead(pet.habitId!);
+        habitRepository.resetHabit(pet.habitId!);
       });
     }
 
@@ -290,8 +290,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           speechBubbleWidget,
           PetDisplay(
             petState: currentState,
-            onFeedPet: () {
-              petService.feedPet(pet.habitId);
+            oncheckIn: () {
+              habitRepository.checkIn(pet.habitId);
             },
           ),
           Spacer(flex: 1),

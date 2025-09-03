@@ -1,16 +1,16 @@
-// lib/pet_service.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:clock/clock.dart'; // Importe o pacote clock
+import 'package:clock/clock.dart';
 import 'package:firy_streak/features/habit_management/domain/pet_state.dart';
 import 'package:firy_streak/features/habit_management/domain/habit_entity.dart';
+import 'package:firy_streak/features/habit_management/domain/habit_repository.dart';
 
-class PetService {
+class HabitRepositoryImpl implements HabitRepository{
   final FirebaseFirestore _firestore;
   final FirebaseAuth _auth;
-  final Clock _clock; // Injetando o relógio!
+  final Clock _clock;
 
-  PetService({
+  HabitRepositoryImpl({
     required FirebaseFirestore firestore,
     required FirebaseAuth auth,
     required Clock clock,
@@ -20,8 +20,8 @@ class PetService {
 
   User? get _currentUser => _auth.currentUser;
 
-  // Stream que a UI vai ouvir para obter os dados do usuário
-  Stream<List<HabitEntity>> get petDataStream {
+  @override
+  Stream<List<HabitEntity>> get habitDataStream {
     if (_auth.currentUser == null) {
       return Stream.empty();
     }
@@ -38,13 +38,15 @@ class PetService {
         });
   }
 
+  @override
   Future<void> setHabit(String habitName) async {
     if (_currentUser == null) return;
     final docRef = _firestore.collection('users').doc(_currentUser!.uid);
     await docRef.update({'habitName': habitName});
   }
 
-  Future<void> feedPet(habitId) async {
+  @override
+  Future<void> checkIn(habitId) async {
     if (_currentUser == null) return;
 
     final docRef = _firestore
@@ -59,7 +61,8 @@ class PetService {
     });
   }
 
-  Future<void> createPet(String habitName) async {
+  @override
+  Future<void> createHabit(String habitName) async {
     if (_currentUser == null) return;
 
     final userId = _auth.currentUser!.uid;
@@ -74,38 +77,34 @@ class PetService {
         .collection('users')
         .doc(userId)
         .collection('pets')
-        .doc(); // gera ID automático
+        .doc();
 
     await petRef.set(newPetDoc.toJson());
   }
 
-  PetState determineCurrentFiryState(HabitEntity HabitEntity) {
-    if (HabitEntity.lastCheckInTimestamp == null) {
+  @override
+  PetState determineCurrentPetState(HabitEntity habitEntity) {
+    if (habitEntity.lastCheckInTimestamp == null) {
       return PetState(GrowthStage.baby, FeedingStatus.notFed);
     }
 
-    final lastFedDate = HabitEntity.lastCheckInTimestamp!.toDate();
+    final lastFedDate = habitEntity.lastCheckInTimestamp!.toDate();
     final now = _clock.now();
 
-    // Calcula o início do dia da última alimentação (00:00:00)
     final lastFedDayStart = DateTime(
       lastFedDate.year,
       lastFedDate.month,
       lastFedDate.day,
     );
 
-    // Calcula o início do dia atual (00:00:00)
     final todayStart = DateTime(now.year, now.month, now.day);
 
-    // Calcula a diferença em dias entre os inícios dos dias
     final daysDifference = todayStart.difference(lastFedDayStart).inDays;
 
     if (daysDifference >= 2) {
-      // Passaram-se 2 dias ou mais desde a última alimentação - pet morreu
       return PetState(GrowthStage.dead);
     }
 
-    // Determina o status da alimentação baseado nos dias
     late FeedingStatus feedingStatus;
     if (now.difference(lastFedDate).inSeconds <= 10) {
       feedingStatus = FeedingStatus.justFed;
@@ -115,14 +114,12 @@ class PetService {
       feedingStatus = FeedingStatus.fed;
     }
 
-    // Determina o estágio de crescimento com base na streak
     GrowthStage growthStage;
-    // Streak thresholds: 1-9 (Baby), 10-29 (Child), 30-59 (Teen), 60+ (Adult)
-    if (HabitEntity.streakCount! >= 60) {
+    if (habitEntity.streakCount! >= 60) {
       growthStage = GrowthStage.adult;
-    } else if (HabitEntity.streakCount! >= 30) {
+    } else if (habitEntity.streakCount! >= 30) {
       growthStage = GrowthStage.teen;
-    } else if (HabitEntity.streakCount! >= 10) {
+    } else if (habitEntity.streakCount! >= 10) {
       growthStage = GrowthStage.child;
     } else {
       growthStage = GrowthStage.baby;
@@ -131,8 +128,8 @@ class PetService {
     return PetState(growthStage, feedingStatus);
   }
 
-  // Lógica de reset do pet
-  Future<void> resetPetIfDead(String habitId) async {
+  @override
+  Future<void> resetHabit(String habitId) async {
     if (_currentUser == null) return;
     final docRef = _firestore
         .collection('users')
@@ -142,7 +139,8 @@ class PetService {
     await docRef.update({'streakCount': 0});
   }
 
-  Future<void> deletePet(String habitId) async {
+  @override
+  Future<void> deleteHabit(String habitId) async {
     if (_currentUser == null) return;
 
     try {
