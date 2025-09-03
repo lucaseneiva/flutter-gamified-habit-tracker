@@ -1,39 +1,37 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
-class PetModel extends Equatable {
-  final String? petid;
+class HabitEntity extends Equatable {
+  final String? habitId;
   final int? streakCount;
-  final Timestamp? lastFedTimestamp;
+  final Timestamp? lastCheckInTimestamp;
   final String? habitName;
 
-  const PetModel({
+  const HabitEntity({
     this.streakCount,
-    this.petid,
-    this.lastFedTimestamp,
+    this.habitId,
+    this.lastCheckInTimestamp,
     this.habitName,
   });
 
-  // Um construtor "vazio"
-  factory PetModel.empty() {
-    return const PetModel(streakCount: 0);
+  factory HabitEntity.empty() {
+    return const HabitEntity(streakCount: 0);
   }
 
-  /// Converte um documento do Firestore (Map) em um objeto PetModel.
-  factory PetModel.fromJson(Map<String, dynamic> json, String docId) {
-    return PetModel(
-      petid: docId,
+  factory HabitEntity.fromJson(Map<String, dynamic> json, String docId) {
+    return HabitEntity(
+      habitId: docId,
       streakCount: json['streakCount'] as int?,
-      lastFedTimestamp: json['lastFedTimestamp'] as Timestamp?,
+      lastCheckInTimestamp: json['lastCheckInTimestamp'] as Timestamp?,
       habitName: json['habitName'] as String?,
     );
   }
 
-  /// Converte um objeto PetModel em um Map para ser salvo no Firestore.
+  /// Converte um objeto HabitEntity em um Map para ser salvo no Firestore.
   Map<String, dynamic> toJson() {
     return {
       'streakCount': streakCount,
-      'lastFedTimestamp': lastFedTimestamp,
+      'lastCheckInTimestamp': lastCheckInTimestamp,
       'habitName': habitName,
     };
   }
@@ -41,9 +39,9 @@ class PetModel extends Equatable {
   // Necessário para o Equatable
   @override
   List<Object?> get props => [
-    petid,
+    habitId,
     streakCount,
-    lastFedTimestamp,
+    lastCheckInTimestamp,
     habitName,
   ];
 }

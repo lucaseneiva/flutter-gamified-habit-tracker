@@ -160,7 +160,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
             try {
               final PetService petService = ref.read(petServiceProvider);
-              await petService.deletePet(currentPet.petid!);
+              await petService.deletePet(currentPet.habitId!);
 
               // Mostra mensagem de sucesso usando a referência salva
               scaffoldMessenger.showSnackBar(
@@ -247,7 +247,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget _buildSinglePetScreen(PetModel pet) {
+  Widget _buildSinglePetScreen(HabitEntity pet) {
     return Scaffold(
       appBar: _buildAppBar(),
       body: _buildPetPage(pet),
@@ -255,14 +255,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget _buildPetPage(PetModel pet) {
+  Widget _buildPetPage(HabitEntity pet) {
     final PetService petService = ref.read(petServiceProvider);
     var currentState = petService.determineCurrentFiryState(pet);
 
     // Lógica para resetar pet morto
     if (currentState.isDead) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        petService.resetPetIfDead(pet.petid!);
+        petService.resetPetIfDead(pet.habitId!);
       });
     }
 
@@ -291,7 +291,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           PetDisplay(
             petState: currentState,
             onFeedPet: () {
-              petService.feedPet(pet.petid);
+              petService.feedPet(pet.habitId);
             },
           ),
           Spacer(flex: 1),

@@ -21,7 +21,7 @@ class PetService {
   User? get _currentUser => _auth.currentUser;
 
   // Stream que a UI vai ouvir para obter os dados do usuário
-  Stream<List<PetModel>> get petDataStream {
+  Stream<List<HabitEntity>> get petDataStream {
     if (_auth.currentUser == null) {
       return Stream.empty();
     }
@@ -33,7 +33,7 @@ class PetService {
         .snapshots()
         .map((querySnapshot) {
           return querySnapshot.docs.map((doc) {
-            return PetModel.fromJson(doc.data(), doc.id);
+            return HabitEntity.fromJson(doc.data(), doc.id);
           }).toList();
         });
   }
@@ -44,17 +44,17 @@ class PetService {
     await docRef.update({'habitName': habitName});
   }
 
-  Future<void> feedPet(petId) async {
+  Future<void> feedPet(habitId) async {
     if (_currentUser == null) return;
 
     final docRef = _firestore
         .collection('users')
         .doc(_currentUser!.uid)
         .collection('pets')
-        .doc(petId);
+        .doc(habitId);
 
     await docRef.update({
-      'lastFedTimestamp': Timestamp.fromDate(_clock.now()),
+      'lastCheckInTimestamp': Timestamp.fromDate(_clock.now()),
       'streakCount': FieldValue.increment(1),
     });
   }
@@ -64,10 +64,10 @@ class PetService {
 
     final userId = _auth.currentUser!.uid;
 
-    final newPetDoc = PetModel(
+    final newPetDoc = HabitEntity(
       habitName: habitName,
       streakCount: 0,
-      lastFedTimestamp: null,
+      lastCheckInTimestamp: null,
     );
 
     final petRef = _firestore
@@ -79,12 +79,12 @@ class PetService {
     await petRef.set(newPetDoc.toJson());
   }
 
-  PetState determineCurrentFiryState(PetModel petModel) {
-    if (petModel.lastFedTimestamp == null) {
+  PetState determineCurrentFiryState(HabitEntity HabitEntity) {
+    if (HabitEntity.lastCheckInTimestamp == null) {
       return PetState(GrowthStage.baby, FeedingStatus.notFed);
     }
 
-    final lastFedDate = petModel.lastFedTimestamp!.toDate();
+    final lastFedDate = HabitEntity.lastCheckInTimestamp!.toDate();
     final now = _clock.now();
 
     // Calcula o início do dia da última alimentação (00:00:00)
@@ -118,11 +118,11 @@ class PetService {
     // Determina o estágio de crescimento com base na streak
     GrowthStage growthStage;
     // Streak thresholds: 1-9 (Baby), 10-29 (Child), 30-59 (Teen), 60+ (Adult)
-    if (petModel.streakCount! >= 60) {
+    if (HabitEntity.streakCount! >= 60) {
       growthStage = GrowthStage.adult;
-    } else if (petModel.streakCount! >= 30) {
+    } else if (HabitEntity.streakCount! >= 30) {
       growthStage = GrowthStage.teen;
-    } else if (petModel.streakCount! >= 10) {
+    } else if (HabitEntity.streakCount! >= 10) {
       growthStage = GrowthStage.child;
     } else {
       growthStage = GrowthStage.baby;
@@ -132,17 +132,17 @@ class PetService {
   }
 
   // Lógica de reset do pet
-  Future<void> resetPetIfDead(String petId) async {
+  Future<void> resetPetIfDead(String habitId) async {
     if (_currentUser == null) return;
     final docRef = _firestore
         .collection('users')
         .doc(_currentUser!.uid)
         .collection('pets')
-        .doc(petId);
+        .doc(habitId);
     await docRef.update({'streakCount': 0});
   }
 
-  Future<void> deletePet(String petId) async {
+  Future<void> deletePet(String habitId) async {
     if (_currentUser == null) return;
 
     try {
@@ -150,7 +150,7 @@ class PetService {
           .collection('users')
           .doc(_currentUser!.uid)
           .collection('pets')
-          .doc(petId);
+          .doc(habitId);
 
       await docRef.delete();
     } catch (e) {

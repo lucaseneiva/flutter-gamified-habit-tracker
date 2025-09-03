@@ -13,7 +13,7 @@ final petServiceProvider = Provider<PetService>((ref) {
   );
 });
 
-final petDataStreamProvider = StreamProvider.autoDispose<List<PetModel>>((ref) {
+final petDataStreamProvider = StreamProvider.autoDispose<List<HabitEntity>>((ref) {
   final petService = ref.watch(petServiceProvider);
 
   return petService.petDataStream;
