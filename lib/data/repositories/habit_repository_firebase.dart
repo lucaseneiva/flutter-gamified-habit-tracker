@@ -21,6 +21,35 @@ class HabitRepositoryImpl implements HabitRepository{
   User? get _currentUser => _auth.currentUser;
 
   @override
+  Future<HabitEntity?> getHabit(String habitId) async {
+    if (_currentUser == null) return null;
+
+    final doc = await _firestore
+        .collection('users')
+        .doc(_currentUser!.uid)
+        .collection('pets')
+        .doc(habitId)
+        .get();
+
+    if (!doc.exists) return null;
+
+    return HabitEntity.fromJson(doc.data()!, doc.id);
+  }
+
+  @override
+  Future<void> updateHabit(String habitId, Map<String, dynamic> updates) async {
+    if (_currentUser == null) return;
+
+    final docRef = _firestore
+        .collection('users')
+        .doc(_currentUser!.uid)
+        .collection('pets')
+        .doc(habitId);
+
+    await docRef.update(updates);
+  }
+  
+  @override
   Stream<List<HabitEntity>> get habitDataStream {
     if (_auth.currentUser == null) {
       return Stream.empty();

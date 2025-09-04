@@ -1,7 +1,7 @@
 import 'package:firy_streak/presentation/core/app_colors.dart';
 import 'package:firy_streak/presentation/providers/auth_providers.dart';
 import 'package:firy_streak/presentation/providers/habit_providers.dart';
-import 'package:firy_streak/data/repositories/habit_repository_impl.dart';
+import 'package:firy_streak/data/repositories/habit_repository_firebase.dart';
 import 'package:firy_streak/domain/models/habit.dart';
 import 'package:firy_streak/presentation/habit_management/widgets/habit_name_card.dart';
 import 'package:flutter/material.dart';
@@ -159,7 +159,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             final scaffoldMessenger = ScaffoldMessenger.of(context);
 
             try {
-              final HabitRepositoryImpl habitRepository = ref.read(habitRepositoryImplProvider);
+              final HabitRepositoryImpl habitRepository = ref.read(
+                habitRepositoryImplProvider,
+              );
               await habitRepository.deleteHabit(currentPet.habitId!);
 
               // Mostra mensagem de sucesso usando a referência salva
@@ -256,7 +258,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Widget _buildPetPage(HabitEntity pet) {
-    final HabitRepositoryImpl habitRepository = ref.read(habitRepositoryImplProvider);
+    final HabitRepositoryImpl habitRepository = ref.read(
+      habitRepositoryImplProvider,
+    );
     var currentState = habitRepository.determineCurrentPetState(pet);
 
     // Lógica para resetar pet morto
@@ -290,8 +294,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           speechBubbleWidget,
           PetDisplay(
             petState: currentState,
-            oncheckIn: () {
-              habitRepository.checkIn(pet.habitId);
+            onCheckIn: () {
+              final habitId = pet.habitId ?? '';
+              if (habitId.isNotEmpty) {
+                ref.read(checkInUseCaseProvider).call(habitId);
+              } else {
+                print('❌ Erro: habitId está vazio!');
+              }
             },
           ),
           Spacer(flex: 1),

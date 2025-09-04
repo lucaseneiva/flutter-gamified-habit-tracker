@@ -1,5 +1,5 @@
 import 'package:firy_streak/presentation/providers/habit_providers.dart';
-import 'package:firy_streak/data/repositories/habit_repository_impl.dart';
+import 'package:firy_streak/data/repositories/habit_repository_firebase.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
