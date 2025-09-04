@@ -1,25 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
-class HabitEntity extends Equatable {
+class Habit extends Equatable {
   final String? habitId;
   final int? streakCount;
   final Timestamp? lastCheckInTimestamp;
   final String? habitName;
 
-  const HabitEntity({
+  const Habit({
     this.streakCount,
     this.habitId,
     this.lastCheckInTimestamp,
     this.habitName,
   });
 
-  factory HabitEntity.empty() {
-    return const HabitEntity(streakCount: 0);
+  factory Habit.empty() {
+    return const Habit(streakCount: 0);
   }
 
-  factory HabitEntity.fromJson(Map<String, dynamic> json, String docId) {
-    return HabitEntity(
+  factory Habit.fromJson(Map<String, dynamic> json, String docId) {
+    return Habit(
       habitId: docId,
       streakCount: json['streakCount'] as int?,
       lastCheckInTimestamp: json['lastCheckInTimestamp'] as Timestamp?,

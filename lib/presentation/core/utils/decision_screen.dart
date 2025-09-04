@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:firy_streak/presentation/habit_management/onboarding_screen.dart';
+import 'package:firy_streak/presentation/habit/onboarding_screen.dart';
 import 'package:firy_streak/presentation/core/auth_gate.dart';
 
 class DecisionScreen extends StatefulWidget {

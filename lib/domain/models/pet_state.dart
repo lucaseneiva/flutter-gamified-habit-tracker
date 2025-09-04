@@ -1,39 +1,13 @@
-enum GrowthStage {
-  egg,
-  baby,
-  child,
-  teen,
-  adult,
-  dead;
-
-  static GrowthStage fromString(String? statusString) {
-    switch (statusString) {
-      case 'egg':
-        return GrowthStage.egg;
-      case 'dead':
-        return GrowthStage.dead;
-      // Adicione outros casos se você salvar outros estágios explicitamente
-      default:
-        // Se a string for nula ou desconhecida, qual é o padrão?
-        // Talvez aqui a gente lance um erro, ou retorne um padrão.
-        // Por enquanto, vamos assumir que não deveria acontecer para um pet ativo.
-        // Vamos deixar a lógica de cálculo cuidar disso.
-        // A rigor, o default aqui seria um erro.
-        return GrowthStage.baby; // Um fallback seguro, mas imperfeito.
-    }
-  }
-}
-
+enum GrowthStage { baby, child, teen, adult, dead }
 enum FeedingStatus { fed, notFed, justFed }
 
 class PetState {
   final GrowthStage stage;
-  final FeedingStatus? status; // Pode ser nulo para EGG e DEAD
+  final FeedingStatus? status;
 
-  // Construtor
-  PetState(this.stage, [this.status]); // O status é opcional
 
-  // Getters para facilitar a vida!
+  PetState(this.stage, [this.status]);
+
   bool get isFed => status == FeedingStatus.fed;
   bool get isHungry => status == FeedingStatus.notFed;
   bool get isDead => stage == GrowthStage.dead;
@@ -42,11 +16,15 @@ class PetState {
   // Isso vai nos ajudar a pegar a imagem SVG correta
   String get imagePath {
     if (isDead) return 'assets/dead.svg';
-	// if (isJustFed) return 'assets/happy.svg';
+    // if (isJustFed) return 'assets/happy.svg';
 
     // Converte o enum para string: 'GrowthStage.baby' -> 'baby'
     final stageString = stage.toString().split('.').last;
-    final statusString = isFed ? 'fed' : isJustFed ? 'just_fed' : 'not_fed';
+    final statusString = isFed
+        ? 'fed'
+        : isJustFed
+        ? 'just_fed'
+        : 'not_fed';
 
     return 'assets/${stageString}_$statusString.svg';
   }

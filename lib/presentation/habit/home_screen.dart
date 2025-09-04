@@ -3,13 +3,13 @@ import 'package:firy_streak/presentation/providers/auth_providers.dart';
 import 'package:firy_streak/presentation/providers/habit_providers.dart';
 import 'package:firy_streak/data/repositories/habit_repository_firebase.dart';
 import 'package:firy_streak/domain/models/habit.dart';
-import 'package:firy_streak/presentation/habit_management/widgets/habit_name_card.dart';
+import 'package:firy_streak/presentation/habit/widgets/habit_name_card.dart';
 import 'package:flutter/material.dart';
 import 'widgets/streak_card.dart';
 import 'create_habit_screen.dart';
-import 'package:firy_streak/presentation/habit_management/widgets/pet_display.dart';
+import 'package:firy_streak/presentation/habit/widgets/pet_display.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:firy_streak/presentation/habit_management/widgets/speech_bubble.dart';
+import 'package:firy_streak/presentation/habit/widgets/speech_bubble.dart';
 import 'package:firy_streak/presentation/providers/quote_provider.dart';
 import 'package:firy_streak/presentation/core/utils/confirmation_dialog.dart';
 
@@ -249,7 +249,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget _buildSinglePetScreen(HabitEntity pet) {
+  Widget _buildSinglePetScreen(Habit pet) {
     return Scaffold(
       appBar: _buildAppBar(),
       body: _buildPetPage(pet),
@@ -257,11 +257,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget _buildPetPage(HabitEntity pet) {
+  Widget _buildPetPage(Habit pet) {
     final HabitRepositoryImpl habitRepository = ref.read(
       habitRepositoryImplProvider,
     );
-    var currentState = habitRepository.determineCurrentPetState(pet);
+    final getPetState = ref.read(getPetStateUseCaseProvider);
+    var currentState = getPetState.execute(pet);
 
     // Lógica para resetar pet morto
     if (currentState.isDead) {
