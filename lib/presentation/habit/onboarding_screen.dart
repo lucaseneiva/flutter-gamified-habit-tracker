@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:firy_streak/presentation/providers/shared_preferences_provider.dart';
+import 'package:firy_streak/presentation/providers/onboarding_providers.dart';
 
 class OnboardingItem {
   final String title;
@@ -108,14 +108,6 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     );
   }
 
-  Future<void> _finishOnboarding() async {
-    final prefs = await ref.read(sharedPreferencesProvider.future);
-    
-    await prefs.setBool('onboarding_complete', true);
-
-    ref.invalidate(sharedPreferencesProvider);
-
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -165,7 +157,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       ),
                       onPressed: () {
                         if (_currentPage == _onboardingPages.length - 1) {
-                          _finishOnboarding();
+                          ref.read(onboardingProvider.notifier).completeOnboarding();
                         } else {
                           _pageController.nextPage(
                             duration: const Duration(milliseconds: 400),

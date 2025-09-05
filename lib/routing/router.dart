@@ -9,22 +9,20 @@ import 'package:firy_streak/presentation/auth/register_screen.dart';
 import 'package:firy_streak/presentation/habit/home_screen.dart';
 import 'package:firy_streak/presentation/habit/create_habit_screen.dart';
 import 'package:firy_streak/presentation/habit/onboarding_screen.dart';
-import 'package:firy_streak/presentation/providers/shared_preferences_provider.dart';
+import 'package:firy_streak/presentation/providers/onboarding_providers.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authStateChangesProvider);
-  final sharedPrefs = ref.watch(sharedPreferencesProvider);
-  
+  final isOnboardingComplete = ref.watch(onboardingProvider);
+
   return GoRouter(
     initialLocation: AppRoutes.home,
     debugLogDiagnostics: true,
 
     redirect: (BuildContext context, GoRouterState state) {
-      if (authState.isLoading || sharedPrefs.isLoading) return null;
+      if (authState.isLoading) return null;
       if (authState.hasError) return null;
 
-      final isOnboardingComplete =
-          sharedPrefs.asData?.value.getBool('onboarding_complete') ?? false;
       final user = authState.value;
       final isLoggedIn = user != null;
 
@@ -34,7 +32,6 @@ final routerProvider = Provider<GoRouter>((ref) {
       final isOnAuthRoute =
           currentLocation == AppRoutes.login ||
           currentLocation == AppRoutes.register;
-      final isOnHomeRoute = currentLocation == AppRoutes.home;
 
       if (!isOnboardingComplete) {
         if (!isOnOnboardingRoute) {
