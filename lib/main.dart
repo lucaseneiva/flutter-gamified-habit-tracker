@@ -1,7 +1,7 @@
+import 'package:firy_streak/routing/router.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'presentation/core/utils/decision_screen.dart';
 import 'presentation/core/app_theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firy_streak/presentation/core/utils/mobile_frame_wrapper.dart';
@@ -14,17 +14,18 @@ void main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
+
+    return MaterialApp.router(
+      routerConfig: router,
       debugShowCheckedModeBanner: false, // Mudei para false para produção
       title: 'Chaminhas',
       theme: AppTheme.lightTheme,
-      home:
-          const DecisionScreen(),
       builder: (context, child) {
         if (kIsWeb) {
           // 2. Se for web, verificamos o tamanho da tela.

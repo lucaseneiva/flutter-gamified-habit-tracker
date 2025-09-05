@@ -2,8 +2,9 @@ import 'package:firy_streak/presentation/providers/auth_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'register_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:firy_streak/routing/routes.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -100,11 +101,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     isLoading: _isLoading,
                     signIn: _signIn,
                     onNavigateToRegister: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const RegisterScreen(),
-                        ),
-                      );
+                      context.push(AppRoutes.register);
                     },
                   ),
                 ],

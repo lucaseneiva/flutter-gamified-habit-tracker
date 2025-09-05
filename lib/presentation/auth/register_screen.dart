@@ -2,6 +2,7 @@ import 'package:firy_streak/presentation/providers/auth_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
@@ -33,9 +34,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       );
 
       if (mounted && Navigator.canPop(context)) {
-        Navigator.of(
-          context,
-        ).pop(); // Volta para LoginScreen, que será substituída por HomeScreen
+        context.pop(); // Volta para LoginScreen, que será substituída por HomeScreen
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Cadastro realizado com sucesso!'),
@@ -113,9 +112,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     isLoading: _isLoading,
                     signUp: _signUp,
                     onNavigateToLogin: () {
-                      Navigator.of(
-                        context,
-                      ).pop(); // Voltar para a tela de Login
+                      context.pop(); // Voltar para a tela de Login
                     },
                   ),
                 ],

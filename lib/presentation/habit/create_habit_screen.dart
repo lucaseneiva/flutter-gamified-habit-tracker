@@ -1,6 +1,7 @@
 import 'package:firy_streak/presentation/providers/habit_providers.dart';
 import 'package:firy_streak/data/repositories/habit_repository_firebase.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -44,7 +45,7 @@ class _CreateHabitScreenState extends ConsumerState<CreateHabitScreen> {
       } finally {
         if (mounted) {
           setState(() => _isLoading = false);
-          Navigator.of(context).pop();
+          context.pop();
         }
       }
     }

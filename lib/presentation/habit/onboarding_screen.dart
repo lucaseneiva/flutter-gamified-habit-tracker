@@ -1,8 +1,9 @@
 // lib/onboarding_screen.dart
 
-import 'package:firy_streak/presentation/core/auth_gate.dart';
+import 'package:firy_streak/routing/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -119,9 +120,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     await prefs.setBool('onboarding_complete', true);
 
     if (mounted) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const AuthGate()),
-      );
+      context.go(AppRoutes.login);
     }
   }
 

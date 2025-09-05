@@ -12,6 +12,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firy_streak/presentation/habit/widgets/speech_bubble.dart';
 import 'package:firy_streak/presentation/providers/quote_provider.dart';
 import 'package:firy_streak/presentation/core/utils/confirmation_dialog.dart';
+import 'package:go_router/go_router.dart';
+import 'package:firy_streak/routing/routes.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -353,10 +355,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget _buildFloatingActionButton() {
     return FloatingActionButton(
       onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => CreateHabitScreen()),
-        );
+        context.push(AppRoutes.createHabit);
       },
       child: const Icon(Icons.add),
     );
