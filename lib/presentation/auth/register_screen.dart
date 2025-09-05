@@ -15,16 +15,19 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
 
   Future<void> _signUp() async {
     if (!_formKey.currentState!.validate()) return;
 
-    ref.read(authIsLoadingProvider.notifier).state = true;
+    setState(() {
+      _isLoading = true;
+    });
 
-    final authService = ref.read(authServiceProvider);
+    final authRepository = ref.read(authRepositoryProvider);
 
     try {
-      authService.signUp(
+      authRepository.signUp(
         _emailController.text,
         _confirmPasswordController.text,
       );
@@ -66,9 +69,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         );
       }
     } finally {
-      if (mounted) {
-        ref.read(authIsLoadingProvider.notifier).state = false;
-      }
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -82,7 +85,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isLoading = ref.watch(authIsLoadingProvider);
     return Scaffold(
       appBar: AppBar(title: const Text('Cadastro')),
       body: Center(
@@ -108,7 +110,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   const SizedBox(height: 16),
 
                   _RegisterActions(
-                    isLoading: isLoading,
+                    isLoading: _isLoading,
                     signUp: _signUp,
                     onNavigateToLogin: () {
                       Navigator.of(

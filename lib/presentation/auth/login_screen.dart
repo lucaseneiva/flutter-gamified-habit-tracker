@@ -2,9 +2,8 @@ import 'package:firy_streak/presentation/providers/auth_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'register_screen.dart'; // Para navegar para a tela de registro
+import 'register_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -18,17 +17,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+  bool _isLoading = false;
+
   Future<void> _signIn() async {
     if (!_formKey.currentState!.validate()) return;
 
-    ref.read(authIsLoadingProvider.notifier).state = true;
+    setState(() {
+      _isLoading = true;
+    });
 
-    final authService = ref.read(authServiceProvider);
-    
+    final authRepository = ref.read(authRepositoryProvider);
+
     try {
-      
-      await authService.signIn(_emailController.text, _passwordController.text);
-      
+      await authRepository.signIn(
+        _emailController.text,
+        _passwordController.text,
+      );
     } on FirebaseAuthException catch (e) {
       String message;
       if (e.code == 'user-not-found') {
@@ -55,9 +59,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         );
       }
     } finally {
-      if (mounted) {
-        ref.read(authIsLoadingProvider.notifier).state = false;
-      }
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -70,8 +74,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isLoading = ref.watch(authIsLoadingProvider);
-
     return Scaffold(
       appBar: AppBar(title: const Text('Login')),
       body: Center(
@@ -95,7 +97,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   const SizedBox(height: 24),
 
                   _LoginActions(
-                    isLoading: isLoading,
+                    isLoading: _isLoading,
                     signIn: _signIn,
                     onNavigateToRegister: () {
                       Navigator.of(context).push(
@@ -192,11 +194,13 @@ class _LoginActions extends StatelessWidget {
         const SizedBox(height: 16),
         Center(
           child: TextButton(
-          onPressed: onNavigateToRegister,
-          child: const Text('Não tem uma conta? Cadastre-se', textAlign: TextAlign.center,),
+            onPressed: onNavigateToRegister,
+            child: const Text(
+              'Não tem uma conta? Cadastre-se',
+              textAlign: TextAlign.center,
+            ),
+          ),
         ),
-        )
-        
       ],
     );
   }

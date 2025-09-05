@@ -198,9 +198,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         title: "Logout",
         message: "Tem certeza que quer fazer o Logout?",
         onConfirmation: () async {
-          final authService = ref.read(authServiceProvider);
+          final authRepository = ref.read(authRepositoryProvider);
           try {
-            await authService.signOut();
+            await authRepository.signOut();
           } catch (e) {
             // fazer depois
           }

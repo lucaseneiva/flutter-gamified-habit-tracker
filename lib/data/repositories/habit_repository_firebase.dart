@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:clock/clock.dart';
-import 'package:firy_streak/domain/models/pet_state.dart';
 import 'package:firy_streak/domain/models/habit.dart';
 import 'package:firy_streak/domain/repositories/habit_repository.dart';
 

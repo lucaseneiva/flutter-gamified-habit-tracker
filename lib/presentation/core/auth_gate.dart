@@ -1,30 +1,27 @@
-// lib/auth_gate.dart
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firy_streak/presentation/auth/login_screen.dart';
 import 'package:firy_streak/presentation/habit/home_screen.dart';
+import 'package:firy_streak/presentation/providers/auth_providers.dart';
 
-class AuthGate extends StatelessWidget {
+class AuthGate extends ConsumerWidget {
   const AuthGate({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<User?>(
-      stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (context, snapshot) {
-        // Se o snapshot ainda não tem dados (carregando)
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authStateChangesProvider);
 
-        // Se o usuário está logado, mostre a HomeScreen
-        if (snapshot.hasData) {
+    return authState.when(
+      data: (user) {
+        if (user != null) {
           return const HomeScreen();
         }
-
-        // Se o usuário não está logado, mostre a LoginScreen
         return const LoginScreen();
       },
+      loading: () =>
+          const Scaffold(body: Center(child: CircularProgressIndicator())),
+      error: (error, stackTrace) =>
+          Scaffold(body: Center(child: Text('Something went wrong: $error'))),
     );
   }
 }
