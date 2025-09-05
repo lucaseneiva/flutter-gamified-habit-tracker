@@ -10,7 +10,7 @@ import 'create_habit_screen.dart';
 import 'package:firy_streak/presentation/habit/widgets/pet_display.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firy_streak/presentation/habit/widgets/speech_bubble.dart';
-import 'package:firy_streak/presentation/providers/quote_provider.dart';
+import 'package:firy_streak/presentation/providers/quote_providers.dart';
 import 'package:firy_streak/presentation/core/utils/confirmation_dialog.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firy_streak/routing/routes.dart';
@@ -204,7 +204,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           try {
             await authRepository.signOut();
           } catch (e) {
-            // fazer depois
+            // fazer depois 
           }
         },
       ),
@@ -318,7 +318,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       final quoteAsync = ref.watch(randomQuoteProvider);
       return quoteAsync.when(
         data: (quote) => SpeechBubble(
-          message: quote,
+          message: quote.text,
           bubbleColor: Colors.white,
           borderColor: const Color(0xFFE0E0E0),
           textColor: const Color(0xFF4F4F4F),
