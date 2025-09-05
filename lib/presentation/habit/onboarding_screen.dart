@@ -1,13 +1,9 @@
-// lib/onboarding_screen.dart
-
-import 'package:firy_streak/routing/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:firy_streak/presentation/providers/shared_preferences_provider.dart';
 
-// Modelo de dados para cada página
 class OnboardingItem {
   final String title;
   final String description;
@@ -20,18 +16,17 @@ class OnboardingItem {
   });
 }
 
-class OnboardingScreen extends StatefulWidget {
+class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
 
   @override
-  State<OnboardingScreen> createState() => _OnboardingScreenState();
+  ConsumerState<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
-class _OnboardingScreenState extends State<OnboardingScreen> {
+class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
-  // Lista com os dados de cada tela do onboarding
   late final List<OnboardingItem> _onboardingPages;
 
   @override
@@ -59,37 +54,36 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   // Widget customizado para a segunda tela
   Widget _buildFeedFiryWidget() {
     return LayoutBuilder(
-  builder: (context, constraints) {
-    double width = constraints.maxWidth;
+      builder: (context, constraints) {
+        double width = constraints.maxWidth;
 
-    // ajuste proporcional (pode afinar depois)
-    double iconLarge = width * 0.36;
-    double iconSmall = width * 0.15;
-    double fontSize = width * 0.12;
+        // ajuste proporcional (pode afinar depois)
+        double iconLarge = width * 0.36;
+        double iconSmall = width * 0.15;
+        double fontSize = width * 0.12;
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SvgPicture.asset('assets/not_fed.svg', height: iconLarge),
-        const SizedBox(width: 6),
-        Text(
-          '+',
-          style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(width: 6),
-        SvgPicture.asset('assets/log.svg', height: iconSmall),
-        const SizedBox(width: 6),
-        Text(
-          '=',
-          style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(width: 6),
-        SvgPicture.asset('assets/happy.svg', height: iconLarge),
-      ],
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset('assets/not_fed.svg', height: iconLarge),
+            const SizedBox(width: 6),
+            Text(
+              '+',
+              style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(width: 6),
+            SvgPicture.asset('assets/log.svg', height: iconSmall),
+            const SizedBox(width: 6),
+            Text(
+              '=',
+              style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(width: 6),
+            SvgPicture.asset('assets/happy.svg', height: iconLarge),
+          ],
+        );
+      },
     );
-  },
-);
-
   }
 
   // Widget customizado para a terceira tela
@@ -114,14 +108,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  // Marca que o onboarding foi concluído e navega para a tela principal
-  void _finishOnboarding() async {
-    final prefs = await SharedPreferences.getInstance();
+  Future<void> _finishOnboarding() async {
+    final prefs = await ref.read(sharedPreferencesProvider.future);
+    
     await prefs.setBool('onboarding_complete', true);
 
-    if (mounted) {
-      context.go(AppRoutes.login);
-    }
+    ref.invalidate(sharedPreferencesProvider);
+
   }
 
   @override
@@ -240,7 +233,7 @@ class OnboardingPageWidget extends StatelessWidget {
           const Spacer(flex: 1),
           item.imageWidget,
           const Spacer(flex: 1),
-          
+
           Text(
             item.description,
             textAlign: TextAlign.center,

@@ -11,19 +11,15 @@ import 'package:firy_streak/presentation/habit/create_habit_screen.dart';
 import 'package:firy_streak/presentation/habit/onboarding_screen.dart';
 import 'package:firy_streak/presentation/providers/shared_preferences_provider.dart';
 
-// 1. Create a provider for your GoRouter instance
 final routerProvider = Provider<GoRouter>((ref) {
-  // Watch the auth state provider. GoRouter will automatically rebuild
-  // and re-run the redirect logic whenever this state changes.
   final authState = ref.watch(authStateChangesProvider);
   final sharedPrefs = ref.watch(sharedPreferencesProvider);
-
+  
   return GoRouter(
     initialLocation: AppRoutes.home,
     debugLogDiagnostics: true,
 
     redirect: (BuildContext context, GoRouterState state) {
-      // Early returns for loading states
       if (authState.isLoading || sharedPrefs.isLoading) return null;
       if (authState.hasError) return null;
 
@@ -34,20 +30,16 @@ final routerProvider = Provider<GoRouter>((ref) {
 
       final currentLocation = state.matchedLocation;
 
-      // Define route checks
       final isOnOnboardingRoute = currentLocation == AppRoutes.onboarding;
       final isOnAuthRoute =
           currentLocation == AppRoutes.login ||
           currentLocation == AppRoutes.register;
       final isOnHomeRoute = currentLocation == AppRoutes.home;
 
-      // 1. Handle onboarding flow
       if (!isOnboardingComplete) {
-        // If onboarding is not complete, only allow onboarding route
         if (!isOnOnboardingRoute) {
           return AppRoutes.onboarding;
         }
-        // If already on onboarding route, stay there
         return null;
       }
 
